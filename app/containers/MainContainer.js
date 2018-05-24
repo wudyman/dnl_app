@@ -22,13 +22,22 @@ import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Main from '../pages/MainPage/Main';
 import * as readCreators from '../actions/read';
+import {TextInput,Button} from 'react-native';  
+
 
 class MainContainer extends React.Component {
   static navigationOptions = {
-    title: '首页',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-home" size={25} color={tintColor} />
-    )
+    //headerTitle: '首页',
+   // tabBarIcon: ({ tintColor }) => (
+     // <Icon name="md-home" size={25} color={tintColor} />
+    //)
+    //headerLeft: (<Button title='搜素'/>),
+    headerRight: (<Button title='提问'/>),
+    headerTitle:(<TextInput style={{flex:1,backgroundColor:'transparent',fontSize:15}}
+      keyboardType='web-search'
+      placeholderTextColor='#fff'   
+      placeholder='搜索内容' />),
+    //headerTitleStyle:{fontSize:5},
   };
 
   static componentDidMount() {
@@ -62,5 +71,7 @@ const mapDispatchToProps = (dispatch) => {
     readActions
   };
 };
+
+ 
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);

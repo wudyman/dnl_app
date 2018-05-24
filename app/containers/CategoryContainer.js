@@ -25,7 +25,7 @@ import Category from '../pages/Category/Category';
 
 class CategoryContainer extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: '分类',
+    title: '话题',
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-pricetags" size={25} color={tintColor} />
     ),

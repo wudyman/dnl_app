@@ -17,3 +17,6 @@
  */
 export const WEXIN_ARTICLE_LIST = 'http://route.showapi.com/582-2';
 export const WEXIN_ARTICLE_TYPE = 'http://route.showapi.com/582-1';
+//export const SITE_URL = 'http://192.168.56.101:8000';
+export const SITE_URL = 'http://www.danongling.com';
+export const AJAX_TOPICS_URL = SITE_URL+'/ajax/topics/1/0/0/';

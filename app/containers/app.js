@@ -56,13 +56,13 @@ const App = StackNavigator(
     Category: {
       screen: CategoryContainer,
       navigationOptions: {
-        headerLeft: null
+        //headerLeft: null
       }
     },
     Home: {
       screen: TabContainer,
       navigationOptions: {
-        headerLeft: null
+        //headerLeft: null
       }
     },
     Web: { screen: WebViewPage }

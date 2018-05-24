@@ -21,17 +21,31 @@ import store from 'react-native-simple-store';
 import * as types from '../constants/ActionTypes';
 import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
-import { WEXIN_ARTICLE_TYPE } from '../constants/Urls';
+import { AJAX_TOPICS_URL } from '../constants/Urls';
 import { fetchTypeList, receiveTypeList } from '../actions/category';
 
+function convertTopics(ret)
+{
+  var topics=[];
+  ret.map((item)=>{
+    let topic={"id":""+item[0],"name":item[1]};
+    //let topic={};
+    //topic.id=''+item[0];
+    //topic.name=item[1];
+    topics.push(topic);
+  });
+  return topics;
+}
 export function* requestTypeList() {
   try {
+    console.log("####################################################");
     yield put(fetchTypeList());
-    const typeList = yield call(RequestUtil.request, WEXIN_ARTICLE_TYPE, 'get');
-    yield put(receiveTypeList(typeList.showapi_res_body.typeList));
-    yield call(store.save, 'typeList', typeList.showapi_res_body.typeList);
-    const errorMessage = typeList.showapi_res_error;
-    if (errorMessage && errorMessage !== '') {
+    const ret = yield call(RequestUtil.request, AJAX_TOPICS_URL, 'post');
+    const typeList=convertTopics(ret);
+    yield put(receiveTypeList(typeList));
+    yield call(store.save, 'typeList', typeList);
+    const errorMessage = typeList;
+    if (errorMessage && errorMessage == 'fail') {
       yield ToastUtil.showShort(errorMessage);
     }
   } catch (error) {

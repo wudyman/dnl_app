@@ -84,6 +84,7 @@ class Category extends React.Component {
   };
 
   onPress = (type) => {
+    console.log(type);
     const pos = tempTypeIds.indexOf(parseInt(type.id));
     if (pos === -1) {
       tempTypeIds.push(parseInt(type.id));
