@@ -149,6 +149,7 @@ class Main extends React.Component {
 
   renderContent = (dataSource, typeId) => {
     const { read } = this.props;
+    console.log(dataSource);
     if (read.loading) {
       return <LoadingView />;
     }
@@ -179,8 +180,6 @@ class Main extends React.Component {
       if (this.state.typeList === null) {
         return null;
       }
-      console.log(this.state.typeList);
-      console.log(typeId);
       const name = getTypeName(this.state.typeList, typeId);
       const typeView = (
         <View key={typeId} tabLabel={name} style={styles.base}>

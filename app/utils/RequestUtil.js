@@ -20,6 +20,7 @@ import getUrl from './UrlUtil';
 
 const request = (url, method, body) => {
   let isOk;
+  console.log(url);
   return new Promise((resolve, reject) => {
     fetch(getUrl(url), {
       method,
