@@ -22,19 +22,21 @@ import MainContainer from '../containers/MainContainer';
 import WebViewPage from '../pages/ItemDetail/WebViewPage';
 import Feedback from '../pages/Feedback/Feedback';
 import About from '../pages/About/About';
+import HomePage from '../pages/HomePage/HomePage';
 
 const TabContainer = TabNavigator(
   {
     Main: { screen: MainContainer },
     Category: { screen: CategoryContainer },
     Feedback: { screen: Feedback },
-    About: { screen: About }
+    About: { screen: About },
+    HomePage: { screen: HomePage }
   },
   {
     lazy: true,
     tabBarPosition: 'bottom',
     tabBarOptions: {
-      activeTintColor: '#3e9ce9',
+      activeTintColor: '#228b22',
       inactiveTintColor: '#999999',
       showIcon: true,
       style: {
@@ -71,7 +73,7 @@ const App = StackNavigator(
     headerMode: 'screen',
     navigationOptions: {
       headerStyle: {
-        backgroundColor: '#3e9ce9'
+        backgroundColor: '#228b22'
       },
       headerTitleStyle: {
         color: '#fff',

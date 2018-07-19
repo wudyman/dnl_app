@@ -202,7 +202,7 @@ class Main extends React.Component {
           )}
           tabBarBackgroundColor="#fcfcfc"
           tabBarUnderlineStyle={styles.tabBarUnderline}
-          tabBarActiveTextColor="#3e9ce9"
+          tabBarActiveTextColor="#228b22"
           tabBarInactiveTextColor="#aaaaaa"
         >
           {content}
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     height: 120,
     justifyContent: 'flex-end',
     padding: 20,
-    backgroundColor: '#3e9ce9'
+    backgroundColor: '#228b22'
   },
   drawerIcon: {
     width: 30,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   tabBarUnderline: {
-    backgroundColor: '#3e9ce9',
+    backgroundColor: '#228b22',
     height: 2
   }
 });

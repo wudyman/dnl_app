@@ -22,7 +22,8 @@ import { ViewPropTypes, Image, TouchableOpacity } from 'react-native';
 const propTypes = {
   onPress: PropTypes.func,
   disabled: PropTypes.bool,
-  source: PropTypes.object,
+  //source: PropTypes.object,
+  source: PropTypes.number,
   style: ViewPropTypes.style,
   containerStyle: ViewPropTypes.style
 };

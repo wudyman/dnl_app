@@ -18,16 +18,22 @@
 
 import getUrl from './UrlUtil';
 
-const request = (url, method, body) => {
+const request = (url, method, data) => {
   let isOk;
   console.log(url);
+  console.log(data);
+  let formData=new FormData();
+  formData.append("type","hot");
   return new Promise((resolve, reject) => {
     fetch(getUrl(url), {
-      method,
+      method:'POST',
+      /*
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body
+      */
+      //body:JSON.stringify({type:'hot'})
+      body:data
     })
       .then((response) => {
         if (response.ok) {

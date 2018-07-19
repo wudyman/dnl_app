@@ -36,27 +36,75 @@ function getIndexImg(content){
   else
       return null;
 }
+
+function removeImg(content){
+  var imgReg=/<img.*?(?:>|\/>)/gi;
+  var temp=content.replace(imgReg,"").replace(/<[^>]+>/g,"");
+  return temp;
+}
+
 function convertQuestionList(ret)
 {
   var questions=[];
   ret.map((item)=>{
     let question={};
+    let content_type=item[2];
+    if("article"==content_type)
+    {
+      question.id=item[0];
+      question.title=item[1];
+      question.topics=item[3];
+      question.click_nums=item[4];
+      question.url=SITE_URL+"/article/"+question.id+"/";
+    }
+    else
+    {
+      question.id=item[0];
+      question.title=item[1];
+      question.topics=item[3];
+      question.answer_id=item[4];
+      question.url=SITE_URL+"/question/"+question.id+"/?ans="+question.answer_id;
+    }
+
+    question.push_index=item[5];
+    question.content=item[6];
+    question.like_nums=item[7];
+    question.comment_nums=item[8];
+    question.author_id=item[9];
+    question.author_name=item[10];
+    question.author_avatar=item[11];
+    question.author_mood=item[12];
+    question.author_sexual=item[13];
+    question.author_question_nums=item[14];
+    question.author_article_nums=item[15];
+    question.author_answer_nums=item[16];
+    question.author_followto_nums=item[17];
+    question.author_follower_nums=item[18];
+    question.author_followtopic_nums=item[19];
+    question.author_followquestion_nums=item[20];
+
     question.date="2018-05-23 22:15:56";
+    question.contentImg=SITE_URL+getIndexImg(question.content);
+    question.userName=question.author_name;
+    question.format_content=removeImg(question.content);
+
+    /*
     question.weixinNum="beautify_english";
     question.ct="2018-05-24 08:00:04.677";
-    question.id=""+item[0];
+    question.id=""+2;
     question.typeName="段子手";
     question.title=""+item[1];
-    question.contentImg=SITE_URL+getIndexImg(item[9]);
+
     question.userLogo="http://wx.qlogo.cn/mmhead/Q3auHgzwzM4mLXrmkfocJUR1zkV4QVjrDj5FibDojH7cJ4vUZe6qBFw/132";
     question.lut="2018-05-25 16:30:03.510";
-    question.userName=""+item[6];
+    question.userName=""+item[10];
     question.like_num=0;
     question.read_num=0;
     question.typeId=""+item[2];
     question.userLogo_code="https://open.weixin.qq.com/qr/code?username=beautify_english";
-    question.answerId=item[4];
+    question.answerId=item[9];
     question.url=SITE_URL+"/question/"+question.id+"/?ans="+question.answerId;
+    */
     questions.push(question);
   });
   return questions;
@@ -68,14 +116,18 @@ export function* requestArticleList(
   isLoadMore,
   page
 ) {
+  let formData=new FormData();
+  formData.append("type","hot");
   try {
     yield put(fetchArticleList(isRefreshing, loading, isLoadMore));
     const ret = yield call(
       RequestUtil.request,
       `${SITE_URL}/ajax/topic/${typeId}/1/0/20/`,
-      'post'
+      'post',
+      formData
     );
     console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    console.log(ret);
     const articleList=convertQuestionList(ret);
     console.log(articleList);
     yield put(receiveArticleList(

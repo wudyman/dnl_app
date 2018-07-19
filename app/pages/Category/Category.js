@@ -157,7 +157,7 @@ class Category extends React.Component {
         containerStyle={[
           styles.categoryBtn,
           isSelect
-            ? { backgroundColor: '#3e9ce9' }
+            ? { backgroundColor: '#228b22' }
             : { backgroundColor: '#fcfcfc' }
         ]}
         style={[
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#3e9ce9'
+    backgroundColor: '#228b22'
   },
   btnText: {
     fontSize: 16,

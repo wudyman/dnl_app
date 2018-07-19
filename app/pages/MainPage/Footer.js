@@ -21,7 +21,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 const Footer = () => (
   <View style={styles.footerContainer}>
-    <ActivityIndicator size="small" color="#3e9ce9" />
+    <ActivityIndicator size="small" color="#228b22" />
     <Text style={styles.footerText}>数据加载中……</Text>
   </View>
 );

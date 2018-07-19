@@ -26,9 +26,10 @@ require('moment/locale/zh-cn');
 const ItemCell = ({ article, onPressHandler }) => (
   <TouchableOpacity onPress={() => onPressHandler(article)}>
     <View style={styles.containerItem}>
-      <Image style={styles.itemImg} source={{ uri: article.contentImg }} />
       <View style={styles.itemRightContent}>
         <Text style={styles.title}>{formatStringWithHtml(article.title)}</Text>
+        <Image style={styles.itemImg} source={{ uri: article.contentImg }} />
+        <Text numberOfLines={3} style={styles.content}>{formatStringWithHtml(article.format_content)}</Text>
         <View style={styles.itemRightBottom}>
           <Text style={styles.userName}>{article.userName}</Text>
           <Text style={styles.timeAgo}>{moment(article.date).fromNow()}</Text>
@@ -44,19 +45,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fcfcfc',
-    padding: 10,
+    padding: 15,
     borderBottomColor: '#ddd',
     borderBottomWidth: 1
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     textAlign: 'left',
     color: 'black'
   },
+  content: {
+    fontSize: 18,
+    textAlign: 'left',
+    color: '#666666'
+  },
   itemImg: {
-    width: 88,
-    height: 66,
-    marginRight: 10
+    height: 120,
+    marginRight: 0
   },
   itemRightContent: {
     flex: 1,

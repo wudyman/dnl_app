@@ -16,20 +16,34 @@
  *
  */
 import React from 'react';
-import { StyleSheet, Image, Text, Linking, View } from 'react-native';
+import { StyleSheet, Image, Text, Linking, Modal,TouchableOpacity, View } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
+import TextButton from '../../components/TextButton';
+import ImageButton from '../../components/ImageButtonWithText';
+import SignInPage from '../SignInAndSignup/SignInPage';
+import SignUpPage from '../SignInAndSignup/SignUpPage';
 
 const SHOW_API = 'https://www.showapi.com';
 const READING_REPO = 'https://github.com/attentiveness/reading';
 
+const LOGIN_URL = 'http://www.danongling.com/signinup/?next=/';
+
 const aboutLogo = require('../../img/about_logo.png');
 
-class About extends React.Component {
+class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        signModal: false,
+        bSignUp:false,
+    }
+  }
+
   static navigationOptions = {
-    title: '关于',
+    title: '我',
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-information-circle" size={25} color={tintColor} />
     ),
@@ -44,29 +58,56 @@ class About extends React.Component {
     )
   };
 
+  _closeSignPage(){
+    this.setState({signModal:false});
+  }
+
+  _switchSignInUp(){
+    this.setState({bSignUp:!this.state.bSignUp});
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.content}>
-          <View style={styles.center}>
-            <Image style={styles.logo} source={aboutLogo} />
-            <Text style={styles.version}>{`v${DeviceInfo.getVersion()}`}</Text>
-            <Text style={styles.title}>iReading</Text>
-            <Text style={styles.subtitle}>让生活更精彩</Text>
+          <View style={styles.login}>
+            <Button
+                style={[styles.loginButton, { color: '#228b22' }]}
+                text='登录/注册'
+                onPress={() => this.setState({ signModal: true})}
+            />
           </View>
           <View style={styles.bottomContainer}>
             <View style={styles.disclaimerContent}>
-              <Text style={[styles.disclaimer, { color: '#999999' }]}>
-                免责声明：所有内容均来自:
-              </Text>
               <Button
                 style={[styles.disclaimer, { color: '#228b22' }]}
-                text={SHOW_API}
+                text='消息'
+                onPress={() => Linking.openURL(SHOW_API)}
+              />
+              <Button
+                style={[styles.disclaimer, { color: '#228b22' }]}
+                text='设置'
                 onPress={() => Linking.openURL(SHOW_API)}
               />
             </View>
           </View>
         </View>
+
+        <View>
+            <Modal
+              animationType={'slide'}
+              transparent={true}
+              onRequestClose={() => this._closeSignPage()}
+              visible={this.state.signModal}
+            >
+            {this.state.bSignUp ?
+              <SignUpPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()}/>
+              :
+              <SignInPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()}/>
+            }
+          </Modal>
+        </View>
+
       </View>
     );
   }
@@ -83,9 +124,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 10
   },
-  center: {
+  login: {
     flex: 1,
+    padding:10,
     alignItems: 'center'
+  },
+  loginButton: {
+    fontSize: 24,
+    textAlign: 'center'
   },
   logo: {
     width: 110,
@@ -113,12 +159,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   disclaimer: {
-    fontSize: 14,
-    textAlign: 'center'
+    fontSize: 18,
+    textAlign: 'left'
   },
   bottomContainer: {
-    alignItems: 'center'
+    alignItems: 'flex-start'
   }
 });
 
-export default About;
+export default HomePage;

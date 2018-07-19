@@ -46,7 +46,7 @@ export function* requestTypeList() {
     yield call(store.save, 'typeList', typeList);
     const errorMessage = typeList;
     if (errorMessage && errorMessage == 'fail') {
-      yield ToastUtil.showShort(errorMessage);
+      yield  ToastUtil.showShort(errorMessage);
     }
   } catch (error) {
     yield put(receiveTypeList([]));
