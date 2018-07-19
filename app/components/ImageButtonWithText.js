@@ -24,6 +24,53 @@ const propTypes = {
     color: PropTypes.string,
     btnStyle: View.propTypes.style
 };
+const ImageButton=({
+    onPress,
+    disabled,
+    containerStyle,
+    style,
+    activeOpacity,
+    image,
+    icon,
+    text, 
+    color, 
+    imgSize, 
+    fontSize, 
+    btnStyle  
+})=>
+{
+    if (image) {
+        return (
+        <TouchableOpacity style={containerStyle} onPress={onPress} disabled={disabled} activeOpacity={activeOpacity}>
+                <View style={[styles.view, btnStyle]}>
+                    <Image source={image} style={{width: imgSize, height: imgSize}}/>
+                    {text ?
+                        <Text style={[styles.text, {fontSize: fontSize, color: color}]}>{text}</Text>
+                        :
+                        null
+                    }
+                </View>
+        </TouchableOpacity>
+        );
+    }
+    else if(icon)
+    {
+        return (
+            <TouchableOpacity style={containerStyle} onPress={onPress} disabled={disabled} activeOpacity={activeOpacity}>
+            <View style={[styles.view, btnStyle]}>
+            <Icon name={icon} size={imgSize} color={color}/>
+            {text ?
+                <Text style={{fontSize: fontSize, color: color}}>{text}</Text>
+                :
+                null
+            }
+            </View>
+            </TouchableOpacity>
+        )
+    }
+};
+
+/*
 class ImageButton extends React.Component{
     render() {
         const {image, icon, onPress} = this.props;
@@ -87,7 +134,7 @@ class ImageButton extends React.Component{
         );
     }
 }
-
+*/
 const styles = StyleSheet.create({
     view:{
         alignItems: 'center',
