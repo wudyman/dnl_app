@@ -22,8 +22,9 @@ const propTypes = {
 const TextButton = ({
     onPress,
     disabled,
-    style,
     containerStyle,
+    btnStyle,
+    textStyle,
     text,
     activeOpacity
   }) => (
@@ -33,11 +34,20 @@ const TextButton = ({
       disabled={disabled}
       activeOpacity={activeOpacity}
     >
-        <View style={{height: px2dp(16)}}>
-            <Text style={style}>{text}</Text>
+        <View style={btnStyle}>
+            <Text style={textStyle}>{text}</Text>
         </View>
     </TouchableOpacity>
 );
+
+const styles = StyleSheet.create({
+    btnStyle: {
+
+    },
+    textStyle: {
+
+    },
+  });
 
 TextButton.propTypes = propTypes;
 
@@ -46,7 +56,7 @@ TextButton.defaultProps = {
   disabled: false,
   activeOpacity: 0.8,
   color: 'white',
-  fontSize: px2dp(12)
+  fontSize: 12
 };
 
 export default TextButton;

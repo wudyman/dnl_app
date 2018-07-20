@@ -73,12 +73,14 @@ class SignInPage extends React.Component{
                             placeholderTextColor="#c4c4c4"/>
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
+                    <View style={styles.forget}>
+                        <Button style={styles.forgetText} text="忘记密码?" onPress={this._forgetPassword.bind(this)} />
+                    </View>
                     <View style={styles.signInButton}>
-                        <Button style={styles.signInButtonText} text="登录" onPress={this._signIn.bind(this)}/>
+                        <TextButton btnStyle={styles.signInButtonBtn} textStyle={styles.signInButtonText} text="登录" onPress={this._signIn.bind(this)}/>
                     </View>
                     <View style={styles.switchSignInUpButton}>
-                        <TextButton style={styles.switchSignInUpButtonText} text="忘记密码?" onPress={this._forgetPassword.bind(this)} color="rgba(255,255,255,0.5)"/>
-                        <TextButton style={styles.switchSignInUpButtonText} text="注册账号" onPress={this.props.switchSignInUp}/>
+                        <TextButton btnStyle={styles.switchSignInUpButtonBtn} textStyle={styles.switchSignInUpButtonText} text="没有帐号？注册" onPress={this.props.switchSignInUp}/>
                     </View>
                 </View>
                 <View style={{flex: 1}}>
@@ -136,26 +138,47 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 3,
         borderBottomRightRadius: 3
     },
-    signInButton:{
+    forget:{
         marginTop: 10,
+        alignItems: 'flex-end'
+    },
+    forgetText:{
+        color: '#aaaaaa'
+    },
+    signInButton:{
+        marginTop: 30,
+        alignItems: 'stretch'
+    },
+    signInButtonBtn:{
         alignItems: 'center',
-        height: 40
+        backgroundColor: '#228b22',
+        borderTopLeftRadius: 3,
+        borderTopRightRadius: 3,
+        borderBottomLeftRadius: 3,
+        borderBottomRightRadius: 3
     },
     signInButtonText:{
-        fontSize: 24
+        paddingTop:5,
+        paddingBottom:5,
+        fontSize:20,
+        color:'white'
     },
     edit:{
         fontSize: 20,
         backgroundColor: '#fff'
     },
     switchSignInUpButton:{
-        height: 40,
-        marginTop: 12,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        marginTop: 30,
+        alignItems: 'stretch'
+    },
+    switchSignInUpButtonBtn:{
+        alignItems: 'center',
+        backgroundColor: '#eeeeee',
     },
     switchSignInUpButtonText:{
-        fontSize: 20
+        paddingTop:5,
+        paddingBottom:5,
+        fontSize: 16
     },
     thirdPartyView:{
         flex: 1,
