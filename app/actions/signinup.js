@@ -15,15 +15,25 @@
  * limitations under the License.
  *
  */
-import { combineReducers } from 'redux';
-import read from './read';
-import category from './category';
-import signinup from './signinup';
+import * as types from '../constants/ActionTypes';
 
-const rootReducer = combineReducers({
-  read,
-  category,
-  signinup
-});
+export function requestSignIn() {
+    console.log("######################requestSignIn##############################");
+  return {
+    type: types.REQUEST_SIGN_IN
+  };
+}
 
-export default rootReducer;
+export function startSignIn() {
+    console.log("######################startSignIn##############################");
+  return {
+    type: types.START_SIGN_IN
+  };
+}
+
+export function endSignIn() {
+    console.log("######################endSignIn##############################");
+  return {
+    type: types.END_SIGN_IN
+  };
+}

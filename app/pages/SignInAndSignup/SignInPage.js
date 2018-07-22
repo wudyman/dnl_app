@@ -2,6 +2,8 @@
  * Created by wangdi on 4/11/16.
  */
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
 //import Icon from 'react-native-vector-icons/Ionicons';
 //import MainPage from '../MainPage';
@@ -11,10 +13,16 @@ import SignUpPage from './SignUpPage';
 import ImageButton from '../../components/ImageButtonWithText';
 import TextDivider from '../../components/TextDivider';
 import px2dp from '../../utils/px2dp';
-
+import * as signInUpCreators from '../../actions/signinup';
+import configureStore from '../../store/configure-store';
+const store = configureStore();
 class SignInPage extends React.Component{
     constructor(props){
         super(props);
+        this.state = {
+            phoneNo : "",
+            password : "",
+        };
         this.handleBack = this._handleBack.bind(this);
     }
 
@@ -27,7 +35,11 @@ class SignInPage extends React.Component{
     }
 
     _signIn() {
-
+        console.log("############################");
+        console.log(this.state.phoneNo);
+        console.log(this.state.password);
+        //store.dispatch(signInUpCreators.requestSignIn(true));
+        gSignInUpActions.requestSignIn();
     }
     _handleBack() {
 
@@ -62,6 +74,11 @@ class SignInPage extends React.Component{
                             style={styles.edit}
                             underlineColorAndroid="transparent"
                             placeholder="手机号"
+                            onChangeText={
+                                (text) => {
+                                  this.setState({phoneNo:text});
+                                }
+                            }
                             placeholderTextColor="#c4c4c4"/>
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
@@ -70,6 +87,11 @@ class SignInPage extends React.Component{
                             style={styles.edit}
                             underlineColorAndroid="transparent"
                             placeholder="密码"
+                            onChangeText={
+                                (text) => {
+                                  this.setState({password:text});
+                                }
+                            }
                             placeholderTextColor="#c4c4c4"/>
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
@@ -189,4 +211,25 @@ const styles = StyleSheet.create({
     }
 
 });
-export default SignInPage;
+
+const mapStateToProps = (state) => {
+    const { signinup } = state;
+    return {
+        signinup
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    const signInUpActions = bindActionCreators(signInUpCreators, dispatch);
+    gSignInUpActions=signInUpActions;
+    return {
+        signInUpActions
+    };
+  };
+
+
+   
+  
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+  
+//export default SignInPage;

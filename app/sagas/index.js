@@ -19,7 +19,8 @@ import { all, fork } from 'redux-saga/effects';
 
 import { watchRequestTypeList } from './category';
 import { watchRequestArticleList } from './read';
+import { watchSignInUp } from './signinup';
 
 export default function* rootSaga() {
-  yield all([fork(watchRequestTypeList), fork(watchRequestArticleList)]);
+  yield all([fork(watchRequestTypeList), fork(watchRequestArticleList),fork(watchSignInUp)]);
 }

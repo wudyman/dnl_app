@@ -15,15 +15,23 @@
  * limitations under the License.
  *
  */
-import { combineReducers } from 'redux';
-import read from './read';
-import category from './category';
-import signinup from './signinup';
+import * as types from '../constants/ActionTypes';
 
-const rootReducer = combineReducers({
-  read,
-  category,
-  signinup
-});
+const initialState = {
+  isStart: false
+};
 
-export default rootReducer;
+export default function signinup(state = initialState, action) {
+  switch (action.type) {
+    case types.START_SIGN_IN:
+      return Object.assign({}, state, {
+        isStart: true
+      });
+    case types.END_SIGN_IN:
+      return Object.assign({}, state, {
+        isStart: false
+      });
+    default:
+      return state;
+  }
+}
