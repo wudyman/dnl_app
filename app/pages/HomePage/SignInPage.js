@@ -9,13 +9,13 @@ import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, T
 //import MainPage from '../MainPage';
 import Button from '../../components/Button';
 import TextButton from '../../components/TextButton';
-import SignUpPage from './SignUpPage';
+//import SignUpPage from './SignUpPage';
 import ImageButton from '../../components/ImageButtonWithText';
 import TextDivider from '../../components/TextDivider';
 import px2dp from '../../utils/px2dp';
-import * as signInUpCreators from '../../actions/signinup';
+//import * as signInUpCreators from '../../actions/signinup';
 import configureStore from '../../store/configure-store';
-const store = configureStore();
+//const store = configureStore();
 class SignInPage extends React.Component{
     constructor(props){
         super(props);
@@ -35,11 +35,10 @@ class SignInPage extends React.Component{
     }
 
     _signIn() {
-        console.log("############################");
-        console.log(this.state.phoneNo);
-        console.log(this.state.password);
         //store.dispatch(signInUpCreators.requestSignIn(true));
-        gSignInUpActions.requestSignIn();
+        //gSignInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
+        const { signInUpActions } = this.props;
+        signInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
     }
     _handleBack() {
 
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
     }
 
 });
-
+/*
 const mapStateToProps = (state) => {
     const { signinup } = state;
     return {
@@ -226,10 +225,10 @@ const mapStateToProps = (state) => {
         signInUpActions
     };
   };
-
+*/
 
    
   
-export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
+//export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);
   
-//export default SignInPage;
+export default SignInPage;

@@ -18,18 +18,30 @@
 import * as types from '../constants/ActionTypes';
 
 const initialState = {
-  isStart: false
+  isStart: false,
+  signInResult: 'fail',
+  userInfo:{}
 };
 
 export default function signinup(state = initialState, action) {
   switch (action.type) {
+    case types.INIT_SIGN_IN:
+    return Object.assign({}, state, {
+      isStart: false,
+      signInResult: 'fail'
+    });
     case types.START_SIGN_IN:
       return Object.assign({}, state, {
         isStart: true
       });
     case types.END_SIGN_IN:
       return Object.assign({}, state, {
-        isStart: false
+        isStart: false,
+        signInResult: action.signInResult
+      });
+    case types.RECEIVE_USER_INFO:
+      return Object.assign({}, state, {
+        userInfo: action.userInfo
       });
     default:
       return state;

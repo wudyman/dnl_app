@@ -21,28 +21,53 @@ import store from 'react-native-simple-store';
 import * as types from '../constants/ActionTypes';
 import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
-import { SIGN_IN_URL } from '../constants/Urls';
-import { startSignIn,endSignIn } from '../actions/signinup';
+import { SITE_URL } from '../constants/Urls';
+import { SIGN_IN_URL,REQUEST_USER_INFO_URL } from '../constants/Urls';
+import { startSignIn,endSignIn,requestUserInfo,receiveUserInfo } from '../actions/signinup';
+function convertUserInfo(ret)
+{
+  let userInfo={};
+  userInfo.id=ret[0];
+  userInfo.name=ret[1];
+  userInfo.avatar=SITE_URL+ret[2];
+  userInfo.mood=ret[3];
 
-export function* signIn() {
+  userInfo.url=SITE_URL+'/er/'+ret[0]+'/'
+  return userInfo;
+}
+export function* signIn(phoneNo,password) {
     let formData=new FormData();
-    formData.append("phoneNo","13927409313");
-    formData.append("password","shenlin830921");
+    formData.append("phoneNo",phoneNo);
+    formData.append("password",password);
   try {
     console.log("######################SIGN IN 1##############################");
     yield put(startSignIn());
     console.log("######################SIGN IN 2##############################");
     const ret = yield call(RequestUtil.request, SIGN_IN_URL, 'post',formData);
     console.log("######################SIGN IN 3##############################");
-    yield put(endSignIn());
+    yield put(endSignIn(ret));
+    if(ret == 'success')
+    {
+      yield ToastUtil.showShort("登录成功");
+      let formData=new FormData();
+      formData.append("type","userprofile");
+      yield put(requestUserInfo());
+      const ret = yield call(RequestUtil.request, REQUEST_USER_INFO_URL, 'post',formData);
+      console.log(ret);
+      if("fail"!=ret)
+      {
+        const userInfo=convertUserInfo(ret);
+        yield put(receiveUserInfo(userInfo));
+      }
+    }
+    else
+    {
+      yield  ToastUtil.showShort("登录失败");
+    }
     console.log("######################SIGN IN 4##############################");
-    const errorMessage = ret;
-    //if (errorMessage && errorMessage == 'fail') {
-    //  yield  ToastUtil.showShort(errorMessage);
-    //}
   } catch (error) {
     console.log("######################SIGN IN 5##############################");
-    yield put(endSignIn());
+    yield put(endSignIn('fail'));
     console.log("######################SIGN IN 6##############################");
     yield ToastUtil.showShort('登录失败');
     console.log("######################SIGN IN 7##############################");
@@ -52,9 +77,9 @@ export function* signIn() {
 export function* watchSignInUp() {
   while (true) {
     console.log("######################watchSignInUp 1 ##############################");
-    yield take(types.REQUEST_SIGN_IN);
+    const {phoneNo,password} = yield take(types.REQUEST_SIGN_IN);
     console.log("######################watchSignInUp 2 ##############################");
-    yield fork(signIn);
+    yield fork(signIn,phoneNo,password);
     console.log("######################watchSignInUp 3 ##############################");
   }
 }

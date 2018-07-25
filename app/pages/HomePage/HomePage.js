@@ -16,6 +16,7 @@
  *
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, Image, Text, Linking, Modal,TouchableOpacity, View } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
@@ -23,8 +24,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import TextButton from '../../components/TextButton';
 import ImageButton from '../../components/ImageButtonWithText';
-import SignInPage from '../SignInAndSignup/SignInPage';
-import SignUpPage from '../SignInAndSignup/SignUpPage';
+import SignInPage from './SignInPage';
+import SignUpPage from './SignUpPage';
+import UserInfoPage from './UserInfoPageByWebView';
 
 const SHOW_API = 'https://www.showapi.com';
 const READING_REPO = 'https://github.com/attentiveness/reading';
@@ -33,30 +35,30 @@ const LOGIN_URL = 'http://www.danongling.com/signinup/?next=/';
 
 const aboutLogo = require('../../img/about_logo.png');
 
+const useravatar='http://www.danongling.com/media/avatar/default.jpg';
+const userurl='http://www.danongling.com/er/2/';
+
+const propTypes = {
+  signInUpActions: PropTypes.object,
+  signinup: PropTypes.object.isRequired
+};
+
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
         signModal: false,
         bSignUp:false,
+        userInfoPageModal: false,
+        bIsSignIn:false
     }
   }
 
-  static navigationOptions = {
-    title: '我',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-information-circle" size={25} color={tintColor} />
-    ),
-    headerRight: (
-      <Icon.Button
-        name="logo-github"
-        backgroundColor="transparent"
-        underlayColor="transparent"
-        activeOpacity={0.8}
-        onPress={() => Linking.openURL(READING_REPO)}
-      />
-    )
-  };
+  _openSignPage(){
+    const { signInUpActions } = this.props;
+    signInUpActions.initSignIn();
+    this.setState({signModal:true});
+  }
 
   _closeSignPage(){
     this.setState({signModal:false});
@@ -66,16 +68,43 @@ class HomePage extends React.Component {
     this.setState({bSignUp:!this.state.bSignUp});
   }
 
+  _openUserInfoPage(){
+    this.setState({userInfoPageModal:true});
+  }
+
+  _closeUserInfoPage(){
+    this.setState({userInfoPageModal:false});
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props);
+    console.log(nextProps);
+    const { signinup } = nextProps;
+    if('success'==signinup.signInResult)
+    {
+      this.setState({signModal:false,bIsSignIn:true});
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.login}>
+          {this.state.bIsSignIn ?
+              <TouchableOpacity style={styles.userInfo} onPress={() => this._openUserInfoPage()}>
+                <Image style={styles.userInfoAvatar} source={{ uri: this.props.signinup.userInfo.avatar }} />
+                <Text style={styles.userInfoName}>{this.props.signinup.userInfo.name}</Text>
+                <Text style={styles.userInfoMood}>{this.props.signinup.userInfo.mood}</Text>
+              </TouchableOpacity>
+            :
             <Button
                 style={[styles.loginButton, { color: '#228b22' }]}
                 text='登录/注册'
-                onPress={() => this.setState({ signModal: true})}
+                onPress={() => this._openSignPage()}
             />
+          }
           </View>
           <View style={styles.bottomContainer}>
             <View style={styles.disclaimerContent}>
@@ -101,10 +130,21 @@ class HomePage extends React.Component {
               visible={this.state.signModal}
             >
             {this.state.bSignUp ?
-              <SignUpPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()}/>
+              <SignUpPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
               :
-              <SignInPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()}/>
+              <SignInPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
             }
+          </Modal>
+        </View>
+        
+        <View>
+          <Modal
+                animationType={'slide'}
+                transparent={true}
+                onRequestClose={() => this._closeUserInfoPage()}
+                visible={this.state.userInfoPageModal}
+          >
+            <UserInfoPage userInfoUrl={this.props.signinup.userInfo.url} closePage={()=>this._closeUserInfoPage()}/>
           </Modal>
         </View>
 
@@ -138,6 +178,22 @@ const styles = StyleSheet.create({
     height: 110,
     marginTop: 50
   },
+  userInfo: {
+    alignItems: 'center'
+  },
+  userInfoAvatar: {
+    width: 70,
+    height: 70,
+    borderRadius:35
+  },
+  userInfoName: {
+    fontSize:20,
+    fontWeight: 'bold',
+    alignItems: 'center'
+  },
+  userInfoMood: {
+    alignItems: 'center'
+  },
   version: {
     fontSize: 16,
     textAlign: 'center',
@@ -166,5 +222,5 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   }
 });
-
+HomePage.propTypes = propTypes;
 export default HomePage;

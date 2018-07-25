@@ -22,7 +22,9 @@ export const REQUEST_TYPE_LIST = 'REQUEST_TYPE_LIST';
 export const FETCH_TYPE_LIST = 'FETCH_TYPE_LIST';
 export const RECEIVE_TYPE_LIST = 'RECEIVE_TYPE_LIST';
 
-
+export const INIT_SIGN_IN = 'INIT_SIGN_IN';
 export const REQUEST_SIGN_IN = 'REQUEST_SIGN_IN';
 export const START_SIGN_IN  = 'START_SIGN_IN';
 export const END_SIGN_IN = 'END_SIGN_IN';
+export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
+export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';

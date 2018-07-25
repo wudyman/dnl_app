@@ -17,10 +17,19 @@
  */
 import * as types from '../constants/ActionTypes';
 
-export function requestSignIn() {
+export function initSignIn(phoneNo,password) {
+  console.log("######################init SignIn##############################");
+return {
+  type: types.INIT_SIGN_IN,
+};
+}
+
+export function requestSignIn(phoneNo,password) {
     console.log("######################requestSignIn##############################");
   return {
-    type: types.REQUEST_SIGN_IN
+    type: types.REQUEST_SIGN_IN,
+    phoneNo,
+    password
   };
 }
 
@@ -31,9 +40,25 @@ export function startSignIn() {
   };
 }
 
-export function endSignIn() {
-    console.log("######################endSignIn##############################");
+export function endSignIn(signInResult) {
+  console.log("######################endSignIn##############################");
   return {
-    type: types.END_SIGN_IN
+    type: types.END_SIGN_IN,
+    signInResult
+  };
+}
+
+export function requestUserInfo() {
+  console.log("######################requestUserInfo##############################");
+  return {
+    type: types.REQUEST_USER_INFO
+  };
+}
+
+export function receiveUserInfo(userInfo) {
+  console.log("######################receiveUserInfo##############################");
+  return {
+    type: types.RECEIVE_USER_INFO,
+    userInfo
   };
 }

@@ -22,7 +22,8 @@ import MainContainer from '../containers/MainContainer';
 import WebViewPage from '../pages/ItemDetail/WebViewPage';
 import Feedback from '../pages/Feedback/Feedback';
 import About from '../pages/About/About';
-import HomePage from '../pages/HomePage/HomePage';
+import HomePageContainer from '../containers/HomePageContainer';
+//import HomePage from '../pages/HomePage/HomePage';
 
 const TabContainer = TabNavigator(
   {
@@ -30,7 +31,7 @@ const TabContainer = TabNavigator(
     Category: { screen: CategoryContainer },
     Feedback: { screen: Feedback },
     About: { screen: About },
-    HomePage: { screen: HomePage }
+    HomePage: { screen: HomePageContainer }
   },
   {
     lazy: true,
