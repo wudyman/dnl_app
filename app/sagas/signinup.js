@@ -29,22 +29,24 @@ function convertUserInfo(ret)
   let userInfo={};
   userInfo.id=ret[0];
   userInfo.name=ret[1];
-  userInfo.avatar=SITE_URL+ret[2];
+  userInfo.avatar=ret[2];
+  if(userInfo.avatar.indexOf('http')<0)
+  {
+    userInfo.avatar=SITE_URL+userInfo.avatar;
+  }
   userInfo.mood=ret[3];
 
   userInfo.url=SITE_URL+'/er/'+ret[0]+'/'
+  userInfo.isSignIn='true';
   return userInfo;
 }
 export function* signIn(phoneNo,password) {
-    let formData=new FormData();
-    formData.append("phoneNo",phoneNo);
-    formData.append("password",password);
+  let formData=new FormData();
+  formData.append("phoneNo",phoneNo);
+  formData.append("password",password);
   try {
-    console.log("######################SIGN IN 1##############################");
     yield put(startSignIn());
-    console.log("######################SIGN IN 2##############################");
     const ret = yield call(RequestUtil.request, SIGN_IN_URL, 'post',formData);
-    console.log("######################SIGN IN 3##############################");
     yield put(endSignIn(ret));
     if(ret == 'success')
     {
@@ -53,7 +55,6 @@ export function* signIn(phoneNo,password) {
       formData.append("type","userprofile");
       yield put(requestUserInfo());
       const ret = yield call(RequestUtil.request, REQUEST_USER_INFO_URL, 'post',formData);
-      console.log(ret);
       if("fail"!=ret)
       {
         const userInfo=convertUserInfo(ret);
@@ -64,22 +65,15 @@ export function* signIn(phoneNo,password) {
     {
       yield  ToastUtil.showShort("登录失败");
     }
-    console.log("######################SIGN IN 4##############################");
   } catch (error) {
-    console.log("######################SIGN IN 5##############################");
     yield put(endSignIn('fail'));
-    console.log("######################SIGN IN 6##############################");
     yield ToastUtil.showShort('登录失败');
-    console.log("######################SIGN IN 7##############################");
   }
 }
 
 export function* watchSignInUp() {
   while (true) {
-    console.log("######################watchSignInUp 1 ##############################");
     const {phoneNo,password} = yield take(types.REQUEST_SIGN_IN);
-    console.log("######################watchSignInUp 2 ##############################");
     yield fork(signIn,phoneNo,password);
-    console.log("######################watchSignInUp 3 ##############################");
   }
 }

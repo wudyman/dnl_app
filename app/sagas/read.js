@@ -84,7 +84,11 @@ function convertQuestionList(ret)
     question.author_followquestion_nums=item[20];
 
     question.date="2018-05-23 22:15:56";
-    question.contentImg=SITE_URL+getIndexImg(question.content);
+    question.contentImg=getIndexImg(question.content);
+    if(question.contentImg.indexOf('http')<0)
+    {
+      question.contentImg=SITE_URL+question.contentImg;
+    }
     question.userName=question.author_name;
     question.format_content=removeImg(question.content);
 
@@ -126,10 +130,7 @@ export function* requestArticleList(
       'post',
       formData
     );
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    console.log(ret);
     const articleList=convertQuestionList(ret);
-    console.log(articleList);
     yield put(receiveArticleList(
       articleList,
       typeId

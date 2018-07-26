@@ -22,8 +22,6 @@ const request = (url, method, data) => {
   let isOk;
   console.log(url);
   console.log(data);
-  let formData=new FormData();
-  formData.append("type","hot");
   return new Promise((resolve, reject) => {
     fetch(getUrl(url), {
       method:'POST',

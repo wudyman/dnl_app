@@ -27,7 +27,7 @@ class HomePageContainer extends React.Component {
   static navigationOptions = {
     title: '我',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-information-circle" size={25} color={tintColor} />
+      <Icon name="md-person" size={25} color={tintColor} />
     ),
     headerRight: (
       <Icon.Button

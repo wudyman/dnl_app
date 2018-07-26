@@ -18,7 +18,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Image, Text, Linking, Modal,TouchableOpacity, View } from 'react-native';
-
+import store from 'react-native-simple-store';
 import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
@@ -47,10 +47,10 @@ class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+        userInfo: {},
         signModal: false,
-        bSignUp:false,
-        userInfoPageModal: false,
-        bIsSignIn:false
+        isSignUp:false,
+        userInfoPageModal: false
     }
   }
 
@@ -65,7 +65,7 @@ class HomePage extends React.Component {
   }
 
   _switchSignInUp(){
-    this.setState({bSignUp:!this.state.bSignUp});
+    this.setState({isSignUp:!this.state.isSignUp});
   }
 
   _openUserInfoPage(){
@@ -76,14 +76,21 @@ class HomePage extends React.Component {
     this.setState({userInfoPageModal:false});
   }
 
+  componentWillMount() {
+    store.get('userinfo').then((userInfo)=>{
+      this.setState({userInfo:userInfo});
+    });
+  }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props);
-    console.log(nextProps);
     const { signinup } = nextProps;
     if('success'==signinup.signInResult)
     {
-      this.setState({signModal:false,bIsSignIn:true});
+      this.setState({signModal:false});
+    }
+    if('success'==signinup.getUserInfoResult)
+    {
+      this.setState({userInfo:signinup.userInfo});
     }
   }
 
@@ -92,11 +99,11 @@ class HomePage extends React.Component {
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.login}>
-          {this.state.bIsSignIn ?
+          {this.state.userInfo.isSignIn=='true' ?
               <TouchableOpacity style={styles.userInfo} onPress={() => this._openUserInfoPage()}>
-                <Image style={styles.userInfoAvatar} source={{ uri: this.props.signinup.userInfo.avatar }} />
-                <Text style={styles.userInfoName}>{this.props.signinup.userInfo.name}</Text>
-                <Text style={styles.userInfoMood}>{this.props.signinup.userInfo.mood}</Text>
+                <Image style={styles.userInfoAvatar} source={{ uri: this.state.userInfo.avatar }} />
+                <Text style={styles.userInfoName}>{this.state.userInfo.name}</Text>
+                <Text style={styles.userInfoMood}>{this.state.userInfo.mood}</Text>
               </TouchableOpacity>
             :
             <Button
@@ -129,7 +136,7 @@ class HomePage extends React.Component {
               onRequestClose={() => this._closeSignPage()}
               visible={this.state.signModal}
             >
-            {this.state.bSignUp ?
+            {this.state.isSignUp ?
               <SignUpPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
               :
               <SignInPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
@@ -144,7 +151,7 @@ class HomePage extends React.Component {
                 onRequestClose={() => this._closeUserInfoPage()}
                 visible={this.state.userInfoPageModal}
           >
-            <UserInfoPage userInfoUrl={this.props.signinup.userInfo.url} closePage={()=>this._closeUserInfoPage()}/>
+            <UserInfoPage userInfoUrl={this.state.userInfo.url} closePage={()=>this._closeUserInfoPage()}/>
           </Modal>
         </View>
 

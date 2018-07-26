@@ -38,7 +38,6 @@ function convertTopics(ret)
 }
 export function* requestTypeList() {
   try {
-    console.log("####################################################");
     yield put(fetchTypeList());
     const ret = yield call(RequestUtil.request, AJAX_TOPICS_URL, 'post');
     const typeList=convertTopics(ret);

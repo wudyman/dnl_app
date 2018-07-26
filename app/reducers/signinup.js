@@ -20,6 +20,7 @@ import * as types from '../constants/ActionTypes';
 const initialState = {
   isStart: false,
   signInResult: 'fail',
+  getUserInfoResult: 'fail',
   userInfo:{}
 };
 
@@ -41,6 +42,7 @@ export default function signinup(state = initialState, action) {
       });
     case types.RECEIVE_USER_INFO:
       return Object.assign({}, state, {
+        getUserInfoResult: 'success',
         userInfo: action.userInfo
       });
     default:

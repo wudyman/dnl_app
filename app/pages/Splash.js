@@ -16,12 +16,14 @@
  *
  */
 import React from 'react';
-import { Dimensions, Animated } from 'react-native';
+import { Dimensions, Animated,StatusBar,View } from 'react-native';
 import store from 'react-native-simple-store';
 import { registerApp } from 'react-native-wechat';
 import AV from 'leancloud-storage';
 import SplashScreen from 'react-native-splash-screen';
 import NavigationUtil from '../utils/NavigationUtil';
+import RequestUtil from '../utils/RequestUtil';
+import { SITE_URL,REQUEST_USER_INFO_URL } from '../constants/Urls';
 
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
@@ -37,6 +39,7 @@ class Splash extends React.Component {
     this.state = {
       bounceValue: new Animated.Value(1)
     };
+    this._getUserInfo(REQUEST_USER_INFO_URL);
     registerApp('wxb24c445773822c79');
     if (!AV.applicationId) {
       AV.init({
@@ -68,8 +71,65 @@ class Splash extends React.Component {
     clearTimeout(this.timer);
   }
 
+  _getUserInfo(url){
+    let formData=new FormData();
+    formData.append("type","userprofile");
+    fetch(url, {
+      method:'POST',
+      body:formData
+    })
+      .then((response) => {
+        if (response.ok) {
+          isOk = true;
+        } else {
+          isOk = false;
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        if (isOk) {
+          this._saveUserInfo(responseData);
+        } else {
+          console.log(responseData);
+          this._saveUserInfo('fail');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this._saveUserInfo('fail');
+      });
+  }
+
+  _saveUserInfo(ret){
+    let userInfo={};
+    if("fail"!=ret)
+    {
+      userInfo.id=ret[0];
+      userInfo.name=ret[1];
+      userInfo.avatar=ret[2];
+      if(userInfo.avatar.indexOf('http')<0)
+      {
+        userInfo.avatar=SITE_URL+userInfo.avatar;
+      }
+      userInfo.mood=ret[3];
+    
+      userInfo.url=SITE_URL+'/er/'+ret[0]+'/';
+      userInfo.isSignIn='true';
+    }
+    else
+    {
+      userInfo.isSignIn='false';
+    }
+    store.save('userinfo',userInfo);
+  }
+
   render() {
     return (
+      <View>
+        <StatusBar  
+          hidden={true}
+        >  
+        </StatusBar>
       <Animated.Image
         style={{
           width: maxWidth,
@@ -78,6 +138,7 @@ class Splash extends React.Component {
         }}
         source={splashImg}
       />
+      </View>
     );
   }
 }

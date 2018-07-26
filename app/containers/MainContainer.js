@@ -28,10 +28,11 @@ import {TextInput,Button} from 'react-native';
 class MainContainer extends React.Component {
   static navigationOptions = {
     //headerTitle: '首页',
-   // tabBarIcon: ({ tintColor }) => (
-     // <Icon name="md-home" size={25} color={tintColor} />
-    //)
-    //headerLeft: (<Button title='搜素'/>),
+    title: '首页',
+    tabBarIcon: ({ tintColor }) => (
+      <Icon name="md-home" size={25} color={tintColor} />
+    ),
+    headerLeft: (<Button title='写文章' color='#228b22'/>),
     headerRight: (<Button title='提问'/>),
     headerTitle:(<TextInput style={{flex:1,backgroundColor:'transparent',fontSize:15}}
       keyboardType='web-search'
