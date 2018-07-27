@@ -27,11 +27,12 @@ import { SITE_URL,REQUEST_USER_INFO_URL } from '../constants/Urls';
 
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
-const splashImg = require('../img/splash.png');
+//const splashImg = require('../img/splash.png');
+const splashImg = require('../img/share_icon_moments.png');
 
 class Splash extends React.Component {
   static navigationOptions = {
-    header: null
+    header: (<StatusBar hidden={true} backgroundColor={'#228b22'} translucent={true} barStyle={'light-content'}/> )
   };
 
   constructor(props) {
@@ -125,11 +126,6 @@ class Splash extends React.Component {
 
   render() {
     return (
-      <View>
-        <StatusBar  
-          hidden={true}
-        >  
-        </StatusBar>
       <Animated.Image
         style={{
           width: maxWidth,
@@ -138,7 +134,6 @@ class Splash extends React.Component {
         }}
         source={splashImg}
       />
-      </View>
     );
   }
 }

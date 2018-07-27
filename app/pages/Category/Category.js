@@ -154,13 +154,13 @@ class Category extends React.Component {
     return (
       <Button
         key={item.id}
-        containerStyle={[
+        btnStyle={[
           styles.categoryBtn,
           isSelect
             ? { backgroundColor: '#228b22' }
             : { backgroundColor: '#fcfcfc' }
         ]}
-        style={[
+        textStyle={[
           styles.categoryText,
           isSelect ? { color: '#fcfcfc' } : { color: 'black' }
         ]}
@@ -215,8 +215,8 @@ class Category extends React.Component {
           </View>
           {this.renderGridView()}
           <Button
-            containerStyle={styles.sureBtn}
-            style={styles.btnText}
+            btnStyle={styles.sureBtn}
+            textStyle={styles.btnText}
             text="确认"
             onPress={() => this.onSelectCategory()}
           />

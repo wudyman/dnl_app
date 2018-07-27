@@ -2,20 +2,12 @@
  * Created by wangdi on 4/11/16.
  */
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
 //import Icon from 'react-native-vector-icons/Ionicons';
-//import MainPage from '../MainPage';
 import Button from '../../components/Button';
-import TextButton from '../../components/TextButton';
-//import SignUpPage from './SignUpPage';
 import ImageButton from '../../components/ImageButtonWithText';
 import TextDivider from '../../components/TextDivider';
-import px2dp from '../../utils/px2dp';
-//import * as signInUpCreators from '../../actions/signinup';
-import configureStore from '../../store/configure-store';
-//const store = configureStore();
+//import px2dp from '../../utils/px2dp';
 class SignInPage extends React.Component{
     constructor(props){
         super(props);
@@ -58,9 +50,9 @@ class SignInPage extends React.Component{
                     <ImageButton
                         onPress={this.props.closePage}
                         icon="md-close"
-                        color="white"
-                        imgSize={25}
-                        btnStyle={{width: 55, height: 55}}
+                        iconColor="white"
+                        iconSize={25}
+                        btnStyle={{width: 55, height: 55, alignItems: 'center',justifyContent: 'center'}}
                     />
                 </View>
                 <View style={styles.title}>
@@ -98,10 +90,10 @@ class SignInPage extends React.Component{
                         <Button style={styles.forgetText} text="忘记密码?" onPress={this._forgetPassword.bind(this)} />
                     </View>
                     <View style={styles.signInButton}>
-                        <TextButton btnStyle={styles.signInButtonBtn} textStyle={styles.signInButtonText} text="登录" onPress={this._signIn.bind(this)}/>
+                        <Button btnStyle={styles.signInButtonBtn} textStyle={styles.signInButtonText} text="登录" onPress={this._signIn.bind(this)}/>
                     </View>
                     <View style={styles.switchSignInUpButton}>
-                        <TextButton btnStyle={styles.switchSignInUpButtonBtn} textStyle={styles.switchSignInUpButtonText} text="没有帐号？注册" onPress={this.props.switchSignInUp}/>
+                        <Button btnStyle={styles.switchSignInUpButtonBtn} textStyle={styles.switchSignInUpButtonText} text="没有帐号？注册" onPress={this.props.switchSignInUp}/>
                     </View>
                 </View>
                 <View style={{flex: 1}}>
@@ -109,9 +101,9 @@ class SignInPage extends React.Component{
                         <TextDivider text="其他账号登录"/>
                     </View>
                     <View style={styles.thirdPartyView}>
-                        <ImageButton text="微博" image={require('../../img/weibo_login.png')} color="rgba(255,255,255,0.7)"/>
-                        <ImageButton text="微信" image={require('../../img/wechat_login.png')} color="rgba(255,255,255,0.7)"/>
-                        <ImageButton text="Github" image={require('../../img/github_login.png')} color="rgba(255,255,255,0.7)"/>
+                        <ImageButton text="微博" image={require('../../img/icon_weibo.png')} imgStyle={{width:40,height:40}} textStyle={{color:"red"}}/>
+                        <ImageButton text="微信" image={require('../../img/icon_wechat.png')} imgStyle={{width:40,height:40}} textStyle={{color:"blue"}}/>
+                        <ImageButton text="Github" image={require('../../img/icon_github.png')} imgStyle={{width:40,height:40}} textStyle={{color:"green"}}/>
                     </View>
                 </View>
             </View>

@@ -22,7 +22,6 @@ import store from 'react-native-simple-store';
 import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
-import TextButton from '../../components/TextButton';
 import ImageButton from '../../components/ImageButtonWithText';
 import SignInPage from './SignInPage';
 import SignUpPage from './SignUpPage';
@@ -107,7 +106,8 @@ class HomePage extends React.Component {
               </TouchableOpacity>
             :
             <Button
-                style={[styles.loginButton, { color: '#228b22' }]}
+                btnStyle={styles.loginButton}
+                textStyle={{fontSize:20,textAlign: 'center',color: '#fff'}}
                 text='登录/注册'
                 onPress={() => this._openSignPage()}
             />
@@ -177,8 +177,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   loginButton: {
-    fontSize: 24,
-    textAlign: 'center'
+    margin: 10,
+    padding: 10,
+    borderRadius: 3,
+    backgroundColor: '#228b22'
   },
   logo: {
     width: 110,

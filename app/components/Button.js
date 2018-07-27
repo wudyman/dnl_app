@@ -22,8 +22,8 @@ import { ViewPropTypes, Text, TouchableOpacity } from 'react-native';
 const propTypes = {
   onPress: PropTypes.func,
   disabled: PropTypes.bool,
-  style: Text.propTypes.style,
-  containerStyle: ViewPropTypes.style,
+  btnStyle: ViewPropTypes.style,
+  textStyle: Text.propTypes.style,
   text: PropTypes.string,
   activeOpacity: PropTypes.number
 };
@@ -31,18 +31,18 @@ const propTypes = {
 const Button = ({
   onPress,
   disabled,
-  style,
-  containerStyle,
+  btnStyle,
+  textStyle,
   text,
   activeOpacity
 }) => (
   <TouchableOpacity
-    style={containerStyle}
+    style={btnStyle}
     onPress={onPress}
     disabled={disabled}
     activeOpacity={activeOpacity}
   >
-    <Text style={style}>{text}</Text>
+    <Text style={textStyle}>{text}</Text>
   </TouchableOpacity>
 );
 

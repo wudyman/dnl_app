@@ -5,7 +5,6 @@ import React from 'react';
 import { WebView, Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
 //import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
-import TextButton from '../../components/TextButton';
 import ImageButton from '../../components/ImageButtonWithText';
 class UserInfoPage extends React.Component{
     constructor(props){
@@ -46,9 +45,9 @@ class UserInfoPage extends React.Component{
                 <ImageButton
                     onPress={this.props.closePage}
                     icon="md-close"
-                    color="white"
-                    imgSize={25}
-                    btnStyle={{width: 55, height: 55}}
+                    iconColor="white"
+                    iconSize={25}
+                    btnStyle={{width: 55, height: 55, alignItems: 'center',justifyContent: 'center'}}
                 />
             </View>
             <WebView

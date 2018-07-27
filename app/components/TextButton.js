@@ -11,43 +11,29 @@ import px2dp from '../utils/px2dp';
 const propTypes = {
     onPress: PropTypes.func,
     disabled: PropTypes.bool,
-    style: Text.propTypes.style,
-    containerStyle: ViewPropTypes.style,
+    btnStyle: ViewPropTypes.style,
+    textStyle: Text.propTypes.style,
     text: PropTypes.string,
-    activeOpacity: PropTypes.number,       
-    color: PropTypes.string,
-    fontSize: PropTypes.number
+    activeOpacity: PropTypes.number
 };
 
 const TextButton = ({
     onPress,
     disabled,
-    containerStyle,
     btnStyle,
     textStyle,
     text,
     activeOpacity
   }) => (
     <TouchableOpacity
-      style={containerStyle}
+      style={btnStyle}
       onPress={onPress}
       disabled={disabled}
       activeOpacity={activeOpacity}
     >
-        <View style={btnStyle}>
-            <Text style={textStyle}>{text}</Text>
-        </View>
+        <Text style={textStyle}>{text}</Text>
     </TouchableOpacity>
 );
-
-const styles = StyleSheet.create({
-    btnStyle: {
-
-    },
-    textStyle: {
-
-    },
-  });
 
 TextButton.propTypes = propTypes;
 
@@ -55,8 +41,6 @@ TextButton.defaultProps = {
   onPress() {},
   disabled: false,
   activeOpacity: 0.8,
-  color: 'white',
-  fontSize: 12
 };
 
 export default TextButton;

@@ -5,14 +5,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes, Text, View, StyleSheet, Platform, PixelRatio, TouchableOpacity, Image } from 'react-native';
-import px2dp from '../utils/px2dp';
+import { Text, View, StyleSheet } from 'react-native';
 
 const propTypes = {
     onPress: PropTypes.func,
     disabled: PropTypes.bool,
-    style: Text.propTypes.style,
-    containerStyle: ViewPropTypes.style,
     text: PropTypes.string,
     activeOpacity: PropTypes.number
   };
@@ -37,13 +34,13 @@ const styles = StyleSheet.create({
     divider:{
         flex: 1,
         backgroundColor: '#3d3d3d',
-        height: 1 / PixelRatio.get()
+        height: 1
     },
     text:{
         color: '#3d3d3d',
-        fontSize: px2dp(10),
-        marginLeft: px2dp(9),
-        marginRight: px2dp(9)
+        fontSize: 10,
+        marginLeft: 9,
+        marginRight: 9
     }
 });
 
