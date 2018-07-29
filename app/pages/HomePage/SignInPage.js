@@ -15,11 +15,11 @@ class SignInPage extends React.Component{
             phoneNo : "",
             password : "",
         };
-        this.handleBack = this._handleBack.bind(this);
+        this.handleBack = this._handleBack.bind(this);// In Modal, no use , block by Modal`s onRequestClose
     }
 
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this.handleBack);
+        BackHandler.addEventListener('hardwareBackPress', this._handleBack.bind(this));
     }
 
     componentWillUnmount() {
@@ -33,7 +33,7 @@ class SignInPage extends React.Component{
         signInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
     }
     _handleBack() {
-
+        return true;
     }
 
     _signupCallback(){
@@ -63,6 +63,7 @@ class SignInPage extends React.Component{
                     <View style={styles.accout}>
                         <TextInput
                             style={styles.edit}
+                            keyboardType='numeric'
                             underlineColorAndroid="transparent"
                             placeholder="手机号"
                             onChangeText={
@@ -76,6 +77,7 @@ class SignInPage extends React.Component{
                     <View style={styles.password}>
                         <TextInput
                             style={styles.edit}
+                            secureTextEntry={true}
                             underlineColorAndroid="transparent"
                             placeholder="密码"
                             onChangeText={
@@ -96,6 +98,7 @@ class SignInPage extends React.Component{
                         <Button btnStyle={styles.switchSignInUpButtonBtn} textStyle={styles.switchSignInUpButtonText} text="没有帐号？注册" onPress={this.props.switchSignInUp}/>
                     </View>
                 </View>
+                {/*
                 <View style={{flex: 1}}>
                     <View style={{flex: 1, justifyContent: 'flex-end', marginLeft: 20, marginRight: 20}}>
                         <TextDivider text="其他账号登录"/>
@@ -106,6 +109,7 @@ class SignInPage extends React.Component{
                         <ImageButton text="Github" image={require('../../img/icon_github.png')} imgStyle={{width:40,height:40}} textStyle={{color:"green"}}/>
                     </View>
                 </View>
+                */}
             </View>
         );
     }

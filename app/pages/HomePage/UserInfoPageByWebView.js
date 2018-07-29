@@ -24,14 +24,7 @@ class UserInfoPage extends React.Component{
     
     _injectedJavaScript()
     {
-        return `$("header").parent().addClass("is-hide");`;
-        /*
-        return `
-        $(document).ready(function(){
-            $("header").parent().addClass("is-hide");
-        });
-        `;
-       */   
+        return `$("header").parent().addClass("is-hide");`; 
     }
 
     _handleBack() {
@@ -61,7 +54,7 @@ class UserInfoPage extends React.Component{
             startInLoadingState
             scalesPageToFit
             decelerationRate="normal"
-            injectedJavaScript={this._injectedJavaScript()}
+            injectedJavaScript={`g_is_app="true";$(".Mobile-header").addClass("is-hide");`}
             onShouldStartLoadWithRequest={() => {
               const shouldStartLoad = true;
               return shouldStartLoad;

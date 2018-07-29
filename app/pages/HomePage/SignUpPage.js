@@ -7,6 +7,7 @@ import React from 'react';
 import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
+import { GET_SMS_URL } from '../../constants/Urls';
 
 
 export default class SignUpPage extends React.Component {
@@ -20,8 +21,8 @@ export default class SignUpPage extends React.Component {
             password : "",
             countDownValue: 60
         };
-        //this.aInterval=null;
-        this.handleBack = this._handleBack.bind(this);
+        this.aInterval=null;
+        this.handleBack = this._handleBack.bind(this);// In Modal, no use , block by Modal`s onRequestClose
     }
 
     componentDidMount() {
@@ -32,31 +33,54 @@ export default class SignUpPage extends React.Component {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
     }
 
+    _signUp() {
+        const { signInUpActions } = this.props;
+        signInUpActions.requestSignUp(this.state.phoneNo,this.state.smsCode,this.state.nickName,this.state.password);
+    }
+
     _handleBack() {
-        const navigator = this.props.navigator;
-        if (navigator && navigator.getCurrentRoutes().length > 1) {
-            navigator.pop()
-            return true;
-        }
-        return false;
+        return true;
     }
 
     _getSmsCode(){
+        let formData=new FormData();
+        formData.append("phone_no",this.state.phoneNo);
+        formData.append("type","register");
+        fetch(GET_SMS_URL, {
+          method:'POST',
+          body:formData
+        })
+          .then((response) => {
+            if (response.ok) {
+              isOk = true;
+            } else {
+              isOk = false;
+            }
+            return response.json();
+          })
+          .then((responseData) => {
+            if (isOk) {
+                console.log(responseData);
+            } else {
+                console.log(responseData);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
         this.setState({smsGetDisable:true,countDownValue:60});
-        setInterval(this._countDown(),1000);
+        this.aInterval=setInterval(this._countDown.bind(this),1000);
     }
 
     _countDown(){
-        console.log("@@@@@@@@@");
-        //if(0==this.state.countDownValue){
-            //this.setState({smsGetDisable:false,countDownValue:60});
-            //clearInterval(this.aInterval);
-        //}
-        //else{
-            //this.setState({countDownValue:this.state.countDownValue-1});
-        //}
-    }
-    _signUp() {
+        if(0==this.state.countDownValue){
+            this.setState({smsGetDisable:false,countDownValue:60});
+            clearInterval(this.aInterval);
+        }
+        else{
+            this.setState({countDownValue:this.state.countDownValue-1});
+        }
     }
 
     _signupCallback(){
@@ -83,8 +107,14 @@ export default class SignUpPage extends React.Component {
                     <View style={styles.accout}>
                         <TextInput
                             style={styles.edit}
+                            keyboardType='numeric'
                             underlineColorAndroid="transparent"
                             placeholder="手机号"
+                            onChangeText={
+                                (text) => {
+                                  this.setState({phoneNo:text});
+                                }
+                            }
                             placeholderTextColor="#c4c4c4"/>
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
@@ -92,13 +122,19 @@ export default class SignUpPage extends React.Component {
                         <View style={styles.smsInputEdit}>
                             <TextInput
                                 style={[styles.edit,{width:180}]}
+                                keyboardType='numeric'
                                 underlineColorAndroid="transparent"
                                 placeholder="请输入短信验证码"
+                                onChangeText={
+                                    (text) => {
+                                      this.setState({smsCode:text});
+                                    }
+                                }
                                 placeholderTextColor="#c4c4c4"/>
                                 <View style={{height: 2, backgroundColor:'#c4c4c4'}}/>
                         </View>                       
                         <View style={styles.smsInputButton}>
-                            <Button disabled={this.state.smsGetDisable} text={this.state.smsGetDisable?this.state.countDownValue+" s":"获取短信验证码"} btnStyle={styles.smsInputButtonBtn} textStyle={styles.smsInputButtonText} onPress={this._getSmsCode.bind(this)}/>
+                            <Button disabled={this.state.smsGetDisable} text={this.state.smsGetDisable?this.state.countDownValue+"秒后可重发":"获取短信验证码"} btnStyle={styles.smsInputButtonBtn} textStyle={styles.smsInputButtonText} onPress={this._getSmsCode.bind(this)}/>
                         </View>                        
                     </View>
                     
@@ -107,6 +143,11 @@ export default class SignUpPage extends React.Component {
                             style={styles.edit}
                             underlineColorAndroid="transparent"
                             placeholder="昵称"
+                            onChangeText={
+                                (text) => {
+                                  this.setState({nickName:text});
+                                }
+                            }
                             placeholderTextColor="#c4c4c4"/>
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
@@ -115,6 +156,11 @@ export default class SignUpPage extends React.Component {
                             style={styles.edit}
                             underlineColorAndroid="transparent"
                             placeholder="密码"
+                            onChangeText={
+                                (text) => {
+                                  this.setState({password:text});
+                                }
+                            }
                             placeholderTextColor="#c4c4c4"/>
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>

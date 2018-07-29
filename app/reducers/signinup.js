@@ -21,7 +21,8 @@ const initialState = {
   isStart: false,
   signInResult: 'fail',
   getUserInfoResult: 'fail',
-  userInfo:{}
+  userInfo:{},
+  signUpResult: 'fail'
 };
 
 export default function signinup(state = initialState, action) {
@@ -29,11 +30,18 @@ export default function signinup(state = initialState, action) {
     case types.INIT_SIGN_IN:
     return Object.assign({}, state, {
       isStart: false,
-      signInResult: 'fail'
+      signInResult: 'fail',
+      getUserInfoResult: 'fail',
+      userInfo:{},
+      signUpResult: 'fail'
     });
     case types.START_SIGN_IN:
       return Object.assign({}, state, {
-        isStart: true
+        isStart: true,
+        signInResult: 'fail',
+        getUserInfoResult: 'fail',
+        userInfo:{},
+        signUpResult: 'fail'
       });
     case types.END_SIGN_IN:
       return Object.assign({}, state, {
@@ -44,6 +52,19 @@ export default function signinup(state = initialState, action) {
       return Object.assign({}, state, {
         getUserInfoResult: 'success',
         userInfo: action.userInfo
+      });
+    case types.START_SIGN_UP:
+      return Object.assign({}, state, {
+        isStart: true,
+        signInResult: 'fail',
+        getUserInfoResult: 'fail',
+        userInfo:{},
+        signUpResult: 'fail'
+      });
+    case types.END_SIGN_UP:
+      return Object.assign({}, state, {
+        isStart: false,
+        signUpResult: action.signUpResult
       });
     default:
       return state;

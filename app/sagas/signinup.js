@@ -22,8 +22,8 @@ import * as types from '../constants/ActionTypes';
 import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
 import { SITE_URL } from '../constants/Urls';
-import { SIGN_IN_URL,REQUEST_USER_INFO_URL } from '../constants/Urls';
-import { startSignIn,endSignIn,requestUserInfo,receiveUserInfo } from '../actions/signinup';
+import { SIGN_IN_URL,REQUEST_USER_INFO_URL,SIGN_UP_URL } from '../constants/Urls';
+import { startSignIn,endSignIn,requestUserInfo,receiveUserInfo,startSignUp,endSignUp } from '../actions/signinup';
 function convertUserInfo(ret)
 {
   let userInfo={};
@@ -71,9 +71,40 @@ export function* signIn(phoneNo,password) {
   }
 }
 
-export function* watchSignInUp() {
+export function* signUp(phoneNo,smsCode,nickName,password) {
+  let formData=new FormData();
+  formData.append("phoneNo",phoneNo);
+  formData.append("smsCode",smsCode);
+  formData.append("nickName",nickName);
+  formData.append("password",password);
+  try {
+    yield put(startSignUp());
+    const ret = yield call(RequestUtil.request, SIGN_UP_URL, 'post',formData);
+    yield put(endSignUp(ret));
+    if(ret == 'success')
+    {
+      yield ToastUtil.showLong("注册成功,请登录");
+    }
+    else
+    {
+      yield  ToastUtil.showShort("注册失败");
+    }
+  } catch (error) {
+    yield put(endSignUp('fail'));
+    yield ToastUtil.showShort('注册失败');
+  }
+}
+
+export function* watchSignIn() {
   while (true) {
     const {phoneNo,password} = yield take(types.REQUEST_SIGN_IN);
     yield fork(signIn,phoneNo,password);
+  }
+}
+
+export function* watchSignUp() {
+  while (true) {
+    const {phoneNo,smsCode,nickName,password} = yield take(types.REQUEST_SIGN_UP);
+    yield fork(signUp,phoneNo,smsCode,nickName,password);
   }
 }

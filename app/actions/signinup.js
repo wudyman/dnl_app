@@ -62,3 +62,29 @@ export function receiveUserInfo(userInfo) {
     userInfo
   };
 }
+
+export function requestSignUp(phoneNo,smsCode,nickName,password) {
+  console.log("######################requestSignUp##############################");
+return {
+  type: types.REQUEST_SIGN_UP,
+  phoneNo,
+  smsCode,
+  nickName,
+  password
+};
+}
+
+export function startSignUp() {
+  console.log("######################startSignUp##############################");
+return {
+  type: types.START_SIGN_UP
+};
+}
+
+export function endSignUp(signUpResult) {
+console.log("######################endSignUp##############################");
+return {
+  type: types.END_SIGN_UP,
+  signUpResult
+};
+}

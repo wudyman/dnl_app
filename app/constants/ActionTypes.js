@@ -28,3 +28,6 @@ export const START_SIGN_IN  = 'START_SIGN_IN';
 export const END_SIGN_IN = 'END_SIGN_IN';
 export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';
 export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
+export const REQUEST_SIGN_UP = 'REQUEST_SIGN_UP';
+export const START_SIGN_UP  = 'START_SIGN_UP';
+export const END_SIGN_UP = 'END_SIGN_UP';

@@ -26,6 +26,8 @@ import ImageButton from '../../components/ImageButtonWithText';
 import SignInPage from './SignInPage';
 import SignUpPage from './SignUpPage';
 import UserInfoPage from './UserInfoPageByWebView';
+import { LOG_OUT_URL } from '../../constants/Urls';
+
 
 const SHOW_API = 'https://www.showapi.com';
 const READING_REPO = 'https://github.com/attentiveness/reading';
@@ -54,8 +56,8 @@ class HomePage extends React.Component {
   }
 
   _openSignPage(){
-    const { signInUpActions } = this.props;
-    signInUpActions.initSignIn();
+    //const { signInUpActions } = this.props;
+    //signInUpActions.initSignIn();
     this.setState({signModal:true});
   }
 
@@ -75,6 +77,36 @@ class HomePage extends React.Component {
     this.setState({userInfoPageModal:false});
   }
 
+  _doNothing(){
+  }
+
+  _logOut(){
+    fetch(LOG_OUT_URL, {
+      method:'POST',
+    })
+      .then((response) => {
+        if (response.ok) {
+          isOk = true;
+        } else {
+          isOk = false;
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        if (isOk) {
+            console.log(responseData);
+        } else {
+            console.log(responseData);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+      this.setState({userInfo: {}});
+  
+  }
+
   componentWillMount() {
     store.get('userinfo').then((userInfo)=>{
       this.setState({userInfo:userInfo});
@@ -90,6 +122,10 @@ class HomePage extends React.Component {
     if('success'==signinup.getUserInfoResult)
     {
       this.setState({userInfo:signinup.userInfo});
+    }
+    if('success'==signinup.signUpResult)
+    {
+      this.setState({isSignUp:false});
     }
   }
 
@@ -116,14 +152,19 @@ class HomePage extends React.Component {
           <View style={styles.bottomContainer}>
             <View style={styles.disclaimerContent}>
               <Button
-                style={[styles.disclaimer, { color: '#228b22' }]}
+                textStyle={[styles.disclaimer, { color: '#228b22' }]}
                 text='消息'
-                onPress={() => Linking.openURL(SHOW_API)}
+                onPress={() => this._doNothing()}
               />
               <Button
-                style={[styles.disclaimer, { color: '#228b22' }]}
+                textStyle={[styles.disclaimer, { color: '#228b22' }]}
                 text='设置'
-                onPress={() => Linking.openURL(SHOW_API)}
+                onPress={() => this._doNothing()}
+              />
+              <Button
+                textStyle={[styles.disclaimer, { color: '#228b22' }]}
+                text='退出'
+                onPress={() => this._logOut()}
               />
             </View>
           </View>
@@ -133,7 +174,7 @@ class HomePage extends React.Component {
             <Modal
               animationType={'slide'}
               transparent={true}
-              onRequestClose={() => this._closeSignPage()}
+              onRequestClose={() => this._doNothing()}
               visible={this.state.signModal}
             >
             {this.state.isSignUp ?
@@ -178,8 +219,9 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     margin: 10,
-    padding: 10,
-    borderRadius: 3,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 50,
     backgroundColor: '#228b22'
   },
   logo: {

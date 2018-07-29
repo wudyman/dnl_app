@@ -200,6 +200,7 @@ class WebViewPage extends React.Component {
           startInLoadingState
           scalesPageToFit
           decelerationRate="normal"
+          injectedJavaScript={`g_is_app="true";$(".Mobile-header").addClass("is-hide");`}
           onShouldStartLoadWithRequest={() => {
             const shouldStartLoad = true;
             return shouldStartLoad;

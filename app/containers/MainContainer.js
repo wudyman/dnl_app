@@ -35,14 +35,13 @@ class MainContainer extends React.Component {
     ),
     headerLeft: (<Button title='写文章' color='#228b22'/>),
     headerRight: (<Button title='提问'/>),
-    headerTitle:(<View>
-      <StatusBar hidden={false} backgroundColor={'#228b22'} translucent={true} barStyle={'light-content'}/>
+    headerTitle:(
       <TextInput
       style={{flex:1,backgroundColor:'transparent',fontSize:15}}
       keyboardType='web-search'
       placeholderTextColor='#fff'   
       placeholder='搜索内容' />
-    </View>),
+    ),
     //headerTitleStyle:{fontSize:5},
   };
 

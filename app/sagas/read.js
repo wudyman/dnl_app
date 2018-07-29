@@ -45,6 +45,8 @@ function removeImg(content){
 
 function convertQuestionList(ret)
 {
+  if("fail"==ret)
+    return [];
   var questions=[];
   ret.map((item)=>{
     let question={};
@@ -85,7 +87,7 @@ function convertQuestionList(ret)
 
     question.date="2018-05-23 22:15:56";
     question.contentImg=getIndexImg(question.content);
-    if(question.contentImg.indexOf('http')<0)
+    if((question.contentImg!=null)&&(question.contentImg.indexOf('http')<0))
     {
       question.contentImg=SITE_URL+question.contentImg;
     }

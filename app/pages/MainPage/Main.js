@@ -149,7 +149,6 @@ class Main extends React.Component {
 
   renderContent = (dataSource, typeId) => {
     const { read } = this.props;
-    console.log(dataSource);
     if (read.loading) {
       return <LoadingView />;
     }

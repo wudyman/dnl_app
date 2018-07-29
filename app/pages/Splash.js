@@ -32,7 +32,7 @@ const splashImg = require('../img/share_icon_moments.png');
 
 class Splash extends React.Component {
   static navigationOptions = {
-    header: (<StatusBar hidden={true} backgroundColor={'#228b22'} translucent={true} barStyle={'light-content'}/> )
+    header: null
   };
 
   constructor(props) {
@@ -126,14 +126,18 @@ class Splash extends React.Component {
 
   render() {
     return (
-      <Animated.Image
-        style={{
-          width: maxWidth,
-          height: maxHeight,
-          transform: [{ scale: this.state.bounceValue }]
-        }}
-        source={splashImg}
-      />
+      <View>
+            {/*<StatusBar hidden={true} backgroundColor={'#228b22'} translucent={true} barStyle={'light-content'}/>
+            <StatusBar hidden={false} backgroundColor={'#228b22'} translucent={true} barStyle={'light-content'}/>*/}
+            <Animated.Image
+            style={{
+              width: maxWidth,
+              height: maxHeight,
+              transform: [{ scale: this.state.bounceValue }]
+            }}
+            source={splashImg}
+            />
+      </View>
     );
   }
 }
