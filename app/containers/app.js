@@ -29,8 +29,8 @@ const TabContainer = TabNavigator(
   {
     Main: { screen: MainContainer },
     Category: { screen: CategoryContainer },
-    Feedback: { screen: Feedback },
-    About: { screen: About },
+    //Feedback: { screen: Feedback },
+    //About: { screen: About },
     HomePage: { screen: HomePageContainer }
   },
   {
@@ -59,28 +59,35 @@ const App = StackNavigator(
     Category: {
       screen: CategoryContainer,
       navigationOptions: {
-        //headerLeft: null
+        headerStyle: {borderBottomWidth: 1,borderColor:'#f8f8f8',elevation: 0,shadowOpacity: 0},
       }
     },
     Home: {
       screen: TabContainer,
       navigationOptions: {
         //headerLeft: null
+        headerStyle: {borderBottomWidth: 1,borderColor:'#f8f8f8',elevation: 0,shadowOpacity: 0},
+        //headerStyle：设置导航条的样式。背景色，宽高等。如果想去掉安卓导航条底部阴影可以添加elevation: 0，iOS下用shadowOpacity: 0
       }
     },
-    Web: { screen: WebViewPage }
+    Web: { 
+      screen: WebViewPage,
+      navigationOptions: {
+        headerStyle: {borderBottomWidth: 1,borderColor:'#f8f8f8',elevation: 0,shadowOpacity: 0},
+      } 
+    }
   },
   {
     headerMode: 'screen',
     navigationOptions: {
       headerStyle: {
-        backgroundColor: '#228b22'
+        backgroundColor: '#fcfcfc'
       },
       headerTitleStyle: {
-        color: '#fff',
+        color: '#228b22',
         fontSize: 20
       },
-      headerTintColor: '#fff'
+      headerTintColor: '#228b22'
     }
   }
 );

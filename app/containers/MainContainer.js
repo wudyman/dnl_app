@@ -23,27 +23,39 @@ import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Main from '../pages/MainPage/Main';
 import * as readCreators from '../actions/read';
-import {TextInput,Button} from 'react-native';  
+import {TextInput} from 'react-native';
+import Button from '../components/Button'; 
 
 
 class MainContainer extends React.Component {
-  static navigationOptions = {
-    //headerTitle: '首页',
-    title: '首页',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-home" size={25} color={tintColor} />
-    ),
-    headerLeft: (<Button title='写文章' color='#228b22'/>),
-    headerRight: (<Button title='提问'/>),
-    headerTitle:(
-      <TextInput
-      style={{flex:1,backgroundColor:'transparent',fontSize:15}}
-      keyboardType='web-search'
-      placeholderTextColor='#fff'   
-      placeholder='搜索内容' />
-    ),
-    //headerTitleStyle:{fontSize:5},
+  
+  static navigationOptions = ({ navigation }) => {
+    return{
+      //headerTitle: '首页',
+      title: '首页',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="md-home" size={25} color={tintColor} />
+      ),
+      headerLeft: (<Button text='写文章' onPress={()=>navigation.state.params.showWritePage()} btnStyle={{padding:5}} textStyle={{textAlign: 'center',color:'#228b22'}}/>),
+      headerRight: (<Button text='提问' btnStyle={{padding:5}} textStyle={{textAlign: 'center',color:'#228b22'}}/>),
+      headerTitle:(
+        <TextInput
+        style={{flex:1,backgroundColor:'transparent',fontSize:15,borderColor:'#f0f0f0',borderWidth:1,borderRadius: 20,padding:1,textAlign:'center'}}
+        underlineColorAndroid='transparent'
+        placeholderTextColor='#aaaaaa'   
+        placeholder='搜索内容' />
+      ),
+    };
   };
+
+  
+  _showWritePage(){
+    console.log('**************show write page*********');
+  }
+
+  componentWillMount() {
+    this.props.navigation.setParams({showWritePage:this._showWritePage});
+  }
 
   static componentDidMount() {
     CodePush.sync({
@@ -59,7 +71,7 @@ class MainContainer extends React.Component {
   }
 
   render() {
-    return <Main {...this.props} />;
+  return (<Main {...this.props} />);
   }
 }
 

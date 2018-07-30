@@ -195,15 +195,27 @@ class Main extends React.Component {
         <ScrollableTabView
           renderTabBar={() => (
             <ScrollableTabBar
+              style={{borderWidth:1,borderColor:'#f8f8f8'}}
               tabStyle={styles.tab}
               textStyle={styles.tabText}
             />
           )}
-          tabBarBackgroundColor="#fcfcfc"
+          onChangeTab={(obj) => {
+            console.log('index:' + obj.i);
+            let topicId=this.state.typeIds[obj.i];
+            //this.renderContent(
+            //  this.state.dataSource.cloneWithRows(getArticleList(read.articleList[topicId])),
+            //  topicId
+            //  );
+            }
+          }
+          tabBarBackgroundColor="#ffffff"
           tabBarUnderlineStyle={styles.tabBarUnderline}
           tabBarActiveTextColor="#228b22"
           tabBarInactiveTextColor="#aaaaaa"
         >
+          <View key='999' tabLabel='头条' style={styles.base}>
+          </View>
           {content}
         </ScrollableTabView>
       </View>
@@ -225,7 +237,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
+    borderBottomColor: '#f8f8f8'
   },
   drawerTitleContent: {
     height: 120,
@@ -264,8 +276,9 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   tabBarUnderline: {
-    backgroundColor: '#228b22',
-    height: 2
+    //backgroundColor: '#228b22',
+    //height: 2
+    backgroundColor: 'transparent',
   }
 });
 

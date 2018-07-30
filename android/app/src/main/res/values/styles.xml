@@ -3,16 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="actionMenuTextColor">#fcfcfc</item>
+        <item name="actionMenuTextColor">#228b22</item>
         <item name="android:actionMenuTextAppearance">@style/ReadingMenuTextStyle</item>
         <item name="actionMenuTextAppearance">@style/ReadingMenuTextStyle</item>
-        <item name="colorPrimaryDark">#228b22</item>
+        <item name="colorPrimaryDark">#fcfcfc</item>
         <!--设置透明背景-->
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ReadingMenuTextStyle">
-        <item name="android:textColor">#fcfcfc</item>
+        <item name="android:textColor">#228b22</item>
         <item name="android:textSize">18sp</item>
     </style>
 

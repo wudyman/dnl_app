@@ -28,6 +28,7 @@ const READING_REPO = 'https://github.com/attentiveness/reading';
 const aboutLogo = require('../../img/about_logo.png');
 
 class About extends React.Component {
+
   static navigationOptions = {
     title: '关于',
     tabBarIcon: ({ tintColor }) => (
@@ -46,6 +47,7 @@ class About extends React.Component {
 
   render() {
     return (
+
       <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.center}>
@@ -68,6 +70,7 @@ class About extends React.Component {
           </View>
         </View>
       </View>
+      
     );
   }
 }
