@@ -19,19 +19,19 @@ import * as types from '../constants/ActionTypes';
 
 const initialState = {
   loading: false,
-  typeList: {}
+  topicList: []
 };
 
 export default function category(state = initialState, action) {
   switch (action.type) {
-    case types.FETCH_TYPE_LIST:
+    case types.FETCH_TOPIC_LIST:
       return Object.assign({}, state, {
         loading: true
       });
-    case types.RECEIVE_TYPE_LIST:
+    case types.RECEIVE_TOPIC_LIST:
       return Object.assign({}, state, {
         loading: false,
-        typeList: action.typeList
+        topicList: action.topicList
       });
     default:
       return state;

@@ -35,8 +35,9 @@ import Button from '../../components/Button';
 import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
 
-let tempTypeIds = [];
-let maxCategory = 5; // 默认最多5个类别，远端可配置
+let initFollowTopics = [{'id':'-1','name':'头条','articleList':{},'index':0}];
+let [ ...tempFollowTopics ] = initFollowTopics;
+let maxCategory = 2; // 未登录最多2个类别，登录后无限制
 
 const propTypes = {
   categoryActions: PropTypes.object,
@@ -47,7 +48,7 @@ class Category extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      typeIds: tempTypeIds
+      followTopics: tempFollowTopics
     };
   }
 
@@ -55,11 +56,14 @@ class Category extends React.Component {
     const { params } = this.props.navigation.state;
     if (params === undefined || !params.isFirst) {
       InteractionManager.runAfterInteractions(() => {
-        store.get('typeIds').then((typeIds) => {
-          tempTypeIds = typeIds;
-          this.setState({
-            typeIds
-          });
+        store.get('followTopics').then((followTopics) => {
+          if(null!=followTopics)
+          {
+            tempFollowTopics = followTopics;
+            this.setState({
+              followTopics
+            });
+          }
         });
       });
     }
@@ -67,11 +71,11 @@ class Category extends React.Component {
 
   componentDidMount() {
     const { categoryActions } = this.props;
-    categoryActions.requestTypeList();
-    const query = new AV.Query('Reading_Settings');
-    query.get('57b86e0ba633bd002a96436b').then((settings) => {
-      maxCategory = settings.get('max_category');
-    });
+    categoryActions.requestTopicList();
+    //const query = new AV.Query('Reading_Settings');
+    //query.get('57b86e0ba633bd002a96436b').then((settings) => {
+    //  maxCategory = settings.get('max_category');
+    //});
     const { params } = this.props.navigation.state;
     if (params === undefined || !params.isFirst) {
       this.props.navigation.setParams({ handleCheck: this.onActionSelected });
@@ -80,77 +84,93 @@ class Category extends React.Component {
 
   onRefresh = () => {
     const { categoryActions } = this.props;
-    categoryActions.requestTypeList();
+    categoryActions.requestTopicList();
   };
 
-  onPress = (type) => {
-    console.log(type);
-    const pos = tempTypeIds.indexOf(parseInt(type.id));
+  onPress = (item) => {
+    let tempfollowTopicsIds=[];
+    tempFollowTopics.map((topic)=>{tempfollowTopicsIds.push(topic.id);});
+    const pos = tempfollowTopicsIds.indexOf(item.id);
     if (pos === -1) {
-      tempTypeIds.push(parseInt(type.id));
+      let tempTopic={'id':item.id,'name':item.name,'articleList':{},'index':0};
+      tempFollowTopics.push(tempTopic);
     } else {
-      tempTypeIds.splice(pos, 1);
+      tempFollowTopics.splice(pos, 1);
     }
     this.setState({
-      typeIds: tempTypeIds
+      followTopics: tempFollowTopics
     });
   };
 
   onSelectCategory = () => {
-    if (this.state.typeIds.length === 0) {
+    if (this.state.followTopics.length === 0) {
       Alert.alert('提示', '您确定不选择任何分类吗？', [
         { text: '取消', style: 'cancel' },
         {
           text: '确定',
           onPress: () => {
-            store.save('typeIds', this.state.typeIds);
+            store.save('followTopics', this.state.followTopics);
             NavigationUtil.reset(this.props.navigation, 'Home');
           }
         }
       ]);
-    } else if (this.state.typeIds.length > maxCategory) {
+    } 
+    else if (this.state.followTopics.length > maxCategory) {
       ToastUtil.showShort(`不要超过${maxCategory}个类别哦`);
-    } else {
-      store.save('typeIds', this.state.typeIds);
+    } 
+    else {
+      store.save('followTopics', this.state.followTopics);
       store.save('isInit', true);
       NavigationUtil.reset(this.props.navigation, 'Home');
     }
   };
 
   onActionSelected = () => {
-    if (tempTypeIds.length > maxCategory) {
+    if (tempFollowTopics.length > maxCategory) {
       ToastUtil.showShort(`不要超过${maxCategory}个类别哦`);
       return;
     }
-    if (tempTypeIds.length < 1) {
+    if (tempFollowTopics.length < 1) {
       ToastUtil.showShort('不要少于1个类别哦');
     }
     const { navigate } = this.props.navigation;
     InteractionManager.runAfterInteractions(() => {
-      store.get('typeIds').then((typeIds) => {
-        if (
-          typeIds.sort().toString() ===
-          Array.from(tempTypeIds)
-            .sort()
-            .toString()
-        ) {
-          navigate('Main');
-          return;
+      store.get('followTopics').then((followTopics) => {
+        if(null!=followTopics)
+        { 
+          console.log(followTopics);
+          console.log(tempFollowTopics);
+          console.log(this.state.followTopics);
+          let tempfollowTopicsIds=[];
+          tempFollowTopics.map((topic)=>{tempfollowTopicsIds.push(topic.id);});
+          let followTopicsIds=[];
+          followTopics.map((topic)=>{followTopicsIds.push(topic.id);});
+          if (
+            followTopicsIds.sort().toString() ===
+            Array.from(tempfollowTopicsIds)
+              .sort()
+              .toString()
+          ) {
+            navigate('Main');
+            return;
+          }
         }
-        store.save('typeIds', this.state.typeIds).then(this.routeMain);
+        store.save('followTopics', this.state.followTopics).then(this.routeMain);
+
       });
     });
   };
 
   routeMain = () => {
     const { navigate } = this.props.navigation;
-    DeviceEventEmitter.emit('changeCategory', this.state.typeIds);
+    DeviceEventEmitter.emit('changeCategory', this.state.followTopics);
     navigate('Main');
   };
 
   renderItem = (item) => {
-    const isSelect =
-      Array.from(this.state.typeIds).indexOf(parseInt(item.id)) !== -1;
+    let followTopicsIds=[];
+    this.state.followTopics.map((topic)=>{followTopicsIds.push(topic.id);});
+    const isSelect = Array.from(followTopicsIds).indexOf(item.id) !== -1;
     return (
       <Button
         key={item.id}
@@ -189,7 +209,7 @@ class Category extends React.Component {
       >
         <View style={styles.gridLayout}>
           <GridView
-            items={Array.from(category.typeList)}
+            items={Array.from(category.topicList)}
             itemsPerRow={3}
             renderItem={this.renderItem}
           />

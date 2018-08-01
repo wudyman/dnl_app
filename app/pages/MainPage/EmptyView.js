@@ -25,7 +25,7 @@ import {
   View
 } from 'react-native';
 
-const EmptyView = ({ read, typeId, onRefresh }) => (
+const EmptyView = ({ read, topicId, onRefresh }) => (
   <ScrollView
     automaticallyAdjustContentInsets={false}
     horizontal={false}
@@ -35,7 +35,7 @@ const EmptyView = ({ read, typeId, onRefresh }) => (
       <RefreshControl
         style={styles.refreshControlBase}
         refreshing={read.isRefreshing}
-        onRefresh={() => onRefresh(typeId)}
+        onRefresh={() => onRefresh(topicId)}
         title="Loading..."
         colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
       />

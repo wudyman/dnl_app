@@ -17,21 +17,21 @@
  */
 import * as types from '../constants/ActionTypes';
 
-export function requestTypeList() {
+export function requestTopicList() {
   return {
-    type: types.REQUEST_TYPE_LIST
+    type: types.REQUEST_TOPIC_LIST
   };
 }
 
-export function fetchTypeList() {
+export function fetchTopicList() {
   return {
-    type: types.FETCH_TYPE_LIST
+    type: types.FETCH_TOPIC_LIST
   };
 }
 
-export function receiveTypeList(typeList) {
+export function receiveTopicList(topicList) {
   return {
-    type: types.RECEIVE_TYPE_LIST,
-    typeList
+    type: types.RECEIVE_TOPIC_LIST,
+    topicList
   };
 }

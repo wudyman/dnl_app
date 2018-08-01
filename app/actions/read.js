@@ -20,17 +20,15 @@ import * as types from '../constants/ActionTypes';
 export function requestArticleList(
   isRefreshing,
   loading,
-  typeId,
-  isLoadMore,
-  page = 1
+  topicId,
+  isLoadMore
 ) {
   return {
     type: types.REQUEST_ARTICLE_LIST,
     isRefreshing,
     loading,
     isLoadMore,
-    typeId,
-    page
+    topicId
   };
 }
 
@@ -43,10 +41,10 @@ export function fetchArticleList(isRefreshing, loading, isLoadMore = false) {
   };
 }
 
-export function receiveArticleList(articleList, typeId) {
+export function receiveArticleList(articleList, topicId) {
   return {
     type: types.RECEIVE_ARTICLE_LIST,
     articleList,
-    typeId
+    topicId
   };
 }

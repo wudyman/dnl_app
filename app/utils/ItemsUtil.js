@@ -8,5 +8,5 @@ export const removeExpiredItem = (list) => {
   return list || [];
 };
 
-export const getTypeName = (typeList, typeId) =>
-  _.head(_.filter(typeList, o => o.id === typeId.toString())).name;
+export const getTypeName = (topicList, topicId) =>
+  _.head(_.filter(topicList, o => o.id === topicId.toString())).name;

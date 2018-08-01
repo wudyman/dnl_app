@@ -41,7 +41,7 @@ export default function read(state = initialState, action) {
         articleList: state.isLoadMore
           ? loadMore(state, action)
           : combine(state, action),
-        loading: state.articleList[action.typeId] === undefined
+        loading: state.articleList[action.topicId] === undefined
       });
     default:
       return state;
@@ -49,13 +49,13 @@ export default function read(state = initialState, action) {
 }
 
 function combine(state, action) {
-  state.articleList[action.typeId] = action.articleList;
+  state.articleList[action.topicId] = action.articleList;
   return state.articleList;
 }
 
 function loadMore(state, action) {
-  state.articleList[action.typeId] = concatFilterDuplicate(
-    state.articleList[action.typeId],
+  state.articleList[action.topicId] = concatFilterDuplicate(
+    state.articleList[action.topicId],
     action.articleList
   );
   return state.articleList;

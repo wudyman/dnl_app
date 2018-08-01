@@ -106,7 +106,7 @@ function convertQuestionList(ret)
     question.userName=""+item[10];
     question.like_num=0;
     question.read_num=0;
-    question.typeId=""+item[2];
+    question.topicId=""+item[2];
     question.userLogo_code="https://open.weixin.qq.com/qr/code?username=beautify_english";
     question.answerId=item[9];
     question.url=SITE_URL+"/question/"+question.id+"/?ans="+question.answerId;
@@ -118,31 +118,32 @@ function convertQuestionList(ret)
 export function* requestArticleList(
   isRefreshing,
   loading,
-  typeId,
-  isLoadMore,
-  page
+  topicId,
+  isLoadMore
 ) {
   let formData=new FormData();
   formData.append("type","hot");
+  if(topicId<1)
+    topicId=2;
   try {
     yield put(fetchArticleList(isRefreshing, loading, isLoadMore));
     const ret = yield call(
       RequestUtil.request,
-      `${SITE_URL}/ajax/topic/${typeId}/1/0/20/`,
+      `${SITE_URL}/ajax/topic/${topicId}/1/0/20/`,
       'post',
       formData
     );
     const articleList=convertQuestionList(ret);
     yield put(receiveArticleList(
       articleList,
-      typeId
+      topicId
     ));
     const errorMessage = articleList;
     if (errorMessage && errorMessage == 'fail') {
       yield ToastUtil.showShort(errorMessage);
     }
   } catch (error) {
-    yield put(receiveArticleList([], typeId));
+    yield put(receiveArticleList([], topicId));
     ToastUtil.showShort('网络发生错误，请重试');
   }
 }
@@ -150,15 +151,14 @@ export function* requestArticleList(
 export function* watchRequestArticleList() {
   while (true) {
     const {
-      isRefreshing, loading, typeId, isLoadMore, page
+      isRefreshing, loading, topicId, isLoadMore
     } = yield take(types.REQUEST_ARTICLE_LIST);
     yield fork(
       requestArticleList,
       isRefreshing,
       loading,
-      typeId,
-      isLoadMore,
-      page
+      topicId,
+      isLoadMore
     );
   }
 }

@@ -40,9 +40,8 @@ const propTypes = {
   read: PropTypes.object.isRequired
 };
 
-const pages = [];
 let loadMoreTime = 0;
-let currentLoadMoreTypeId;
+let currentLoadMoreTopicId;
 
 class Main extends React.Component {
   constructor(props) {
@@ -51,35 +50,37 @@ class Main extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
-      typeIds: [],
-      typeList: {}
+      followTopics: [],
+      topicList: []
     };
   }
 
   componentDidMount() {
     const { readActions } = this.props;
-    DeviceEventEmitter.addListener('changeCategory', (typeIds) => {
-      typeIds.forEach((typeId) => {
-        readActions.requestArticleList(false, true, typeId);
-        pages.push(1);
+    DeviceEventEmitter.addListener('changeCategory', (followTopics) => {
+      console.log(followTopics);
+      followTopics.forEach((topic) => {
+        readActions.requestArticleList(false, true, topic.id);
       });
       this.setState({
-        typeIds
+        followTopics
       });
     });
     InteractionManager.runAfterInteractions(() => {
-      store.get('typeIds').then((typeIds) => {
-        if (!typeIds) {
+      store.get('followTopics').then((followTopics) => {
+        if (!followTopics) {
           return;
         }
-        typeIds.forEach((typeId) => {
-          readActions.requestArticleList(false, true, typeId);
-          pages.push(1);
-        });
-        store.get('typeList').then(typeList =>
+        console.log(followTopics);
+        let headTopic=followTopics[0];
+        readActions.requestArticleList(false, true, headTopic.id);
+        //followTopics.forEach((topic) => {
+        //  readActions.requestArticleList(false, true, topic.id);
+        //});
+        store.get('topicList').then(topicList =>
           this.setState({
-            typeIds,
-            typeList
+            followTopics,
+            topicList
           }));
       });
     });
@@ -87,6 +88,8 @@ class Main extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { read } = this.props;
+    console.log(read);
+    console.log(nextProps);
     if (
       read.isLoadMore &&
       !nextProps.read.isLoadMore &&
@@ -94,10 +97,7 @@ class Main extends React.Component {
     ) {
       if (nextProps.read.noMore) {
         ToastUtil.showShort('没有更多数据了');
-        const index = this.state.typeIds.indexOf(currentLoadMoreTypeId);
-        if (index >= 0) {
-          pages[index] -= 1;
-        }
+        //const index = this.state.typeIds.indexOf(currentLoadMoreTypeId);
       }
     }
   }
@@ -106,13 +106,11 @@ class Main extends React.Component {
     DeviceEventEmitter.removeAllListeners('changeCategory');
   }
 
-  onRefresh = (typeId) => {
+  onRefresh = (topicId) => {
     const { readActions } = this.props;
-    readActions.requestArticleList(true, false, typeId);
-    const index = this.state.typeIds.indexOf(typeId);
-    if (index >= 0) {
-      pages[index] = 1;
-    }
+    console.log("#################################2");
+    readActions.requestArticleList(true, false, topicId);
+    //const index = this.state.typeIds.indexOf(typeId);
   };
 
   onPress = (article) => {
@@ -124,17 +122,17 @@ class Main extends React.Component {
     this.drawer.openDrawer();
   };
 
-  onEndReached = (typeId) => {
-    currentLoadMoreTypeId = typeId;
+  onEndReached = (topicId) => {
+    currentLoadMoreTopicId = topicId;
     const time = Date.parse(new Date()) / 1000;
-    const index = this.state.typeIds.indexOf(typeId);
-    if (index < 0) {
-      return;
-    }
+    //const index = this.state.typeIds.indexOf(topicId);
+    //if (index < 0) {
+    //  return;
+    //}
     if (time - loadMoreTime > 1) {
-      pages[index] += 1;
       const { readActions } = this.props;
-      readActions.requestArticleList(false, false, typeId, true, pages[index]);
+      console.log("#################################1");
+      readActions.requestArticleList(false, false, topicId, true);
       loadMoreTime = Date.parse(new Date()) / 1000;
     }
   };
@@ -147,23 +145,26 @@ class Main extends React.Component {
     <ItemCell article={article} onPressHandler={this.onPress} />
   );
 
-  renderContent = (dataSource, typeId) => {
+  renderContent = (dataSource, topicId) => {
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$a"+topicId);
     const { read } = this.props;
     if (read.loading) {
       return <LoadingView />;
     }
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$b"+topicId);
     const isEmpty =
-      read.articleList[typeId] === undefined ||
-      read.articleList[typeId].length === 0;
+      read.articleList[topicId] === undefined ||
+      read.articleList[topicId].length === 0;
     if (isEmpty) {
       return (
-        <EmptyView read={read} typeId={typeId} onRefresh={this.onRefresh} />
+        <EmptyView read={read} topicId={topicId} onRefresh={this.onRefresh} />
       );
     }
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$c"+topicId);
     return (
       <ItemListView
         dataSource={dataSource}
-        typeId={typeId}
+        topicId={topicId}
         isRefreshing={read.isRefreshing}
         onEndReached={this.onEndReached}
         onRefresh={this.onRefresh}
@@ -175,16 +176,25 @@ class Main extends React.Component {
 
   render() {
     const { read } = this.props;
-    const content = this.state.typeIds.map((typeId) => {
-      if (this.state.typeList === null) {
+    const content = this.state.followTopics.map((topic) => {
+      /*
+      if (this.state.topicList === null) {
         return null;
       }
-      const name = getTypeName(this.state.typeList, typeId);
+      if(topic.id<1)
+        return;
+      console.log('############start##############');
+      console.log(this.state.topicList);
+      console.log(this.state.topicList);
+      const name = getTypeName(this.state.topicList, parseInt(topic.id));
+      console.log(name);
+      console.log('############end##############');
+      */
       const typeView = (
-        <View key={typeId} tabLabel={name} style={styles.base}>
+        <View key={topic.id} tabLabel={topic.name} style={styles.base}>
           {this.renderContent(
-            this.state.dataSource.cloneWithRows(getArticleList(read.articleList[typeId])),
-            typeId
+            this.state.dataSource.cloneWithRows(getArticleList(read.articleList[topic.id])),
+            topic.id
           )}
         </View>
       );
@@ -201,8 +211,10 @@ class Main extends React.Component {
             />
           )}
           onChangeTab={(obj) => {
-            console.log('index:' + obj.i);
-            let topicId=this.state.typeIds[obj.i];
+            let index=obj.i;
+            console.log('index:' + index);
+            let topicId=this.state.followTopics[index].id;
+            console.log('topicId:' + topicId);
             //this.renderContent(
             //  this.state.dataSource.cloneWithRows(getArticleList(read.articleList[topicId])),
             //  topicId
@@ -214,8 +226,6 @@ class Main extends React.Component {
           tabBarActiveTextColor="#228b22"
           tabBarInactiveTextColor="#aaaaaa"
         >
-          <View key='999' tabLabel='头条' style={styles.base}>
-          </View>
           {content}
         </ScrollableTabView>
       </View>

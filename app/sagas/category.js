@@ -22,7 +22,7 @@ import * as types from '../constants/ActionTypes';
 import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
 import { AJAX_TOPICS_URL } from '../constants/Urls';
-import { fetchTypeList, receiveTypeList } from '../actions/category';
+import { fetchTopicList, receiveTopicList } from '../actions/category';
 
 function convertTopics(ret)
 {
@@ -36,26 +36,26 @@ function convertTopics(ret)
   });
   return topics;
 }
-export function* requestTypeList() {
+export function* requestTopicList() {
   try {
-    yield put(fetchTypeList());
+    yield put(fetchTopicList());
     const ret = yield call(RequestUtil.request, AJAX_TOPICS_URL, 'post');
-    const typeList=convertTopics(ret);
-    yield put(receiveTypeList(typeList));
-    yield call(store.save, 'typeList', typeList);
-    const errorMessage = typeList;
+    const topicList=convertTopics(ret);
+    yield put(receiveTopicList(topicList));
+    yield call(store.save, 'topicList', topicList);
+    const errorMessage = topicList;
     if (errorMessage && errorMessage == 'fail') {
       yield  ToastUtil.showShort(errorMessage);
     }
   } catch (error) {
-    yield put(receiveTypeList([]));
+    yield put(receiveTopicList([]));
     yield ToastUtil.showShort('网络发生错误，请重试');
   }
 }
 
-export function* watchRequestTypeList() {
+export function* watchRequestTopicList() {
   while (true) {
-    yield take(types.REQUEST_TYPE_LIST);
-    yield fork(requestTypeList);
+    yield take(types.REQUEST_TOPIC_LIST);
+    yield fork(requestTopicList);
   }
 }
