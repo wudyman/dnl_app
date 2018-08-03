@@ -22,7 +22,7 @@ const initialState = {
   loading: false,
   isLoadMore: false,
   noMore: false,
-  articleList: {}
+  articleList: []
 };
 
 export default function read(state = initialState, action) {
@@ -38,10 +38,8 @@ export default function read(state = initialState, action) {
         isRefreshing: false,
         isLoadMore: false,
         noMore: action.articleList.length === 0,
-        articleList: state.isLoadMore
-          ? loadMore(state, action)
-          : combine(state, action),
-        loading: state.articleList[action.topicId] === undefined
+        articleList: state.isLoadMore? loadMore(state, action): combine(state, action),
+        loading: false,//state.articleList[action.topicId] === undefined,
       });
     default:
       return state;
@@ -49,13 +47,13 @@ export default function read(state = initialState, action) {
 }
 
 function combine(state, action) {
-  state.articleList[action.topicId] = action.articleList;
+  state.articleList[action.tabIndex] = action.articleList;
   return state.articleList;
 }
 
 function loadMore(state, action) {
-  state.articleList[action.topicId] = concatFilterDuplicate(
-    state.articleList[action.topicId],
+  state.articleList[action.tabIndex] = concatFilterDuplicate(
+    state.articleList[action.tabIndex],
     action.articleList
   );
   return state.articleList;

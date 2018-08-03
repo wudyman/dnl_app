@@ -18,17 +18,21 @@
 import * as types from '../constants/ActionTypes';
 
 export function requestArticleList(
+  topicId,
+  tabIndex,
+  dataIndex,
   isRefreshing,
   loading,
-  topicId,
   isLoadMore
 ) {
   return {
     type: types.REQUEST_ARTICLE_LIST,
+    topicId,
+    tabIndex,
+    dataIndex,
     isRefreshing,
     loading,
-    isLoadMore,
-    topicId
+    isLoadMore
   };
 }
 
@@ -41,10 +45,12 @@ export function fetchArticleList(isRefreshing, loading, isLoadMore = false) {
   };
 }
 
-export function receiveArticleList(articleList, topicId) {
+export function receiveArticleList(topicId, tabIndex, dataIndex, articleList) {
   return {
     type: types.RECEIVE_ARTICLE_LIST,
-    articleList,
-    topicId
+    topicId,
+    tabIndex,
+    dataIndex,
+    articleList
   };
 }

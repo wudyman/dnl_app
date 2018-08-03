@@ -34,10 +34,12 @@ import GridView from '../../components/GridView';
 import Button from '../../components/Button';
 import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
+import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
 
-let initFollowTopics = [{'id':'-1','name':'头条','articleList':{},'index':0}];
+let initFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
 let [ ...tempFollowTopics ] = initFollowTopics;
-let maxCategory = 2; // 未登录最多2个类别，登录后无限制
+let tempFollowTopicsIds = [HEAD_TOPIC_ID,ANSWER_TOPIC_ID];
+let maxCategory = 5; // 未登录最多3个类别，登录后无限制
 
 const propTypes = {
   categoryActions: PropTypes.object,
@@ -64,6 +66,8 @@ class Category extends React.Component {
               followTopics
             });
           }
+          tempFollowTopicsIds=[];
+          tempFollowTopics.map((topic)=>{tempFollowTopicsIds.push(topic.id);});
         });
       });
     }
@@ -88,15 +92,16 @@ class Category extends React.Component {
   };
 
   onPress = (item) => {
-    let tempfollowTopicsIds=[];
-    tempFollowTopics.map((topic)=>{tempfollowTopicsIds.push(topic.id);});
-    const pos = tempfollowTopicsIds.indexOf(item.id);
+    const pos = tempFollowTopicsIds.indexOf(item.id);
     if (pos === -1) {
-      let tempTopic={'id':item.id,'name':item.name,'articleList':{},'index':0};
+      let tempTopic={'id':item.id,'name':item.name,'dataIndex':0};
       tempFollowTopics.push(tempTopic);
     } else {
       tempFollowTopics.splice(pos, 1);
     }
+    tempFollowTopicsIds=[];
+    tempFollowTopics.map((topic)=>{tempFollowTopicsIds.push(topic.id);});
+    console.log(tempFollowTopicsIds);
     this.setState({
       followTopics: tempFollowTopics
     });
@@ -109,8 +114,11 @@ class Category extends React.Component {
         {
           text: '确定',
           onPress: () => {
-            store.save('followTopics', this.state.followTopics);
-            NavigationUtil.reset(this.props.navigation, 'Home');
+            //store.save('followTopics', this.state.followTopics);
+            //NavigationUtil.reset(this.props.navigation, 'Home');
+            store.save('followTopics', this.state.followTopics)
+            .then(store.save('isInit', true))
+            .then(this.routeMain);
           }
         }
       ]);
@@ -119,9 +127,12 @@ class Category extends React.Component {
       ToastUtil.showShort(`不要超过${maxCategory}个类别哦`);
     } 
     else {
-      store.save('followTopics', this.state.followTopics);
-      store.save('isInit', true);
-      NavigationUtil.reset(this.props.navigation, 'Home');
+      //store.save('followTopics', this.state.followTopics);
+      //store.save('isInit', true);
+      //NavigationUtil.reset(this.props.navigation, 'Home');
+      store.save('followTopics', this.state.followTopics)
+      .then(store.save('isInit', true))
+      .then(this.routeMain);
     }
   };
 
@@ -138,16 +149,13 @@ class Category extends React.Component {
       store.get('followTopics').then((followTopics) => {
         if(null!=followTopics)
         { 
-          console.log(followTopics);
-          console.log(tempFollowTopics);
-          console.log(this.state.followTopics);
-          let tempfollowTopicsIds=[];
-          tempFollowTopics.map((topic)=>{tempfollowTopicsIds.push(topic.id);});
+          tempFollowTopicsIds=[];
+          tempFollowTopics.map((topic)=>{tempFollowTopicsIds.push(topic.id);});
           let followTopicsIds=[];
           followTopics.map((topic)=>{followTopicsIds.push(topic.id);});
           if (
             followTopicsIds.sort().toString() ===
-            Array.from(tempfollowTopicsIds)
+            Array.from(tempFollowTopicsIds)
               .sort()
               .toString()
           ) {
@@ -168,9 +176,7 @@ class Category extends React.Component {
   };
 
   renderItem = (item) => {
-    let followTopicsIds=[];
-    this.state.followTopics.map((topic)=>{followTopicsIds.push(topic.id);});
-    const isSelect = Array.from(followTopicsIds).indexOf(item.id) !== -1;
+    const isSelect = Array.from(tempFollowTopicsIds).indexOf(item.id) !== -1;
     return (
       <Button
         key={item.id}

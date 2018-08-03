@@ -22,6 +22,7 @@ import * as types from '../constants/ActionTypes';
 import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
 import { SITE_URL } from '../constants/Urls';
+import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID,DATA_STEP } from '../constants/Constants';
 import { fetchArticleList, receiveArticleList } from '../actions/read';
 
 function getIndexImg(content){
@@ -116,34 +117,47 @@ function convertQuestionList(ret)
   return questions;
 }
 export function* requestArticleList(
+  topicId,
+  tabIndex,
+  dataIndex,
   isRefreshing,
   loading,
-  topicId,
   isLoadMore
 ) {
+  let start=dataIndex;
+  let end=start+DATA_STEP;
+  let url=`${SITE_URL}/ajax/topic/${topicId}/1/${start}/${end}/`;
+  if(HEAD_TOPIC_ID==topicId)
+  {
+    url=`${SITE_URL}/ajax/questions/1/${start}/${end}/`;
+  }
+  else if(ANSWER_TOPIC_ID==topicId)
+  {
+    url=`${SITE_URL}/ajax/answer_page/all/1/${start}/${end}/`;
+  }
   let formData=new FormData();
   formData.append("type","hot");
-  if(topicId<1)
-    topicId=2;
   try {
     yield put(fetchArticleList(isRefreshing, loading, isLoadMore));
     const ret = yield call(
       RequestUtil.request,
-      `${SITE_URL}/ajax/topic/${topicId}/1/0/20/`,
+      url,
       'post',
       formData
     );
     const articleList=convertQuestionList(ret);
     yield put(receiveArticleList(
-      articleList,
-      topicId
+      topicId,
+      tabIndex,
+      dataIndex,
+      articleList
     ));
     const errorMessage = articleList;
     if (errorMessage && errorMessage == 'fail') {
       yield ToastUtil.showShort(errorMessage);
     }
   } catch (error) {
-    yield put(receiveArticleList([], topicId));
+    yield put(receiveArticleList(topicId, tabIndex, dataIndex, []));
     ToastUtil.showShort('网络发生错误，请重试');
   }
 }
@@ -151,13 +165,15 @@ export function* requestArticleList(
 export function* watchRequestArticleList() {
   while (true) {
     const {
-      isRefreshing, loading, topicId, isLoadMore
+      topicId, tabIndex, dataIndex, isRefreshing, loading, isLoadMore
     } = yield take(types.REQUEST_ARTICLE_LIST);
     yield fork(
       requestArticleList,
+      topicId,
+      tabIndex,
+      dataIndex,
       isRefreshing,
       loading,
-      topicId,
       isLoadMore
     );
   }

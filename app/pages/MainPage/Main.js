@@ -34,14 +34,20 @@ import ItemCell from './ItemCell';
 import Footer from './Footer';
 import EmptyView from './EmptyView';
 import ItemListView from './ItemListView';
+import { DATA_STEP } from '../../constants/Constants';
 
 const propTypes = {
   readActions: PropTypes.object,
   read: PropTypes.object.isRequired
 };
 
+let gFollowTopics=[];
 let loadMoreTime = 0;
 let currentLoadMoreTopicId;
+let currentTabIndex=0;
+let currentTopicId;
+let initDataIndex=0;
+let dataIndex=0;
 
 class Main extends React.Component {
   constructor(props) {
@@ -50,36 +56,41 @@ class Main extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
-      followTopics: [],
       topicList: []
     };
   }
 
   componentDidMount() {
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx1");
     const { readActions } = this.props;
     DeviceEventEmitter.addListener('changeCategory', (followTopics) => {
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx2");
       console.log(followTopics);
-      followTopics.forEach((topic) => {
-        readActions.requestArticleList(false, true, topic.id);
-      });
-      this.setState({
-        followTopics
-      });
+      currentTopicId=followTopics[0].id;
+      //followTopics.forEach((topic) => {
+      //  readActions.requestArticleList(topic.id, false, true);
+      //});
+      //this.setState({
+      //  followTopics
+      //});
+      gFollowTopics=followTopics;
+      readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
     });
     InteractionManager.runAfterInteractions(() => {
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx3");
       store.get('followTopics').then((followTopics) => {
         if (!followTopics) {
           return;
         }
         console.log(followTopics);
-        let headTopic=followTopics[0];
-        readActions.requestArticleList(false, true, headTopic.id);
+        currentTopicId=followTopics[0].id;
+        gFollowTopics=followTopics;
+        readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
         //followTopics.forEach((topic) => {
-        //  readActions.requestArticleList(false, true, topic.id);
+        //  readActions.requestArticleList(topic.id, false, true);
         //});
         store.get('topicList').then(topicList =>
           this.setState({
-            followTopics,
             topicList
           }));
       });
@@ -100,7 +111,22 @@ class Main extends React.Component {
         //const index = this.state.typeIds.indexOf(currentLoadMoreTypeId);
       }
     }
+
+    if((read.loading && !nextProps.read.loading)||(read.isRefreshing && !nextProps.read.isRefreshing)||(read.isLoadMore && !nextProps.read.isLoadMore))
+    {
+      //this.setState({followTopics[currentTabIndex].articleList:[]})
+      let topicId=nextProps.read.topicId;
+      if(topicId==currentTopicId)
+      {
+        //this.state.followTopics[currentTabIndex].articleList=nextProps.read.articleList;
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        console.log(currentTabIndex);
+        console.log(currentTopicId);
+        //console.log(this.state.followTopics);
+      }
+    }
   }
+  
 
   componentWillUnmount() {
     DeviceEventEmitter.removeAllListeners('changeCategory');
@@ -109,7 +135,8 @@ class Main extends React.Component {
   onRefresh = (topicId) => {
     const { readActions } = this.props;
     console.log("#################################2");
-    readActions.requestArticleList(true, false, topicId);
+    dataIndex=0;
+    readActions.requestArticleList(topicId, currentTabIndex, dataIndex, true, false);
     //const index = this.state.typeIds.indexOf(typeId);
   };
 
@@ -131,8 +158,13 @@ class Main extends React.Component {
     //}
     if (time - loadMoreTime > 1) {
       const { readActions } = this.props;
-      console.log("#################################1");
-      readActions.requestArticleList(false, false, topicId, true);
+      console.log("################################# onEndReached");
+      dataIndex=gFollowTopics[currentTabIndex].dataIndex;
+      console.log(dataIndex);
+      dataIndex=dataIndex+DATA_STEP;
+      console.log(dataIndex);
+      gFollowTopics[currentTabIndex].dataIndex=dataIndex;
+      readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, false, true);
       loadMoreTime = Date.parse(new Date()) / 1000;
     }
   };
@@ -145,26 +177,26 @@ class Main extends React.Component {
     <ItemCell article={article} onPressHandler={this.onPress} />
   );
 
-  renderContent = (dataSource, topicId) => {
-    console.log("$$$$$$$$$$$$$$$$$$$$$$$$a"+topicId);
+  renderContent = (topic) => {
+    console.log(topic);
     const { read } = this.props;
     if (read.loading) {
       return <LoadingView />;
     }
-    console.log("$$$$$$$$$$$$$$$$$$$$$$$$b"+topicId);
     const isEmpty =
-      read.articleList[topicId] === undefined ||
-      read.articleList[topicId].length === 0;
+      read.articleList[currentTabIndex] === undefined ||
+      read.articleList[currentTabIndex].length === 0;
     if (isEmpty) {
       return (
-        <EmptyView read={read} topicId={topicId} onRefresh={this.onRefresh} />
+        <EmptyView read={read} topicId={topic.id} onRefresh={this.onRefresh} />
       );
     }
-    console.log("$$$$$$$$$$$$$$$$$$$$$$$$c"+topicId);
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$"+topic.id);
+    let dataSource=this.state.dataSource.cloneWithRows(getArticleList(read.articleList[currentTabIndex]));
     return (
       <ItemListView
         dataSource={dataSource}
-        topicId={topicId}
+        topicId={topic.id}
         isRefreshing={read.isRefreshing}
         onEndReached={this.onEndReached}
         onRefresh={this.onRefresh}
@@ -175,8 +207,8 @@ class Main extends React.Component {
   };
 
   render() {
-    const { read } = this.props;
-    const content = this.state.followTopics.map((topic) => {
+    //const { read } = this.props;
+    const content = gFollowTopics.map((topic) => {
       /*
       if (this.state.topicList === null) {
         return null;
@@ -192,10 +224,13 @@ class Main extends React.Component {
       */
       const typeView = (
         <View key={topic.id} tabLabel={topic.name} style={styles.base}>
-          {this.renderContent(
-            this.state.dataSource.cloneWithRows(getArticleList(read.articleList[topic.id])),
-            topic.id
-          )}
+          {(currentTopicId==topic.id)? 
+            this.renderContent(
+            topic
+          )
+          :
+          <View/>
+          }
         </View>
       );
       return typeView;
@@ -211,14 +246,13 @@ class Main extends React.Component {
             />
           )}
           onChangeTab={(obj) => {
-            let index=obj.i;
-            console.log('index:' + index);
-            let topicId=this.state.followTopics[index].id;
-            console.log('topicId:' + topicId);
-            //this.renderContent(
-            //  this.state.dataSource.cloneWithRows(getArticleList(read.articleList[topicId])),
-            //  topicId
-            //  );
+            currentTabIndex=obj.i;
+            const { read } = this.props;
+            console.log(read);
+            currentTopicId=gFollowTopics[currentTabIndex].id;
+            const { readActions } = this.props;
+            dataIndex=0;
+            readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, true, false);
             }
           }
           tabBarBackgroundColor="#ffffff"
