@@ -31,8 +31,9 @@ const ItemCell = ({ article, onPressHandler }) => (
         <Image style={styles.itemImg} source={{ uri: article.contentImg }} />
         <Text numberOfLines={3} style={styles.content}>{formatStringWithHtml(article.format_content)}</Text>
         <View style={styles.itemRightBottom}>
-          <Text style={styles.userName}>{article.userName}</Text>
-          <Text style={styles.timeAgo}>{moment(article.date).fromNow()}</Text>
+          <Image style={styles.authorAvatar} source={{ uri: article.author_avatar }} />
+          <Text style={styles.authorName}>{article.authorName}</Text>
+          <Text style={styles.timeAgo}>{moment(article.pub_date).fromNow()}</Text>
         </View>
       </View>
     </View>
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    //fontWeight: '500',
     textAlign: 'left',
     color: 'black'
   },
@@ -72,12 +74,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  userName: {
-    flex: 1,
-    fontSize: 14,
-    color: '#87CEFA',
+  authorAvatar: {
+    width:20,
+    height:20,
+    borderRadius:10,
     marginTop: 5,
     marginRight: 5
+  },
+  authorName: {
+    flex: 1,
+    fontSize: 14,
+    color: '#aaaaaa',
+    marginTop: 5,
+    marginRight: 5
+  },
+  timeAgo: {
+    marginTop: 5,
+    fontSize: 14,
+    color: '#aaaaaa'
   }
 });
 

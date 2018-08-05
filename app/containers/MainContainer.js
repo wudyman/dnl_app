@@ -17,6 +17,7 @@
  */
 import React from 'react';
 import { View,StatusBar } from 'react-native';
+import store from 'react-native-simple-store';
 import { connect } from 'react-redux';
 import CodePush from 'react-native-code-push';
 import { bindActionCreators } from 'redux';
@@ -24,9 +25,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Main from '../pages/MainPage/Main';
 import * as readCreators from '../actions/read';
 import {TextInput} from 'react-native';
-import Button from '../components/Button'; 
+import Button from '../components/Button';
+import ImageButton from '../components/ImageButtonWithText';  
 
-
+let isSignIn='';
 class MainContainer extends React.Component {
   
   static navigationOptions = ({ navigation }) => {
@@ -36,28 +38,31 @@ class MainContainer extends React.Component {
       tabBarIcon: ({ tintColor }) => (
         <Icon name="md-home" size={25} color={tintColor} />
       ),
-      headerLeft: (<Button text='写文章' onPress={()=>navigation.state.params.showWritePage()} btnStyle={{padding:5}} textStyle={{textAlign: 'center',color:'#228b22'}}/>),
-      headerRight: (<Button text='提问' btnStyle={{padding:5}} textStyle={{textAlign: 'center',color:'#228b22'}}/>),
+      headerLeft: (<Button text='写文章' onPress={()=>navigation.navigate('Misc',{pageType:'write',isSignIn:isSignIn})} textStyle={{fontSize:15,fontWeight:'900',textAlign: 'center',color:'#228b22'}}/>),
+      headerRight: (<Button text='提问' onPress={()=>navigation.navigate('Misc',{pageType:'ask',isSignIn:isSignIn})} btnStyle={{padding:15}} textStyle={{fontSize:15,fontWeight:'900',textAlign: 'center',color:'#228b22'}}/>),
       headerTitle:(
+        <View style={{flex:1,flexDirection:'row',marginLeft:15,marginRight:15,borderColor:'#f0f0f0',borderWidth:1,borderRadius: 20}}>
+          <ImageButton text='搜索内容' onPress={()=>navigation.navigate('Misc',{pageType:'search',isSignIn:isSignIn})} icon="md-search" iconColor="#aaaaaa" iconSize={20} btnStyle={{flex:1,flexDirection:'row',justifyContent:'center', padding:5}} textStyle={{paddingLeft:5, fontSize:14, textAlign: 'center',color:'#aaaaaa'}}/>
+          {/*}
         <TextInput
         style={{flex:1,backgroundColor:'transparent',fontSize:15,borderColor:'#f0f0f0',borderWidth:1,borderRadius: 20,padding:1,textAlign:'center'}}
         underlineColorAndroid='transparent'
         placeholderTextColor='#aaaaaa'   
-        placeholder='搜索内容' />
+        placeholder='搜索内容' />*/}
+        </View>
       ),
     };
   };
 
-  
-  _showWritePage(){
-    console.log('**************show write page*********');
-  }
-
   componentWillMount() {
-    this.props.navigation.setParams({showWritePage:this._showWritePage});
+    console.log('**************MainContainer componentWillMount*********');
+    store.get('userInfo').then((userInfo)=>{
+      isSignIn=userInfo.isSignIn;
+    });
   }
 
   static componentDidMount() {
+    console.log('**************MainContainer componentDidMount*********');
     CodePush.sync({
       deploymentKey: 'RGOUfyINiLicZnld67aD0nrbRvyLV1Ifekvul',
       updateDialog: {

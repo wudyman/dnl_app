@@ -42,7 +42,8 @@ const ItemListView = ({
         refreshing={isRefreshing}
         onRefresh={() => onRefresh(topicId)}
         title="Loading..."
-        colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+        colors={['#228b22cc', '#00ff00ff', '#ffffbb33', '#ffff4444']}
+        //colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
       />
     }
   />

@@ -29,6 +29,7 @@ const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
 //const splashImg = require('../img/splash.png');
 const splashImg = require('../img/share_icon_moments.png');
+let bDone=false;
 
 class Splash extends React.Component {
   static navigationOptions = {
@@ -57,6 +58,7 @@ class Splash extends React.Component {
       duration: 1000
     }).start();
     SplashScreen.hide();
+    /*
     this.timer = setTimeout(() => {
       store.get('isInit').then((isInit) => {
         if (!isInit) {
@@ -66,18 +68,31 @@ class Splash extends React.Component {
         }
       });
     }, 1000);
+    */
   }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
 
+  _goToNext(){
+    console.log('***********************_goToNext***********');
+    const { navigate } = this.props.navigation;
+    this.timer = setTimeout(() => {
+      store.get('isInit').then((isInit) => {
+        if (!isInit) {
+          navigate('Category', { isFirst: true });
+        } else {
+          NavigationUtil.reset(this.props.navigation, 'Home');
+        }
+      });
+    }, 1000);
+
+  }
+
   _getUserInfo(url){
-    let formData=new FormData();
-    formData.append("type","userprofile");
     fetch(url, {
-      method:'POST',
-      body:formData
+      method:'POST'
     })
       .then((response) => {
         if (response.ok) {
@@ -92,7 +107,7 @@ class Splash extends React.Component {
           this._saveUserInfo(responseData);
         } else {
           console.log(responseData);
-          this._saveUserInfo('fail');
+          this._saveUserInfo(responseData);
         }
       })
       .catch((error) => {
@@ -102,26 +117,41 @@ class Splash extends React.Component {
   }
 
   _saveUserInfo(ret){
-    let userInfo={};
-    if("fail"!=ret)
+    if("fail"==ret)
     {
-      userInfo.id=ret[0];
-      userInfo.name=ret[1];
-      userInfo.avatar=ret[2];
+      this._goToNext();
+    }
+    else if("nologin"==ret)
+    {
+      store.save('userInfo',{}).then(store.save('followTopics',[])).then(this._goToNext());
+    }
+    else
+    {
+      let userInfoArray=ret[0];
+      let userInfo={};
+      let followTopicsArray=ret[1];
+      let followTopics=[];
+      userInfo.id=userInfoArray[0];
+      userInfo.name=userInfoArray[1];
+      userInfo.avatar=userInfoArray[2];
       if(userInfo.avatar.indexOf('http')<0)
       {
         userInfo.avatar=SITE_URL+userInfo.avatar;
       }
-      userInfo.mood=ret[3];
+      userInfo.mood=userInfoArray[3];
     
-      userInfo.url=SITE_URL+'/er/'+ret[0]+'/';
+      userInfo.url=SITE_URL+'/er/'+userInfo.id+'/';
       userInfo.isSignIn='true';
+
+      followTopicsArray.map((item)=>{
+        let tempTopic={'id':item[0],'name':item[1],'dataIndex':0};
+        followTopics.push(tempTopic);
+      });
+
+      console.log(followTopics);
+      
+      store.save('userInfo',userInfo).then(store.save('followTopics',followTopics)).then(this._goToNext());
     }
-    else
-    {
-      userInfo.isSignIn='false';
-    }
-    store.save('userinfo',userInfo);
   }
 
   render() {

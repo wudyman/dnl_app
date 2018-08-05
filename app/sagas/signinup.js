@@ -27,18 +27,42 @@ import { startSignIn,endSignIn,requestUserInfo,receiveUserInfo,startSignUp,endSi
 function convertUserInfo(ret)
 {
   let userInfo={};
-  userInfo.id=ret[0];
-  userInfo.name=ret[1];
-  userInfo.avatar=ret[2];
-  if(userInfo.avatar.indexOf('http')<0)
+  if('nologin'!=ret)
   {
-    userInfo.avatar=SITE_URL+userInfo.avatar;
+    let userInfoArray=ret[0];
+    userInfo.id=userInfoArray[0];
+    userInfo.name=userInfoArray[1];
+    userInfo.avatar=userInfoArray[2];
+    if(userInfo.avatar.indexOf('http')<0)
+    {
+      userInfo.avatar=SITE_URL+userInfo.avatar;
+    }
+    userInfo.mood=userInfoArray[3];
+  
+    userInfo.url=SITE_URL+'/er/'+userInfo.id+'/';
+    userInfo.isSignIn='true';
   }
-  userInfo.mood=ret[3];
-
-  userInfo.url=SITE_URL+'/er/'+ret[0]+'/'
-  userInfo.isSignIn='true';
+  else{
+    userInfo.isSignIn='fail';
+  }
   return userInfo;
+}
+function convertFollowTopics(ret)
+{
+  let followTopics=[];
+  if('nologin'!=ret)
+  {
+    let followTopicsArray=ret[1];
+
+    followTopicsArray.map((item)=>{
+      let tempTopic={'id':item[0],'name':item[1],'dataIndex':0};
+      followTopics.push(tempTopic);
+    });
+  }
+  else{
+    followTopics=[];
+  }
+  return followTopics;
 }
 export function* signIn(phoneNo,password) {
   let formData=new FormData();
@@ -51,13 +75,14 @@ export function* signIn(phoneNo,password) {
     if(ret == 'success')
     {
       yield ToastUtil.showShort("登录成功");
-      let formData=new FormData();
-      formData.append("type","userprofile");
       yield put(requestUserInfo());
-      const ret = yield call(RequestUtil.request, REQUEST_USER_INFO_URL, 'post',formData);
+      const ret = yield call(RequestUtil.request, REQUEST_USER_INFO_URL, 'post');
       if("fail"!=ret)
       {
         const userInfo=convertUserInfo(ret);
+        const followTopics=convertFollowTopics(ret);
+        yield call(store.save, 'userInfo', userInfo);
+        yield call(store.save, 'followTopics', followTopics);
         yield put(receiveUserInfo(userInfo));
       }
     }

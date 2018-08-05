@@ -40,8 +40,6 @@ const useravatar='http://www.danongling.com/media/avatar/default.jpg';
 const userurl='http://www.danongling.com/er/2/';
 
 const propTypes = {
-  signInUpActions: PropTypes.object,
-  signinup: PropTypes.object.isRequired
 };
 
 class HomePage extends React.Component {
@@ -49,8 +47,6 @@ class HomePage extends React.Component {
     super(props);
     this.state = {
         userInfo: {},
-        signModal: false,
-        isSignUp:false,
         userInfoPageModal: false
     }
   }
@@ -58,15 +54,8 @@ class HomePage extends React.Component {
   _openSignPage(){
     //const { signInUpActions } = this.props;
     //signInUpActions.initSignIn();
-    this.setState({signModal:true});
-  }
-
-  _closeSignPage(){
-    this.setState({signModal:false});
-  }
-
-  _switchSignInUp(){
-    this.setState({isSignUp:!this.state.isSignUp});
+    //this.setState({signModal:true});
+    this.props.navigation.navigate('Misc',{isSignIn:'false'});
   }
 
   _openUserInfoPage(){
@@ -104,30 +93,16 @@ class HomePage extends React.Component {
       });
 
       this.setState({userInfo: {}});
+      store.save('userInfo',{});
   
   }
 
   componentWillMount() {
-    store.get('userinfo').then((userInfo)=>{
+    store.get('userInfo').then((userInfo)=>{
       this.setState({userInfo:userInfo});
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { signinup } = nextProps;
-    if('success'==signinup.signInResult)
-    {
-      this.setState({signModal:false});
-    }
-    if('success'==signinup.getUserInfoResult)
-    {
-      this.setState({userInfo:signinup.userInfo});
-    }
-    if('success'==signinup.signUpResult)
-    {
-      this.setState({isSignUp:false});
-    }
-  }
 
   render() {
     return (
@@ -168,21 +143,6 @@ class HomePage extends React.Component {
               />
             </View>
           </View>
-        </View>
-
-        <View>
-            <Modal
-              animationType={'slide'}
-              transparent={true}
-              onRequestClose={() => this._doNothing()}
-              visible={this.state.signModal}
-            >
-            {this.state.isSignUp ?
-              <SignUpPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
-              :
-              <SignInPage closePage={()=>this._closeSignPage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
-            }
-          </Modal>
         </View>
         
         <View>

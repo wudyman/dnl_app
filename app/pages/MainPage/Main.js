@@ -22,6 +22,7 @@ import {
   InteractionManager,
   ListView,
   StyleSheet,
+  Modal,
   View
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
@@ -29,19 +30,24 @@ import store from 'react-native-simple-store';
 
 import LoadingView from '../../components/LoadingView';
 import ToastUtil from '../../utils/ToastUtil';
-import { getArticleList, getTypeName } from '../../utils/ItemsUtil';
+import { getArticleList } from '../../utils/ItemsUtil';
 import ItemCell from './ItemCell';
 import Footer from './Footer';
 import EmptyView from './EmptyView';
 import ItemListView from './ItemListView';
 import { DATA_STEP } from '../../constants/Constants';
+import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
+
 
 const propTypes = {
   readActions: PropTypes.object,
   read: PropTypes.object.isRequired
 };
 
-let gFollowTopics=[];
+
+let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
+let [ ...myTopics ] = preFollowTopics;
+
 let loadMoreTime = 0;
 let currentLoadMoreTopicId;
 let currentTabIndex=0;
@@ -56,43 +62,32 @@ class Main extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
-      topicList: []
     };
   }
 
   componentDidMount() {
-    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx1");
+    console.log('**************MainPage componentDidMount*********');
     const { readActions } = this.props;
     DeviceEventEmitter.addListener('changeCategory', (followTopics) => {
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx2");
-      console.log(followTopics);
-      currentTopicId=followTopics[0].id;
-      //followTopics.forEach((topic) => {
-      //  readActions.requestArticleList(topic.id, false, true);
-      //});
-      //this.setState({
-      //  followTopics
-      //});
-      gFollowTopics=followTopics;
+      console.log('**************MainPage componentDidMount changeCategory*********');
+      myTopics = [];
+      [ ...myTopics ] = preFollowTopics;
+      myTopics=myTopics.concat(followTopics);
+      currentTopicId=myTopics[0].id;
       readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
     });
     InteractionManager.runAfterInteractions(() => {
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx3");
+      console.log('*MainPage componentDidMount runAfterInteractions*');
       store.get('followTopics').then((followTopics) => {
-        if (!followTopics) {
-          return;
+        myTopics = [];
+        [ ...myTopics ] = preFollowTopics;
+        if(null!=followTopics)
+        {
+          myTopics=myTopics.concat(followTopics);
         }
-        console.log(followTopics);
-        currentTopicId=followTopics[0].id;
-        gFollowTopics=followTopics;
+        console.log(myTopics);
+        currentTopicId=myTopics[0].id;
         readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
-        //followTopics.forEach((topic) => {
-        //  readActions.requestArticleList(topic.id, false, true);
-        //});
-        store.get('topicList').then(topicList =>
-          this.setState({
-            topicList
-          }));
       });
     });
   }
@@ -134,7 +129,6 @@ class Main extends React.Component {
 
   onRefresh = (topicId) => {
     const { readActions } = this.props;
-    console.log("#################################2");
     dataIndex=0;
     readActions.requestArticleList(topicId, currentTabIndex, dataIndex, true, false);
     //const index = this.state.typeIds.indexOf(typeId);
@@ -158,12 +152,9 @@ class Main extends React.Component {
     //}
     if (time - loadMoreTime > 1) {
       const { readActions } = this.props;
-      console.log("################################# onEndReached");
-      dataIndex=gFollowTopics[currentTabIndex].dataIndex;
-      console.log(dataIndex);
+      dataIndex=myTopics[currentTabIndex].dataIndex;
       dataIndex=dataIndex+DATA_STEP;
-      console.log(dataIndex);
-      gFollowTopics[currentTabIndex].dataIndex=dataIndex;
+      myTopics[currentTabIndex].dataIndex=dataIndex;
       readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, false, true);
       loadMoreTime = Date.parse(new Date()) / 1000;
     }
@@ -207,21 +198,9 @@ class Main extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     //const { read } = this.props;
-    const content = gFollowTopics.map((topic) => {
-      /*
-      if (this.state.topicList === null) {
-        return null;
-      }
-      if(topic.id<1)
-        return;
-      console.log('############start##############');
-      console.log(this.state.topicList);
-      console.log(this.state.topicList);
-      const name = getTypeName(this.state.topicList, parseInt(topic.id));
-      console.log(name);
-      console.log('############end##############');
-      */
+    const content = myTopics.map((topic) => {
       const typeView = (
         <View key={topic.id} tabLabel={topic.name} style={styles.base}>
           {(currentTopicId==topic.id)? 
@@ -249,7 +228,7 @@ class Main extends React.Component {
             currentTabIndex=obj.i;
             const { read } = this.props;
             console.log(read);
-            currentTopicId=gFollowTopics[currentTabIndex].id;
+            currentTopicId=myTopics[currentTabIndex].id;
             const { readActions } = this.props;
             dataIndex=0;
             readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, true, false);
@@ -263,6 +242,7 @@ class Main extends React.Component {
           {content}
         </ScrollableTabView>
       </View>
+
     );
   }
 }

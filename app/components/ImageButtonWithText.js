@@ -55,7 +55,7 @@ const ImageButton=({
             <TouchableOpacity style={btnStyle} onPress={onPress} disabled={disabled} activeOpacity={activeOpacity}>
             <Icon name={icon} size={iconSize} color={iconColor}/>
             {text ?
-                <Text style={texStyle}>{text}</Text>
+                <Text style={textStyle}>{text}</Text>
                 :
                 null
             }

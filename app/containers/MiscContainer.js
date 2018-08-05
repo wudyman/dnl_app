@@ -21,30 +21,36 @@ import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as signInUpCreators from '../actions/signinup';
 
-import HomePage from '../pages/HomePage/HomePage';
+import SignPage from '../pages/MiscPage/SignPage';
+import WritePage from '../pages/MiscPage/WritePageByWebView';
 
-class HomePageContainer extends React.Component {
-  static navigationOptions = {
-    title: '我',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-person" size={25} color={tintColor} />
-    ),
-    headerRight: (
-      <Icon.Button
-        name="logo-github"
-        backgroundColor="transparent"
-        underlayColor="transparent"
-        activeOpacity={0.8}
-        onPress={() => Linking.openURL(READING_REPO)}
-      />
-    )
-  };
+import { WRITE_URL} from '../constants/Urls';
+
+let gUserInfo={};
+class SignContainer extends React.Component {
+  _closePage(){
+    console.log('*******SignContainer _closePage*******');
+    this.props.navigation.pop();
+  }
+
+  componentWillMount() {
+    console.log('*******SignContainer componentWillMount*******');
+  }
+
 
   render() {
-    return <HomePage {...this.props} />;
+    const { params } = this.props.navigation.state;
+    if(params.isSignIn=='false')
+      return <SignPage closePage={()=>this._closePage()} {...this.props} />;
+    else if(params.pageType=='ask')
+      return <WritePage closePage={()=>this._closePage()} writePageUrl={WRITE_URL}/>;
+    else if(params.pageType=='write')
+      return <WritePage closePage={()=>this._closePage()} writePageUrl={WRITE_URL}/>;
+    else if(params.pageType=='search')
+      return <WritePage closePage={()=>this._closePage()} writePageUrl={WRITE_URL}/>;
   }
 }
-/*
+
 const mapStateToProps = (state) => {
   const { signinup } = state;
   return {
@@ -59,6 +65,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);
-*/
-export default HomePageContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(SignContainer);

@@ -36,10 +36,12 @@ import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
 import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
 
-let initFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
-let [ ...tempFollowTopics ] = initFollowTopics;
-let tempFollowTopicsIds = [HEAD_TOPIC_ID,ANSWER_TOPIC_ID];
-let maxCategory = 5; // 未登录最多3个类别，登录后无限制
+let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
+//let [ ...tempFollowTopics ] = preFollowTopics;
+//let tempFollowTopicsIds = [HEAD_TOPIC_ID,ANSWER_TOPIC_ID];
+let tempFollowTopics = [];
+let tempFollowTopicsIds = [];
+let maxCategory = 15; // 未登录最多3个类别，登录后无限制
 
 const propTypes = {
   categoryActions: PropTypes.object,
@@ -55,6 +57,7 @@ class Category extends React.Component {
   }
 
   componentWillMount() {
+    console.log("********category componentWillMount*********");
     const { params } = this.props.navigation.state;
     if (params === undefined || !params.isFirst) {
       InteractionManager.runAfterInteractions(() => {
@@ -68,6 +71,7 @@ class Category extends React.Component {
           }
           tempFollowTopicsIds=[];
           tempFollowTopics.map((topic)=>{tempFollowTopicsIds.push(topic.id);});
+          console.log(tempFollowTopicsIds);
         });
       });
     }
@@ -176,7 +180,10 @@ class Category extends React.Component {
   };
 
   renderItem = (item) => {
+    console.log(item);
+    console.log(tempFollowTopicsIds);
     const isSelect = Array.from(tempFollowTopicsIds).indexOf(item.id) !== -1;
+    console.log(isSelect);
     return (
       <Button
         key={item.id}
@@ -209,7 +216,8 @@ class Category extends React.Component {
             refreshing={category.loading}
             onRefresh={this.onRefresh}
             title="Loading..."
-            colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
+            colors={['#228b22cc', '#00ff00ff', '#ffffbb33', '#ffff4444']}
+            //colors={['#ffaa66cc', '#ff00ddff', '#ffffbb33', '#ffff4444']}
           />
         }
       >

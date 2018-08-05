@@ -28,7 +28,7 @@ function convertTopics(ret)
 {
   var topics=[];
   ret.map((item)=>{
-    let topic={"id":""+item[0],"name":item[1]};
+    let topic={'id':item[0],'name':item[1]};
     //let topic={};
     //topic.id=''+item[0];
     //topic.name=item[1];

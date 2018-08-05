@@ -20,17 +20,13 @@ import Splash from '../pages/Splash';
 import CategoryContainer from '../containers/CategoryContainer';
 import MainContainer from '../containers/MainContainer';
 import WebViewPage from '../pages/ItemDetail/WebViewPage';
-import Feedback from '../pages/Feedback/Feedback';
-import About from '../pages/About/About';
 import HomePageContainer from '../containers/HomePageContainer';
-//import HomePage from '../pages/HomePage/HomePage';
+import MiscContainer from '../containers/MiscContainer';
 
 const TabContainer = TabNavigator(
   {
     Main: { screen: MainContainer },
     Category: { screen: CategoryContainer },
-    //Feedback: { screen: Feedback },
-    //About: { screen: About },
     HomePage: { screen: HomePageContainer }
   },
   {
@@ -66,6 +62,14 @@ const App = StackNavigator(
       screen: TabContainer,
       navigationOptions: {
         //headerLeft: null
+        headerStyle: {borderBottomWidth: 1,borderColor:'#f8f8f8',elevation: 0,shadowOpacity: 0},
+        //headerStyle：设置导航条的样式。背景色，宽高等。如果想去掉安卓导航条底部阴影可以添加elevation: 0，iOS下用shadowOpacity: 0
+      }
+    },
+    Misc: {
+      screen: MiscContainer,
+      navigationOptions: {
+        header: null,
         headerStyle: {borderBottomWidth: 1,borderColor:'#f8f8f8',elevation: 0,shadowOpacity: 0},
         //headerStyle：设置导航条的样式。背景色，宽高等。如果想去掉安卓导航条底部阴影可以添加elevation: 0，iOS下用shadowOpacity: 0
       }
