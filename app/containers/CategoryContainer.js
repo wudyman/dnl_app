@@ -16,12 +16,14 @@
  *
  */
 import React from 'react';
+import { View,Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as categoryCreators from '../actions/category';
 
 import Category from '../pages/Category/Category';
+import Button from '../components/Button';
 
 class CategoryContainer extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -29,11 +31,13 @@ class CategoryContainer extends React.Component {
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-pricetags" size={25} color={tintColor} />
     ),
+    header: null,
     headerRight:
       navigation.state.params !== undefined &&
       navigation.state.params.isFirst ? null : (
         <Icon.Button
           name="md-checkmark"
+          color='#228b22'
           backgroundColor="transparent"
           underlayColor="transparent"
           activeOpacity={0.8}

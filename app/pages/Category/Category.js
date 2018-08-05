@@ -106,6 +106,7 @@ class Category extends React.Component {
     tempFollowTopicsIds=[];
     tempFollowTopics.map((topic)=>{tempFollowTopicsIds.push(topic.id);});
     console.log(tempFollowTopicsIds);
+
     this.setState({
       followTopics: tempFollowTopics
     });
@@ -180,10 +181,7 @@ class Category extends React.Component {
   };
 
   renderItem = (item) => {
-    console.log(item);
-    console.log(tempFollowTopicsIds);
     const isSelect = Array.from(tempFollowTopicsIds).indexOf(item.id) !== -1;
-    console.log(isSelect);
     return (
       <Button
         key={item.id}
@@ -224,11 +222,44 @@ class Category extends React.Component {
         <View style={styles.gridLayout}>
           <GridView
             items={Array.from(category.topicList)}
-            itemsPerRow={3}
+            itemsPerRow={4}
             renderItem={this.renderItem}
           />
         </View>
       </ScrollView>
+    );
+  };
+
+  renderItemMyTopic = (item) => {
+    return (
+      <Button
+        key={item.id}
+        btnStyle={[
+          styles.categoryBtn,
+          {backgroundColor: '#228b22'}
+        ]}
+        textStyle={[
+          styles.categoryText,
+          { color: '#fcfcfc' }
+        ]}
+        text={item.name}
+        onPress={() => this.onPress(item)}
+      />
+    );
+  };
+
+  renderGridViewMyTopic = () => {
+    const { category } = this.props;
+    return (
+
+        <View style={styles.gridLayout}>
+          <GridView
+            items={Array.from(tempFollowTopics)}
+            itemsPerRow={3}
+            renderItem={this.renderItemMyTopic}
+          />
+        </View>
+
     );
   };
 
@@ -259,12 +290,27 @@ class Category extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={[styles.btnText, { color: 'black' }]}>
-            请选择您感兴趣的1-5个类别
-          </Text>
+
+        <View style={styles.title}>
+          <Text style={styles.titleText}>栏目</Text>
+        </View>
+
+        <View style={styles.myTopic}>
+          <Text style={styles.myTopicText}>我的栏目</Text>
+          <Text style={styles.myTopicSubText}>点击栏目移除</Text> 
+        </View>
+        {this.renderGridViewMyTopic()}
+        <View style={styles.allTopic}>
+          <Text style={styles.allTopicText}>所有栏目</Text>
+          <Text style={styles.allTopicSubText}>点击栏目添加或移除</Text>
         </View>
         {this.renderGridView()}
+        <Button
+            btnStyle={styles.sureBtn}
+            textStyle={styles.btnText}
+            text="确认"
+            onPress={() => this.onActionSelected()}
+        />
       </View>
     );
   }
@@ -272,28 +318,88 @@ class Category extends React.Component {
 
 const styles = StyleSheet.create({
   base: {
-    flex: 1
+    //flex: 1
   },
   container: {
     flex: 1,
     flexDirection: 'column',
+    //justifyContent: 'flex-start',
+    //alignItems:'flex-start',
+    //alignContent:'flex-start',
     backgroundColor: '#fff'
   },
-  categoryBtn: {
-    margin: 10,
+  title: {
     padding: 10,
-    borderRadius: 10,
+    backgroundColor: '#fcfcfc'
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black'
+  },
+  myTopic: {
+    marginLeft: 20,
+    marginTop:20,
+    marginBottom:10,
+    //flex: 1,  //can`t use
+    flexDirection: 'row',
+    //justifyContent: 'flex-start',
+    //alignItems:'flex-start',
+    //alignContent:'flex-start',
+  },
+  myTopicText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black'
+  },
+  myTopicSubText: {
+    marginLeft:5,
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#ccc'
+  },
+  allTopic: {
+    marginLeft: 20,
+    marginTop:20,
+    marginBottom:10,
+    //flex: 1,  //can`t use
+    flexDirection: 'row',
+    //justifyContent: 'flex-start',
+    //alignItems:'flex-start',
+    //alignContent:'flex-start',
+  },
+  allTopicText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black'
+  },
+  allTopicSubText: {
+    marginLeft:5,
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#ccc'
+  },
+  categoryBtn: {
+    margin: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#dddddd'
+    borderColor: '#eee'
   },
   categoryText: {
     fontSize: 16,
     textAlign: 'center'
   },
   gridLayout: {
-    flex: 1,
+    //flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2'
+    backgroundColor: '#fff'
   },
   sureBtn: {
     margin: 10,

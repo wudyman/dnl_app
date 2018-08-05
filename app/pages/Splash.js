@@ -117,20 +117,21 @@ class Splash extends React.Component {
   }
 
   _saveUserInfo(ret){
+    let userInfo={};
+    let followTopics=[];
     if("fail"==ret)
     {
       this._goToNext();
     }
     else if("nologin"==ret)
     {
-      store.save('userInfo',{}).then(store.save('followTopics',[])).then(this._goToNext());
+      userInfo.isSignIn='false';
+      store.save('userInfo',userInfo).then(store.save('followTopics',followTopics)).then(this._goToNext());
     }
     else
     {
       let userInfoArray=ret[0];
-      let userInfo={};
       let followTopicsArray=ret[1];
-      let followTopics=[];
       userInfo.id=userInfoArray[0];
       userInfo.name=userInfoArray[1];
       userInfo.avatar=userInfoArray[2];

@@ -23,21 +23,8 @@ import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
-import SignInPage from './SignInPage';
-import SignUpPage from './SignUpPage';
 import UserInfoPage from './UserInfoPageByWebView';
 import { LOG_OUT_URL } from '../../constants/Urls';
-
-
-const SHOW_API = 'https://www.showapi.com';
-const READING_REPO = 'https://github.com/attentiveness/reading';
-
-const LOGIN_URL = 'http://www.danongling.com/signinup/?next=/';
-
-const aboutLogo = require('../../img/about_logo.png');
-
-const useravatar='http://www.danongling.com/media/avatar/default.jpg';
-const userurl='http://www.danongling.com/er/2/';
 
 const propTypes = {
 };
@@ -168,12 +155,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   content: {
-    flex: 1,
+    //flex: 1,
     justifyContent: 'center',
     paddingBottom: 10
   },
   login: {
-    flex: 1,
+    //flex: 1,
     padding:10,
     alignItems: 'center'
   },
