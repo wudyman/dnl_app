@@ -26,6 +26,7 @@ import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import SignInPage from './SignInPage';
 import SignUpPage from './SignUpPage';
+import RetrievePasswordPage from './RetrievePasswordPage';
 
 
 const propTypes = {
@@ -38,13 +39,25 @@ class SignPage extends React.Component {
     super(props);
     this.state = {
         userInfo: {},
-        isSignUp:false
+        isSignUp:false,
+        isRetrievePassword:false,
     }
   }
 
-
+  _renderPage(){
+    if(this.state.isRetrievePassword)
+      return (<RetrievePasswordPage closePage={()=>this.props.closePage()} {...this.props}/>);
+    else if(this.state.isSignUp)
+      return (<SignUpPage closePage={()=>this.props.closePage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>);
+    else
+      return (<SignInPage closePage={()=>this.props.closePage()} switchSignInUp={()=>this._switchSignInUp()} openRetrievePasswordPage={()=>this._openRetrievePasswordPage()} {...this.props}/>);
+  }
   _switchSignInUp(){
     this.setState({isSignUp:!this.state.isSignUp});
+  }
+
+  _openRetrievePasswordPage(){
+    this.setState({isRetrievePassword:true});
   }
 
   _doNothing(){
@@ -80,11 +93,7 @@ class SignPage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-            {this.state.isSignUp ?
-              <SignUpPage closePage={()=>this.props.closePage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
-              :
-              <SignInPage closePage={()=>this.props.closePage()} switchSignInUp={()=>this._switchSignInUp()} {...this.props}/>
-            }
+        {this._renderPage()}
       </View>
     );
   }

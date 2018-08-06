@@ -8,6 +8,8 @@ import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, T
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import { GET_SMS_URL } from '../../constants/Urls';
+import { checkPhoneNoFormat, checkPasswordFormat, checkSmsCodeFormat, checkNickNameFormat } from '../../utils/AccountUtil';
+import ToastUtil from '../../utils/ToastUtil';
 
 
 export default class SignUpPage extends React.Component {
@@ -34,8 +36,30 @@ export default class SignUpPage extends React.Component {
     }
 
     _signUp() {
+        if(false==checkPhoneNoFormat(this.state.phoneNo))
+        {
+            ToastUtil.showShort("手机号码格式错误");
+            return;
+        }
+        if(false==checkSmsCodeFormat(this.state.smsCode))
+        {
+            ToastUtil.showShort("验证码格式错误");
+            return;
+        }
+        if(false==checkNickNameFormat(this.state.nickName))
+        {
+            ToastUtil.showShort("昵称长度太长");
+            return;
+        }
+        if(false==checkPasswordFormat(this.state.password))
+        {
+            ToastUtil.showShort("密码格式错误");
+            return;
+        }
+
+
         const { signInUpActions } = this.props;
-        signInUpActions.requestSignUp(this.state.phoneNo,this.state.smsCode,this.state.nickName,this.state.password);
+        //signInUpActions.requestSignUp(this.state.phoneNo,this.state.smsCode,this.state.nickName,this.state.password);
     }
 
     _handleBack() {

@@ -8,6 +8,8 @@ import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import TextDivider from '../../components/TextDivider';
 //import px2dp from '../../utils/px2dp';
+import { checkPhoneNoFormat, checkPasswordFormat } from '../../utils/AccountUtil';
+import ToastUtil from '../../utils/ToastUtil';
 class SignInPage extends React.Component{
     constructor(props){
         super(props);
@@ -29,8 +31,19 @@ class SignInPage extends React.Component{
     _signIn() {
         //store.dispatch(signInUpCreators.requestSignIn(true));
         //gSignInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
+        if(false==checkPhoneNoFormat(this.state.phoneNo))
+        {
+            ToastUtil.showShort("手机号码格式错误");
+            return;
+        }
+        if(false==checkPasswordFormat(this.state.password))
+        {
+            ToastUtil.showShort("密码格式错误");
+            return;
+        }
+
         const { signInUpActions } = this.props;
-        signInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
+        //signInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
     }
     _handleBack() {
         return true;
@@ -89,7 +102,7 @@ class SignInPage extends React.Component{
                     </View>
                     <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
                     <View style={styles.forget}>
-                        <Button style={styles.forgetText} text="忘记密码?" onPress={this._forgetPassword.bind(this)} />
+                        <Button style={styles.forgetText} text="忘记密码?" onPress={this.props.openRetrievePasswordPage} />
                     </View>
                     <View style={styles.signInButton}>
                         <Button btnStyle={styles.signInButtonBtn} textStyle={styles.signInButtonText} text="登录" onPress={this._signIn.bind(this)}/>
