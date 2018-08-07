@@ -29,15 +29,7 @@ class HomePageContainer extends React.Component {
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-person" size={25} color={tintColor} />
     ),
-    headerRight: (
-      <Icon.Button
-        name="logo-github"
-        backgroundColor="transparent"
-        underlayColor="transparent"
-        activeOpacity={0.8}
-        onPress={() => Linking.openURL(READING_REPO)}
-      />
-    )
+    header:null
   };
 
   render() {

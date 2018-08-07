@@ -23,6 +23,7 @@ import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
+import ArrowButton from '../../components/ArrowButton';
 import UserInfoPage from './UserInfoPageByWebView';
 import { LOG_OUT_URL } from '../../constants/Urls';
 
@@ -111,27 +112,41 @@ class HomePage extends React.Component {
             />
           }
           </View>
-          <View style={styles.bottomContainer}>
-            <View style={styles.disclaimerContent}>
-              <Button
-                textStyle={[styles.disclaimer, { color: '#228b22' }]}
-                text='消息'
-                onPress={() => this._doNothing()}
+
+          <View style={{height: 5, backgroundColor:'#f0f4f4'}}/>
+
+          <View style={styles.midContainer}>
+            <View style={styles.midContent}>
+              <ArrowButton text="我的消息" textStyle={{fontSize: 16,color:'#555', textAlign: 'left'}}
+              /* tips='评论/通知' tipsStyle={{fontSize: 14,color:'#aaa', marginRight:5}} */
+              icon='ios-arrow-forward'
+              iconSize={14}
+              iconColor='#aaa'
               />
-              <Button
-                textStyle={[styles.disclaimer, { color: '#228b22' }]}
-                text='设置'
-                onPress={() => this._doNothing()}
+              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
+              <ArrowButton text="我的私信" textStyle={{fontSize: 16, color:'#555',textAlign: 'left'}}
+              icon='ios-arrow-forward-outline'
+              iconSize={14}
+              iconColor='#aaa'
               />
-              <Button
-                textStyle={[styles.disclaimer, { color: '#228b22' }]}
-                text='退出'
-                onPress={() => this._logOut()}
+              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
+              <ArrowButton text="设置" textStyle={{fontSize: 16, color:'#555',textAlign: 'left'}}
+              icon='ios-arrow-forward-outline'
+              iconSize={14}
+              iconColor='#aaa'
+              />
+              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
+              <ArrowButton text="退出" textStyle={{fontSize: 16, color:'#555',textAlign: 'left'}}
+              icon='ios-arrow-forward-outline'
+              iconSize={14}
+              iconColor='#aaa'
+              onPress={() => this._logOut()}
               />
             </View>
           </View>
+
         </View>
-        
+
         <View>
           <Modal
                 animationType={'slide'}
@@ -209,16 +224,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#4e4e4e'
   },
-  disclaimerContent: {
-    flexDirection: 'column'
+  midContainer: {
+    //alignItems: 'flex-start'
+    padding:20
   },
-  disclaimer: {
-    fontSize: 18,
-    textAlign: 'left'
+  midContent: {
+    //flexDirection: 'column'
   },
-  bottomContainer: {
-    alignItems: 'flex-start'
-  }
 });
 HomePage.propTypes = propTypes;
 export default HomePage;
