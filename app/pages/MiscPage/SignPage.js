@@ -27,6 +27,7 @@ import ImageButton from '../../components/ImageButtonWithText';
 import SignInPage from './SignInPage';
 import SignUpPage from './SignUpPage';
 import RetrievePasswordPage from './RetrievePasswordPage';
+//import ToastUtil from '../../utils/ToastUtil';
 
 
 const propTypes = {
@@ -66,6 +67,7 @@ class SignPage extends React.Component {
 
   componentWillMount() {
     console.log(this.props);
+    //ToastUtil.showShort("请先登录");
     store.get('userInfo').then((userInfo)=>{
       this.setState({userInfo:userInfo});
     });

@@ -24,17 +24,23 @@ import * as signInUpCreators from '../actions/signinup';
 import SignPage from '../pages/MiscPage/SignPage';
 import WritePage from '../pages/MiscPage/WritePageByWebView';
 
+import ToastUtil from '../utils/ToastUtil';
 import { WRITE_URL} from '../constants/Urls';
 
 let gUserInfo={};
-class SignContainer extends React.Component {
+class MiscContainer extends React.Component {
   _closePage(){
-    console.log('*******SignContainer _closePage*******');
+    console.log('*******MiscContainer _closePage*******');
     this.props.navigation.pop();
   }
 
   componentWillMount() {
-    console.log('*******SignContainer componentWillMount*******');
+    console.log('*******MiscContainer componentWillMount*******');
+    const { params } = this.props.navigation.state;
+    if(params.isSignIn=='false')
+    {
+      ToastUtil.showShort("此功能需要先登录");
+    }
   }
 
 
@@ -65,4 +71,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MiscContainer);

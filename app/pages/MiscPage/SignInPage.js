@@ -43,7 +43,7 @@ class SignInPage extends React.Component{
         }
 
         const { signInUpActions } = this.props;
-        //signInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
+        signInUpActions.requestSignIn(this.state.phoneNo,this.state.password);
     }
     _handleBack() {
         return true;

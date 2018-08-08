@@ -94,8 +94,8 @@ class Main extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { read } = this.props;
-    console.log(read);
-    console.log(nextProps);
+    //console.log(read);
+    //console.log(nextProps);
     if (
       read.isLoadMore &&
       !nextProps.read.isLoadMore &&
@@ -169,7 +169,7 @@ class Main extends React.Component {
   );
 
   renderContent = (topic) => {
-    console.log(topic);
+    //console.log(topic);
     const { read } = this.props;
     if (read.loading) {
       return <LoadingView />;
@@ -198,7 +198,7 @@ class Main extends React.Component {
   };
 
   render() {
-    console.log(this.props);
+    //console.log(this.props);
     //const { read } = this.props;
     const content = myTopics.map((topic) => {
       const typeView = (

@@ -50,6 +50,7 @@ class WebViewPage extends React.Component {
         name="md-share"
         backgroundColor="transparent"
         underlayColor="transparent"
+        color="#555"
         activeOpacity={0.8}
         onPress={() => {
           navigation.state.params.handleShare();
@@ -85,6 +86,7 @@ class WebViewPage extends React.Component {
   };
 
   goBack = () => {
+    console.log("******goBack*******");
     if (this.state.isShareModal) {
       this.setState({
         isShareModal: false

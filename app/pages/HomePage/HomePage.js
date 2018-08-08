@@ -57,35 +57,12 @@ class HomePage extends React.Component {
   _doNothing(){
   }
 
-  _logOut(){
-    fetch(LOG_OUT_URL, {
-      method:'POST',
-    })
-      .then((response) => {
-        if (response.ok) {
-          isOk = true;
-        } else {
-          isOk = false;
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        if (isOk) {
-            console.log(responseData);
-        } else {
-            console.log(responseData);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-      this.setState({userInfo: {}});
-      store.save('userInfo',{});
-  
+  _openSettingPage(){
+    this.props.navigation.navigate('Sub',{subPage:'Setting'});
   }
 
   componentWillMount() {
+    console.log('**************HomePage componentWillMount***************');
     store.get('userInfo').then((userInfo)=>{
       this.setState({userInfo:userInfo});
     });
@@ -117,30 +94,24 @@ class HomePage extends React.Component {
 
           <View style={styles.midContainer}>
             <View style={styles.midContent}>
-              <ArrowButton text="我的消息" textStyle={{fontSize: 16,color:'#555', textAlign: 'left'}}
-              /* tips='评论/通知' tipsStyle={{fontSize: 14,color:'#aaa', marginRight:5}} */
+              <ArrowButton text="我的消息" textStyle={styles.arrowButtonTextStyle}
+              /* tips='评论/通知' tipsStyle={styles.arrowButtonTipsStyle} */
               icon='ios-arrow-forward'
               iconSize={14}
               iconColor='#aaa'
               />
               <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
-              <ArrowButton text="我的私信" textStyle={{fontSize: 16, color:'#555',textAlign: 'left'}}
+              <ArrowButton text="我的私信" textStyle={styles.arrowButtonTextStyle}
               icon='ios-arrow-forward-outline'
               iconSize={14}
               iconColor='#aaa'
               />
               <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
-              <ArrowButton text="设置" textStyle={{fontSize: 16, color:'#555',textAlign: 'left'}}
+              <ArrowButton text="设置" textStyle={styles.arrowButtonTextStyle}
               icon='ios-arrow-forward-outline'
               iconSize={14}
               iconColor='#aaa'
-              />
-              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
-              <ArrowButton text="退出" textStyle={{fontSize: 16, color:'#555',textAlign: 'left'}}
-              icon='ios-arrow-forward-outline'
-              iconSize={14}
-              iconColor='#aaa'
-              onPress={() => this._logOut()}
+              onPress={() => this._openSettingPage()}
               />
             </View>
           </View>
@@ -231,6 +202,16 @@ const styles = StyleSheet.create({
   midContent: {
     //flexDirection: 'column'
   },
+  arrowButtonTextStyle: {
+    fontSize: 16,
+    color:'#555',
+    textAlign: 'left'
+  },
+  arrowButtonTipsStyle: {
+    fontSize: 14,
+    color:'#aaa',
+    marginRight:5
+  }
 });
 HomePage.propTypes = propTypes;
 export default HomePage;

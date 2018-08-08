@@ -32,6 +32,7 @@ import AV from 'leancloud-storage';
 import store from 'react-native-simple-store';
 import GridView from '../../components/GridView';
 import Button from '../../components/Button';
+import ImageButton from '../../components/ImageButtonWithText';
 import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
 import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
@@ -114,7 +115,7 @@ class Category extends React.Component {
 
   onSelectCategory = () => {
     if (this.state.followTopics.length === 0) {
-      Alert.alert('提示', '您确定不选择任何分类吗？', [
+      Alert.alert('提示', '您确定不选择任何栏目吗？', [
         { text: '取消', style: 'cancel' },
         {
           text: '确定',
@@ -236,7 +237,7 @@ class Category extends React.Component {
         key={item.id}
         btnStyle={[
           styles.categoryBtn,
-          {backgroundColor: '#228b22'}
+          {backgroundColor: '#006400'}
         ]}
         textStyle={[
           styles.categoryText,
@@ -268,6 +269,12 @@ class Category extends React.Component {
     if (params !== undefined && params.isFirst) {
       return (
         <View style={styles.container}>
+
+            <View style={styles.title}>
+              <Text style={styles.titleText}>栏目</Text>
+            </View>
+            
+          <ImageButton btnStyle={{alignItems:'flex-end' ,marginRight:10}} icon="md-checkmark" iconSize={20} iconColor="black"/>
           <View style={styles.header}>
             <Text
               style={[
@@ -275,7 +282,7 @@ class Category extends React.Component {
                 { color: 'black', padding: 5, fontSize: 18 }
               ]}
             >
-              初次见面，请选择您感兴趣的1-5个类别
+              初次见面，请选择您感兴趣的栏目
             </Text>
           </View>
           {this.renderGridView()}
@@ -300,6 +307,7 @@ class Category extends React.Component {
           <Text style={styles.myTopicSubText}>点击栏目移除</Text> 
         </View>
         {this.renderGridViewMyTopic()}
+        <View style={{paddingBottom:50}}/>
         <View style={styles.allTopic}>
           <Text style={styles.allTopicText}>所有栏目</Text>
           <Text style={styles.allTopicSubText}>点击栏目添加或移除</Text>
