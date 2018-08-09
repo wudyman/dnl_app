@@ -35,6 +35,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import com.theweflex.react.WeChatPackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.reading.webview.WebViewReactPackage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,6 +100,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             List<ReactPackage> packages = Arrays.asList(
                     new MainReactPackage(),
+                    new CustomToastPackage(),
+                    new WebViewReactPackage(),
                     new SplashScreenReactPackage(),
                     new WeChatPackage(),
                     new CodePush(BuildConfig.CODEPUSH_KEY, MainApplication.this, BuildConfig.DEBUG),

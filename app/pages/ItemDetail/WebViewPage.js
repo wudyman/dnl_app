@@ -34,6 +34,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ToastUtil from '../../utils/ToastUtil';
 import LoadingView from '../../components/LoadingView';
 import { formatStringWithHtml } from '../../utils/FormatUtil';
+import WebView2 from '../../components/WebView2';
 
 let canGoBack = false;
 const shareIconWechat = require('../../img/share_icon_wechat.png');
@@ -191,7 +192,7 @@ class WebViewPage extends React.Component {
         >
           {this.renderSpinner()}
         </Modal>
-        <WebView
+        <WebView2
           ref={(ref) => {
             this.webview = ref;
           }}
