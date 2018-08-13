@@ -429,7 +429,7 @@ public class ReactWebViewManager extends SimpleViewManager<WebView> implements A
                 try {
                     final Intent galleryIntent = new Intent(Intent.ACTION_PICK);
                     galleryIntent.setType("image/*");
-                    final Intent chooserIntent = Intent.createChooser(galleryIntent, "choose file");
+                    final Intent chooserIntent = Intent.createChooser(galleryIntent, "选择文件");
 
                     Activity currentActivity = reactApplicationContext.getCurrentActivity();
                     currentActivity.startActivityForResult(chooserIntent, CHOOSE_PHOTO);

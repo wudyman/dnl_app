@@ -28,4 +28,7 @@ export const GET_SMS_URL= SITE_URL+'/ajax/send_sms/';
 export const CHECK_SMS_URL= SITE_URL+'/ajax/check_sms/';
 export const RESET_PWD_URL= SITE_URL+'/ajax/reset_pwd/';
 export const LOG_OUT_URL= SITE_URL+'/ajax/app_logout/';
-export const WRITE_URL= SITE_URL+'/write';
+export const WRITE_URL= SITE_URL+'/write/';
+export const ASK_URL= SITE_URL+'/ask/';
+
+export const FOLLOW_TOPICS_URL= SITE_URL+'/app_follow_topics/';

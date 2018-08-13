@@ -36,6 +36,7 @@ import ImageButton from '../../components/ImageButtonWithText';
 import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
 import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
+import { FOLLOW_TOPICS_URL } from '../../constants/Urls';
 
 let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
 //let [ ...tempFollowTopics ] = preFollowTopics;
@@ -89,6 +90,33 @@ class Category extends React.Component {
     if (params === undefined || !params.isFirst) {
       this.props.navigation.setParams({ handleCheck: this.onActionSelected });
     }
+  }
+
+  followTopicsServer=(topicsIds)=>{
+    let formData=new FormData();
+    formData.append("topicsIds",topicsIds);
+    fetch(FOLLOW_TOPICS_URL, {
+      method:'POST',
+      body: formData
+    })
+      .then((response) => {
+        if (response.ok) {
+          isOk = true;
+        } else {
+          isOk = false;
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        if (isOk) {
+          console.log(responseData);
+        } else {
+          console.log(responseData);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   onRefresh = () => {
@@ -169,6 +197,7 @@ class Category extends React.Component {
             return;
           }
         }
+        this.followTopicsServer(tempFollowTopicsIds);
         store.save('followTopics', this.state.followTopics).then(this.routeMain);
 
       });

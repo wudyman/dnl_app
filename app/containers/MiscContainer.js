@@ -23,9 +23,10 @@ import * as signInUpCreators from '../actions/signinup';
 
 import SignPage from '../pages/MiscPage/SignPage';
 import WritePage from '../pages/MiscPage/WritePageByWebView';
+import AskPage from '../pages/MiscPage/AskPageByWebView';
 
 import ToastUtil from '../utils/ToastUtil';
-import { WRITE_URL} from '../constants/Urls';
+import { WRITE_URL,ASK_URL} from '../constants/Urls';
 
 let gUserInfo={};
 class MiscContainer extends React.Component {
@@ -49,11 +50,11 @@ class MiscContainer extends React.Component {
     if(params.isSignIn=='false')
       return <SignPage closePage={()=>this._closePage()} {...this.props} />;
     else if(params.pageType=='ask')
-      return <WritePage closePage={()=>this._closePage()} writePageUrl={WRITE_URL}/>;
+      return <AskPage closePage={()=>this._closePage()} pageUrl={ASK_URL}/>;
     else if(params.pageType=='write')
-      return <WritePage closePage={()=>this._closePage()} writePageUrl={WRITE_URL}/>;
+      return <WritePage closePage={()=>this._closePage()} pageUrl={WRITE_URL}/>;
     else if(params.pageType=='search')
-      return <WritePage closePage={()=>this._closePage()} writePageUrl={WRITE_URL}/>;
+      return <WritePage closePage={()=>this._closePage()} pageUrl={WRITE_URL}/>;
   }
 }
 

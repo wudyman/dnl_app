@@ -23,6 +23,7 @@ import AV from 'leancloud-storage';
 import SplashScreen from 'react-native-splash-screen';
 import NavigationUtil from '../utils/NavigationUtil';
 import RequestUtil from '../utils/RequestUtil';
+import { concatFilterDuplicateTopics } from '../utils/FormatUtil';
 import { SITE_URL,REQUEST_USER_INFO_URL } from '../constants/Urls';
 
 const maxHeight = Dimensions.get('window').height;
@@ -107,11 +108,11 @@ class Splash extends React.Component {
           this._saveUserInfo(responseData);
         } else {
           console.log(responseData);
-          this._saveUserInfo(responseData);
+          this._saveUserInfo('fail');
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         this._saveUserInfo('fail');
       });
   }
@@ -126,7 +127,7 @@ class Splash extends React.Component {
     else if("nologin"==ret)
     {
       userInfo.isSignIn='false';
-      store.save('userInfo',userInfo).then(store.save('followTopics',followTopics)).then(this._goToNext());
+      store.save('userInfo',userInfo).then(this._goToNext());
     }
     else
     {
@@ -150,7 +151,10 @@ class Splash extends React.Component {
       });
 
       console.log(followTopics);
-      store.save('userInfo',userInfo).then(store.save('followTopics',followTopics)).then(this._goToNext());
+      store.get('followTopics').then((oldFollowTopics)=>{
+        followTopics=concatFilterDuplicateTopics(followTopics,oldFollowTopics);
+        store.save('userInfo',userInfo).then(store.save('followTopics',followTopics)).then(this._goToNext());
+      });
     }
   }
 

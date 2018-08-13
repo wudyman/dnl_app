@@ -21,13 +21,18 @@ import store from 'react-native-simple-store';
 import * as types from '../constants/ActionTypes';
 import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
+import { concatFilterDuplicateTopics } from '../utils/FormatUtil';
 import { SITE_URL } from '../constants/Urls';
 import { SIGN_IN_URL,REQUEST_USER_INFO_URL,SIGN_UP_URL } from '../constants/Urls';
 import { startSignIn,endSignIn,requestUserInfo,receiveUserInfo,startSignUp,endSignUp } from '../actions/signinup';
 function convertUserInfo(ret)
 {
   let userInfo={};
-  if('nologin'!=ret)
+  if('nologin'==ret)
+  {
+    userInfo.isSignIn='fail';
+  }
+  else
   {
     let userInfoArray=ret[0];
     userInfo.id=userInfoArray[0];
@@ -42,15 +47,16 @@ function convertUserInfo(ret)
     userInfo.url=SITE_URL+'/er/'+userInfo.id+'/';
     userInfo.isSignIn='true';
   }
-  else{
-    userInfo.isSignIn='fail';
-  }
   return userInfo;
 }
 function convertFollowTopics(ret)
 {
   let followTopics=[];
-  if('nologin'!=ret)
+  if('nologin'==ret)
+  {
+    followTopics=['nologin'];
+  }
+  else
   {
     let followTopicsArray=ret[1];
 
@@ -58,9 +64,6 @@ function convertFollowTopics(ret)
       let tempTopic={'id':item[0],'name':item[1],'dataIndex':0};
       followTopics.push(tempTopic);
     });
-  }
-  else{
-    followTopics=[];
   }
   return followTopics;
 }
@@ -82,7 +85,12 @@ export function* signIn(phoneNo,password) {
         const userInfo=convertUserInfo(ret);
         const followTopics=convertFollowTopics(ret);
         yield call(store.save, 'userInfo', userInfo);
-        yield call(store.save, 'followTopics', followTopics);
+        if(followTopics!=['nologin'])
+          {
+          let oldFollowTopics=yield call(store.get, 'followTopics');
+          followTopics=concatFilterDuplicateTopics(followTopics,oldFollowTopics);
+          yield call(store.save, 'followTopics', followTopics);
+          }
         yield put(receiveUserInfo(userInfo));
       }
     }

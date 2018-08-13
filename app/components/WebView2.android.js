@@ -6,7 +6,6 @@
  *
  * @providesModule WebView2
  */
-'use strict';
 
 const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const ActivityIndicator = require('ActivityIndicator');
