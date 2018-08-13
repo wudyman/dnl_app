@@ -150,7 +150,6 @@ class Splash extends React.Component {
       });
 
       console.log(followTopics);
-      
       store.save('userInfo',userInfo).then(store.save('followTopics',followTopics)).then(this._goToNext());
     }
   }

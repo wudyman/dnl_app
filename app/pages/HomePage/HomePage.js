@@ -25,10 +25,6 @@ import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import ArrowButton from '../../components/ArrowButton';
 import UserInfoPage from './UserInfoPageByWebView';
-import { LOG_OUT_URL } from '../../constants/Urls';
-
-import ToastExample from '../../utils/ToastExample';
-//import { NativeModules } from "react-native";
 
 
 const propTypes = {
@@ -47,7 +43,7 @@ class HomePage extends React.Component {
     //const { signInUpActions } = this.props;
     //signInUpActions.initSignIn();
     //this.setState({signModal:true});
-    this.props.navigation.navigate('Misc',{isSignIn:'false'});
+    this.props.navigation.navigate('Misc',{pageType:'sign',isSignIn:'false'});
   }
 
   _openUserInfoPage(){
@@ -67,8 +63,6 @@ class HomePage extends React.Component {
 
   componentWillMount() {
     console.log('**************HomePage componentWillMount***************');
-    //NativeModules.ToastExample.show("Awesome", NativeModules.ToastExample.SHORT);
-    ToastExample.show("Awesome222",ToastExample.SHORT);
     store.get('userInfo').then((userInfo)=>{
       this.setState({userInfo:userInfo});
     });

@@ -38,6 +38,14 @@ class SettingPage extends React.Component {
     }
   }
 
+  _about() {
+    this.props.navigation.navigate('Sub',{subPage:'about'});
+  }
+
+  _feedBack() {
+    this.props.navigation.navigate('Sub',{subPage:'feedback'});
+  }
+
   _doNothing(){
   }
 
@@ -90,16 +98,43 @@ class SettingPage extends React.Component {
 
           <View style={styles.midContainer}>
             <View style={styles.midContent}>
-              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
-              <ArrowButton text="退出账号" textStyle={styles.arrowButtonTextStyle}
+              <ArrowButton text="意见反馈" textStyle={styles.arrowButtonTextStyle}
               icon='ios-arrow-forward-outline'
               iconSize={14}
               iconColor='#aaa'
-              onPress={() => this._logOut()}
+              onPress={() => this._feedBack()}
               />
+              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
+              <ArrowButton text="检查更新" textStyle={styles.arrowButtonTextStyle}
+              tips={`V${DeviceInfo.getVersion()}`} tipsStyle={styles.arrowButtonTipsStyle}
+              icon='ios-arrow-forward-outline'
+              iconSize={14}
+              iconColor='#aaa'
+              onPress={() => this._checkUpdate()}
+              />
+              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
+              <ArrowButton text="关于" textStyle={styles.arrowButtonTextStyle}
+              icon='ios-arrow-forward-outline'
+              iconSize={14}
+              iconColor='#aaa'
+              onPress={() => this._about()}
+              />
+              <View style={{height: 1, backgroundColor:'#f0f4f4'}}/>
             </View>
           </View>
 
+          <View>
+            {this.state.userInfo.isSignIn=='true'?
+            <Button
+              btnStyle={styles.logOutBtn}
+              textStyle={styles.logOutBtnText}
+              text="退出账号"
+              onPress={() => this._logOut()}
+            />
+            :
+            <View />
+            }
+          </View>
         </View>
 
       </View>
@@ -184,7 +219,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color:'#aaa',
     marginRight:5
-  }
+  },
+  logOutBtn: {
+    margin: 20,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#dc143c'
+  },
+  logOutBtnText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#fff'
+  },
 });
 SettingPage.propTypes = propTypes;
 export default SettingPage;

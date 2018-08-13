@@ -324,7 +324,7 @@ export default class SignUpPage extends React.Component {
                         icon="md-close"
                         iconColor="white"
                         iconSize={25}
-                        btnStyle={{width: 55, height: 55, alignItems: 'center',justifyContent: 'center'}}
+                        btnStyle={{width: 45, height: 45, alignItems: 'center',justifyContent: 'center'}}
                     />
                 </View>
                 <View style={styles.title}>

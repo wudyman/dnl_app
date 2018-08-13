@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   authorName: {
     flex: 1,
     fontSize: 14,
-    color: '#aaaaaa',
+    color: '#a0b0a0',
     marginTop: 5,
     marginRight: 5
   },

@@ -65,7 +65,7 @@ class SignInPage extends React.Component{
                         icon="md-close"
                         iconColor="white"
                         iconSize={25}
-                        btnStyle={{width: 55, height: 55, alignItems: 'center',justifyContent: 'center'}}
+                        btnStyle={{width: 45, height: 45, alignItems: 'center',justifyContent: 'center'}}
                     />
                 </View>
                 <View style={styles.title}>
@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     signIn:{
-        margin: 15
+        margin: 15,
+        marginTop: 5
     },
     accout:{
         height: 48,

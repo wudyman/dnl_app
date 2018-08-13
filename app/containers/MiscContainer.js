@@ -37,7 +37,7 @@ class MiscContainer extends React.Component {
   componentWillMount() {
     console.log('*******MiscContainer componentWillMount*******');
     const { params } = this.props.navigation.state;
-    if(params.isSignIn=='false')
+    if((params.pageType!='sign')&&(params.isSignIn=='false'))
     {
       ToastUtil.showShort("此功能需要先登录");
     }

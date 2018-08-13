@@ -269,26 +269,23 @@ class Category extends React.Component {
     if (params !== undefined && params.isFirst) {
       return (
         <View style={styles.container}>
-
+          <View style={styles.header}>
+            <ImageButton icon="md-close" iconSize={25} iconColor="black" onPress={() => this.onSelectCategory()}/>
             <View style={styles.title}>
               <Text style={styles.titleText}>栏目</Text>
             </View>
-            
-          <ImageButton btnStyle={{alignItems:'flex-end' ,marginRight:10}} icon="md-checkmark" iconSize={20} iconColor="black"/>
-          <View style={styles.header}>
-            <Text
-              style={[
-                styles.btnText,
-                { color: 'black', padding: 5, fontSize: 18 }
-              ]}
-            >
+            <ImageButton icon="md-checkmark" iconSize={25} iconColor="black" onPress={() => this.onSelectCategory()}/>
+          </View>           
+
+          <View style={styles.greet}>
+            <Text style={styles.greetText}>
               初次见面，请选择您感兴趣的栏目
             </Text>
           </View>
           {this.renderGridView()}
           <Button
             btnStyle={styles.sureBtn}
-            textStyle={styles.btnText}
+            textStyle={styles.sureBtnText}
             text="确认"
             onPress={() => this.onSelectCategory()}
           />
@@ -298,9 +295,13 @@ class Category extends React.Component {
     return (
       <View style={styles.container}>
 
-        <View style={styles.title}>
-          <Text style={styles.titleText}>栏目</Text>
-        </View>
+        <View style={styles.header}>
+          <ImageButton icon="md-close" iconSize={25} iconColor="black" onPress={() => this.onActionSelected()}/>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>栏目</Text>
+          </View>
+          <ImageButton icon="md-checkmark" iconSize={25} iconColor="black" onPress={() => this.onActionSelected()}/>
+        </View>   
 
         <View style={styles.myTopic}>
           <Text style={styles.myTopicText}>我的栏目</Text>
@@ -315,7 +316,7 @@ class Category extends React.Component {
         {this.renderGridView()}
         <Button
             btnStyle={styles.sureBtn}
-            textStyle={styles.btnText}
+            textStyle={styles.sureBtnText}
             text="确认"
             onPress={() => this.onActionSelected()}
         />
@@ -336,8 +337,13 @@ const styles = StyleSheet.create({
     //alignContent:'flex-start',
     backgroundColor: '#fff'
   },
+  header: {
+  flexDirection: 'row',
+  justifyContent:'space-between',
+  margin:10
+  },
   title: {
-    padding: 10,
+    //padding: 10,
     backgroundColor: '#fcfcfc'
   },
   titleText: {
@@ -410,19 +416,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   sureBtn: {
-    margin: 10,
+    margin: 20,
     padding: 10,
     borderRadius: 10,
     backgroundColor: '#228b22'
   },
-  btnText: {
+  sureBtnText: {
     fontSize: 16,
     textAlign: 'center',
     color: '#fff'
   },
-  header: {
+  greet: {
     padding: 10,
     backgroundColor: '#fcfcfc'
+  },
+  greetText: {
+    padding: 5,
+    fontSize: 16,
+    color: 'black',
+    textAlign: 'center'
   }
 });
 

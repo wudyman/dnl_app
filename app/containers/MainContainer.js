@@ -38,8 +38,8 @@ class MainContainer extends React.Component {
       tabBarIcon: ({ tintColor }) => (
         <Icon name="md-home" size={25} color={tintColor} />
       ),
-      headerLeft: (<Button text='写文章' onPress={()=>navigation.navigate('Misc',{pageType:'write',isSignIn:isSignIn})} btnStyle={{padding:15}} textStyle={{fontSize:15,fontWeight:'900',textAlign: 'center',color:'#228b22'}}/>),
-      headerRight: (<Button text='提问' onPress={()=>navigation.navigate('Misc',{pageType:'ask',isSignIn:isSignIn})} btnStyle={{padding:15}} textStyle={{fontSize:15,fontWeight:'900',textAlign: 'center',color:'#228b22'}}/>),
+      headerLeft: (<Button text='写文章' onPress={()=>navigation.navigate('Misc',{pageType:'write',isSignIn:isSignIn})} btnStyle={{padding:15}} textStyle={{fontSize:16,fontWeight:'900',textAlign: 'center',color:'#565'}}/>),
+      headerRight: (<Button text='提问' onPress={()=>navigation.navigate('Misc',{pageType:'ask',isSignIn:isSignIn})} btnStyle={{padding:15}} textStyle={{fontSize:16,fontWeight:'900',textAlign: 'center',color:'#565'}}/>),
       headerTitle:(
         <View style={{flex:1,flexDirection:'row',marginLeft:15,marginRight:15,borderColor:'#f0f0f0',borderWidth:1,borderRadius: 20}}>
           <ImageButton text='搜索内容' onPress={()=>navigation.navigate('Misc',{pageType:'search',isSignIn:isSignIn})} icon="md-search" iconColor="#aaaaaa" iconSize={20} btnStyle={{flex:1,flexDirection:'row',justifyContent:'center', padding:5}} textStyle={{paddingLeft:5, fontSize:14, textAlign: 'center',color:'#aaaaaa'}}/>

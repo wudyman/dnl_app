@@ -22,6 +22,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as signInUpCreators from '../actions/signinup';
 
 import SettingPage from '../pages/HomePage/Subs/SettingPage';
+import AboutPage from '../pages/HomePage/Subs/AboutPage';
+import FeedbackPage from '../pages/HomePage/Subs/FeedbackPage';
 
 import ToastUtil from '../utils/ToastUtil';
 import { WRITE_URL} from '../constants/Urls';
@@ -42,6 +44,10 @@ class SubContainer extends React.Component {
     const { params } = this.props.navigation.state;
     if(params.subPage=='Setting')
         return <SettingPage closePage={()=>this._closePage()} {...this.props}/>;
+    else if(params.subPage=='about')
+        return <AboutPage closePage={()=>this._closePage()} {...this.props}/>;
+    else if(params.subPage=='feedback')
+        return <FeedbackPage closePage={()=>this._closePage()} {...this.props}/>;
     else
         return <SettingPage closePage={()=>this._closePage()} {...this.props}/>;
   }

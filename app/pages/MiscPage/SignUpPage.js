@@ -120,12 +120,11 @@ export default class SignUpPage extends React.Component {
                         icon="md-close"
                         iconColor="white"
                         iconSize={25}
-                        btnStyle={{width: 55, height: 55, alignItems: 'center',justifyContent: 'center'}}
+                        btnStyle={{width: 45, height: 45, alignItems: 'center',justifyContent: 'center'}}
                     />
                 </View>
                 <View style={styles.title}>
                     <Text style={styles.mainTitle}>注册大农令</Text>
-                    <Text style={styles.subTitle}>关注新农村,新农业,新农民</Text>
                 </View>
                 <View style={styles.signUp}>
                     <View style={styles.accout}>
@@ -155,13 +154,13 @@ export default class SignUpPage extends React.Component {
                                     }
                                 }
                                 placeholderTextColor="#c4c4c4"/>
-                                <View style={{height: 2, backgroundColor:'#c4c4c4'}}/>
                         </View>                       
                         <View style={styles.smsInputButton}>
                             <Button disabled={this.state.smsGetDisable} text={this.state.smsGetDisable?this.state.countDownValue+"秒后可重发":"获取短信验证码"} btnStyle={styles.smsInputButtonBtn} textStyle={styles.smsInputButtonText} onPress={this._getSmsCode.bind(this)}/>
                         </View>                        
                     </View>
-                    
+
+                    <View style={{height: 1, backgroundColor:'#c4c4c4'}}/>
                     <View style={styles.nickName}>
                         <TextInput
                             style={styles.edit}
@@ -224,7 +223,8 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     signUp:{
-        margin: 15
+        margin: 15,
+        marginTop: 5
     },
     accout:{
         height: 48,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 3
     },
     signUpButton:{
-        marginTop: 30,
+        marginTop: 20,
         alignItems: 'stretch'
     },
     signUpButtonBtn:{

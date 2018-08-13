@@ -29,7 +29,7 @@ class CategoryContainer extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: '栏目',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-pricetags" size={25} color={tintColor} />
+      <Icon name="md-list-box" size={25} color={tintColor} />
     ),
     header: null,
     headerRight:
