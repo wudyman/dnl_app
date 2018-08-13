@@ -36,7 +36,7 @@ import ImageButton from '../../components/ImageButtonWithText';
 import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
 import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
-import { FOLLOW_TOPICS_URL } from '../../constants/Urls';
+import { FOLLOW_TOPICS_URL,REQUEST_USER_INFO_URL } from '../../constants/Urls';
 
 let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
 //let [ ...tempFollowTopics ] = preFollowTopics;
@@ -92,12 +92,12 @@ class Category extends React.Component {
     }
   }
 
-  followTopicsServer=(topicsIds)=>{
+  followTopicsServer(topicsIds) {
     let formData=new FormData();
-    formData.append("topicsIds",topicsIds);
+    formData.append("topicsIds",""+topicsIds);
     fetch(FOLLOW_TOPICS_URL, {
       method:'POST',
-      body: formData
+      body:formData
     })
       .then((response) => {
         if (response.ok) {
