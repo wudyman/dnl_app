@@ -31,4 +31,4 @@ export const LOG_OUT_URL= SITE_URL+'/ajax/app_logout/';
 export const WRITE_URL= SITE_URL+'/write/';
 export const ASK_URL= SITE_URL+'/ask/';
 
-export const FOLLOW_TOPICS_URL= SITE_URL+'/app_follow_topics/';
+export const FOLLOW_TOPICS_URL= SITE_URL+'/ajax/app_follow_topics/';

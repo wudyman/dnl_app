@@ -23,8 +23,37 @@ import ToastUtil from '../utils/ToastUtil';
 import RequestUtil from '../utils/RequestUtil';
 import { concatFilterDuplicateTopics } from '../utils/FormatUtil';
 import { SITE_URL } from '../constants/Urls';
-import { SIGN_IN_URL,REQUEST_USER_INFO_URL,SIGN_UP_URL } from '../constants/Urls';
+import { SIGN_IN_URL,REQUEST_USER_INFO_URL,SIGN_UP_URL,FOLLOW_TOPICS_URL } from '../constants/Urls';
 import { startSignIn,endSignIn,requestUserInfo,receiveUserInfo,startSignUp,endSignUp } from '../actions/signinup';
+
+function followTopicsServer(topicsIds) {
+  let formData=new FormData();
+  formData.append("topicsIds",""+topicsIds);
+  fetch(FOLLOW_TOPICS_URL, {
+    method:'POST',
+    body:formData
+  })
+    .then((response) => {
+      if (response.ok) {
+        isOk = true;
+      } else {
+        isOk = false;
+      }
+      console.log(response);
+      return response.json();
+    })
+    .then((responseData) => {
+      if (isOk) {
+        console.log(responseData);
+      } else {
+        console.log(responseData);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 function convertUserInfo(ret)
 {
   let userInfo={};
@@ -87,9 +116,18 @@ export function* signIn(phoneNo,password) {
         yield call(store.save, 'userInfo', userInfo);
         if(followTopics!=['nologin'])
           {
-          let oldFollowTopics=yield call(store.get, 'followTopics');
-          followTopics=concatFilterDuplicateTopics(followTopics,oldFollowTopics);
-          yield call(store.save, 'followTopics', followTopics);
+            let oldFollowTopics=yield call(store.get, 'followTopics');
+            console.log(oldFollowTopics.length);
+            if(oldFollowTopics.length>0)
+            {
+              followTopics=concatFilterDuplicateTopics(followTopics,oldFollowTopics);
+              console.log(followTopics);
+              let followTopicsIds=[];
+              followTopics.map((topic)=>{followTopicsIds.push(topic.id);});
+              console.log(followTopicsIds);
+              followTopicsServer(followTopicsIds);
+            }
+            yield call(store.save, 'followTopics', followTopics);
           }
         yield put(receiveUserInfo(userInfo));
       }

@@ -46,6 +46,10 @@ class SettingPage extends React.Component {
     this.props.navigation.navigate('Sub',{subPage:'feedback'});
   }
 
+  _checkUpdate(){
+    
+  }
+
   _doNothing(){
   }
 

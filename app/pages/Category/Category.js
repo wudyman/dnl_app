@@ -36,14 +36,14 @@ import ImageButton from '../../components/ImageButtonWithText';
 import ToastUtil from '../../utils/ToastUtil';
 import NavigationUtil from '../../utils/NavigationUtil';
 import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
-import { FOLLOW_TOPICS_URL,REQUEST_USER_INFO_URL } from '../../constants/Urls';
+import { FOLLOW_TOPICS_URL } from '../../constants/Urls';
 
-let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
+let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0}];
 //let [ ...tempFollowTopics ] = preFollowTopics;
 //let tempFollowTopicsIds = [HEAD_TOPIC_ID,ANSWER_TOPIC_ID];
 let tempFollowTopics = [];
 let tempFollowTopicsIds = [];
-let maxCategory = 15; // 未登录最多3个类别，登录后无限制
+let maxCategory = 100; // 未登录最多3个类别，登录后无限制
 
 const propTypes = {
   categoryActions: PropTypes.object,
@@ -218,7 +218,7 @@ class Category extends React.Component {
         btnStyle={[
           styles.categoryBtn,
           isSelect
-            ? { backgroundColor: '#228b22' }
+            ? { backgroundColor: '#898' }
             : { backgroundColor: '#fcfcfc' }
         ]}
         textStyle={[
@@ -252,7 +252,7 @@ class Category extends React.Component {
         <View style={styles.gridLayout}>
           <GridView
             items={Array.from(category.topicList)}
-            itemsPerRow={4}
+            itemsPerRow={3}
             renderItem={this.renderItem}
           />
         </View>
@@ -285,7 +285,7 @@ class Category extends React.Component {
         <View style={styles.gridLayout}>
           <GridView
             items={Array.from(tempFollowTopics)}
-            itemsPerRow={3}
+            itemsPerRow={2}
             renderItem={this.renderItemMyTopic}
           />
         </View>

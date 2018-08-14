@@ -45,7 +45,7 @@ const propTypes = {
 };
 
 
-let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'回答','dataIndex':0}];
+let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0}];
 let [ ...myTopics ] = preFollowTopics;
 
 let loadMoreTime = 0;

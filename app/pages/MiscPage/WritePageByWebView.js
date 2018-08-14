@@ -53,9 +53,9 @@ class WritePage extends React.Component{
                 <ImageButton
                     onPress={this.props.closePage}
                     icon="md-close"
-                    iconColor="white"
+                    iconColor="black"
                     iconSize={25}
-                    btnStyle={{width: 55, height: 55, alignItems: 'center',justifyContent: 'center'}}
+                    btnStyle={{width: 45, height: 25, alignItems: 'center',justifyContent: 'center'}}
                 />
             </View>
             <WebView2
@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     closeButton:{
-        marginTop: (Platform.OS === 'ios') ? 10 : 0,
-        backgroundColor: '#228b22'
+        marginTop: (Platform.OS === 'ios') ? 10 : 10,
+        backgroundColor: 'white'
     },
     base: {
         flex: 1
