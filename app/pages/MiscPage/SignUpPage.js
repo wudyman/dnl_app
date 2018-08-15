@@ -17,7 +17,7 @@
  */
 
 import React from 'react';
-import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
+import {Text, View, StyleSheet, Platform, TextInput, BackHandler} from 'react-native';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import { GET_SMS_URL } from '../../constants/Urls';

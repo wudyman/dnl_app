@@ -17,11 +17,11 @@
  */
 
 import React from 'react';
-import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
+import {Text, View, StyleSheet, Platform, TextInput, BackHandler} from 'react-native';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import { GET_SMS_URL, CHECK_SMS_URL, RESET_PWD_URL } from '../../constants/Urls';
-import { checkPhoneNoFormat, checkPasswordFormat, checkSmsCodeFormat, checkNickNameFormat } from '../../utils/AccountUtil';
+import { checkPhoneNoFormat, checkPasswordFormat, checkSmsCodeFormat } from '../../utils/AccountUtil';
 import ToastUtil from '../../utils/ToastUtil';
 
 

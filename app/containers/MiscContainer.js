@@ -18,18 +18,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Icon from 'react-native-vector-icons/Ionicons';
 import * as signInUpCreators from '../actions/signinup';
 
 import SignPage from '../pages/MiscPage/SignPage';
 import WritePage from '../pages/MiscPage/WritePageByWebView';
 import AskPage from '../pages/MiscPage/AskPageByWebView';
+import SearchPage from '../pages/MiscPage/SearchPage';
 
 import ToastUtil from '../utils/ToastUtil';
 import { WRITE_URL,ASK_URL} from '../constants/Urls';
 
-let gUserInfo={};
 class MiscContainer extends React.Component {
+
   _closePage(){
     console.log('*******MiscContainer _closePage*******');
     this.props.navigation.pop();
@@ -38,7 +38,7 @@ class MiscContainer extends React.Component {
   componentWillMount() {
     console.log('*******MiscContainer componentWillMount*******');
     const { params } = this.props.navigation.state;
-    if((params.pageType!='sign')&&(params.isSignIn=='false'))
+    if((params.pageType!='sign')&&(params.pageType!='search')&&(params.isSignIn=='false'))
     {
       ToastUtil.showShort("此功能需要先登录");
     }
@@ -47,13 +47,13 @@ class MiscContainer extends React.Component {
 
   render() {
     const { params } = this.props.navigation.state;
-    if(params.isSignIn=='false')
+    if(params.pageType=='search')
+      return <SearchPage closePage={()=>this._closePage()} {...this.props}/>;
+    else if(params.isSignIn=='false')
       return <SignPage closePage={()=>this._closePage()} {...this.props} />;
     else if(params.pageType=='ask')
       return <AskPage closePage={()=>this._closePage()} pageUrl={ASK_URL}/>;
     else if(params.pageType=='write')
-      return <WritePage closePage={()=>this._closePage()} pageUrl={WRITE_URL}/>;
-    else if(params.pageType=='search')
       return <WritePage closePage={()=>this._closePage()} pageUrl={WRITE_URL}/>;
   }
 }

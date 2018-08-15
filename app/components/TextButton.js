@@ -18,8 +18,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes,Text, View, StyleSheet, Platform, TouchableOpacity } from 'react-native';
-import px2dp from '../utils/px2dp';
+import { ViewPropTypes,Text, TouchableOpacity } from 'react-native';
 
 const propTypes = {
     onPress: PropTypes.func,

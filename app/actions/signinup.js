@@ -18,14 +18,12 @@
 import * as types from '../constants/ActionTypes';
 
 export function initSignIn(phoneNo,password) {
-  console.log("######################init SignIn##############################");
-return {
-  type: types.INIT_SIGN_IN,
-};
+  return {
+    type: types.INIT_SIGN_IN,
+  };
 }
 
 export function requestSignIn(phoneNo,password) {
-    console.log("######################requestSignIn##############################");
   return {
     type: types.REQUEST_SIGN_IN,
     phoneNo,
@@ -34,14 +32,12 @@ export function requestSignIn(phoneNo,password) {
 }
 
 export function startSignIn() {
-    console.log("######################startSignIn##############################");
   return {
     type: types.START_SIGN_IN
   };
 }
 
 export function endSignIn(signInResult) {
-  console.log("######################endSignIn##############################");
   return {
     type: types.END_SIGN_IN,
     signInResult
@@ -49,14 +45,12 @@ export function endSignIn(signInResult) {
 }
 
 export function requestUserInfo() {
-  console.log("######################requestUserInfo##############################");
   return {
     type: types.REQUEST_USER_INFO
   };
 }
 
 export function receiveUserInfo(userInfo) {
-  console.log("######################receiveUserInfo##############################");
   return {
     type: types.RECEIVE_USER_INFO,
     userInfo
@@ -64,27 +58,24 @@ export function receiveUserInfo(userInfo) {
 }
 
 export function requestSignUp(phoneNo,smsCode,nickName,password) {
-  console.log("######################requestSignUp##############################");
-return {
-  type: types.REQUEST_SIGN_UP,
-  phoneNo,
-  smsCode,
-  nickName,
-  password
-};
+  return {
+    type: types.REQUEST_SIGN_UP,
+    phoneNo,
+    smsCode,
+    nickName,
+    password
+  };
 }
 
 export function startSignUp() {
-  console.log("######################startSignUp##############################");
-return {
-  type: types.START_SIGN_UP
-};
+  return {
+    type: types.START_SIGN_UP
+  };
 }
 
 export function endSignUp(signUpResult) {
-console.log("######################endSignUp##############################");
-return {
-  type: types.END_SIGN_UP,
-  signUpResult
-};
+  return {
+    type: types.END_SIGN_UP,
+    signUpResult
+  };
 }

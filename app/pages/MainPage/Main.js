@@ -22,7 +22,6 @@ import {
   InteractionManager,
   ListView,
   StyleSheet,
-  Modal,
   View
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';

@@ -16,10 +16,7 @@
  *
  */
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import * as signInUpCreators from '../actions/signinup';
 
 import HomePage from '../pages/HomePage/HomePage';
 
@@ -36,21 +33,5 @@ class HomePageContainer extends React.Component {
     return <HomePage {...this.props} />;
   }
 }
-/*
-const mapStateToProps = (state) => {
-  const { signinup } = state;
-  return {
-    signinup
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  const signInUpActions = bindActionCreators(signInUpCreators, dispatch);
-  return {
-    signInUpActions
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);
-*/
 export default HomePageContainer;

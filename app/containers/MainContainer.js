@@ -24,7 +24,6 @@ import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Main from '../pages/MainPage/Main';
 import * as readCreators from '../actions/read';
-import {TextInput} from 'react-native';
 import Button from '../components/Button';
 import ImageButton from '../components/ImageButtonWithText';  
 
@@ -43,12 +42,6 @@ class MainContainer extends React.Component {
       headerTitle:(
         <View style={{flex:1,flexDirection:'row',marginLeft:15,marginRight:15,borderColor:'#f0f0f0',borderWidth:1,borderRadius: 20}}>
           <ImageButton text='搜索内容' onPress={()=>navigation.navigate('Misc',{pageType:'search',isSignIn:isSignIn})} icon="md-search" iconColor="#aaaaaa" iconSize={20} btnStyle={{flex:1,flexDirection:'row',justifyContent:'center', padding:5}} textStyle={{paddingLeft:5, fontSize:14, textAlign: 'center',color:'#aaaaaa'}}/>
-          {/*}
-        <TextInput
-        style={{flex:1,backgroundColor:'transparent',fontSize:15,borderColor:'#f0f0f0',borderWidth:1,borderRadius: 20,padding:1,textAlign:'center'}}
-        underlineColorAndroid='transparent'
-        placeholderTextColor='#aaaaaa'   
-        placeholder='搜索内容' />*/}
         </View>
       ),
     };

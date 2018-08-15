@@ -17,7 +17,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image, Text, Linking, Modal,TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import store from 'react-native-simple-store';
 import NavigationUtil from '../../../utils/NavigationUtil';
 import DeviceInfo from 'react-native-device-info';

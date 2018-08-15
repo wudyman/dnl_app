@@ -19,7 +19,6 @@ import React from 'react';
 import { StyleSheet, Image, Text, Linking, View } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../../components/Button';
 import { SITE_URL } from '../../../constants/Urls';
 

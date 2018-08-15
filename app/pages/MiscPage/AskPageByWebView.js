@@ -16,9 +16,7 @@
  *
  */
 import React from 'react';
-import { WebView, Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
-//import Icon from 'react-native-vector-icons/Ionicons';
-import Button from '../../components/Button';
+import { View, StyleSheet, Platform, BackHandler} from 'react-native';
 import WebView2 from '../../components/WebView2';
 import ImageButton from '../../components/ImageButtonWithText';
 class AskPage extends React.Component{

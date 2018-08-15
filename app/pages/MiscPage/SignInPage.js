@@ -16,12 +16,9 @@
  *
  */
 import React from 'react';
-import {Text, View, StyleSheet, PixelRatio, Platform, TouchableOpacity, Image, TextInput, BackHandler} from 'react-native';
-//import Icon from 'react-native-vector-icons/Ionicons';
+import {Text, View, StyleSheet, Platform, TextInput, BackHandler} from 'react-native';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
-import TextDivider from '../../components/TextDivider';
-//import px2dp from '../../utils/px2dp';
 import { checkPhoneNoFormat, checkPasswordFormat } from '../../utils/AccountUtil';
 import ToastUtil from '../../utils/ToastUtil';
 class SignInPage extends React.Component{

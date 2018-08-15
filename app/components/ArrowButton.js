@@ -17,10 +17,8 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ViewPropTypes,Text, View, StyleSheet, Platform, TouchableOpacity, TouchableNativeFeedback, Image } from 'react-native';
-import px2dp from '../utils/px2dp';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import theme from '../config/theme';
 
 const propTypes = {
     onPress: PropTypes.func,

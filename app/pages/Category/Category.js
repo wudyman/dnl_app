@@ -28,17 +28,17 @@ import {
   Alert
 } from 'react-native';
 
-import AV from 'leancloud-storage';
+//import AV from 'leancloud-storage';
 import store from 'react-native-simple-store';
 import GridView from '../../components/GridView';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import ToastUtil from '../../utils/ToastUtil';
-import NavigationUtil from '../../utils/NavigationUtil';
-import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
+//import NavigationUtil from '../../utils/NavigationUtil';
+//import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
 import { FOLLOW_TOPICS_URL } from '../../constants/Urls';
 
-let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0}];
+//let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0}];
 //let [ ...tempFollowTopics ] = preFollowTopics;
 //let tempFollowTopicsIds = [HEAD_TOPIC_ID,ANSWER_TOPIC_ID];
 let tempFollowTopics = [];
@@ -299,11 +299,11 @@ class Category extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.header}>
-            <ImageButton icon="md-close" iconSize={25} iconColor="black" onPress={() => this.onSelectCategory()}/>
+            <ImageButton btnStyle={{padding:10}} icon="md-close" iconSize={25} iconColor="black" activeOpacity={0.2} onPress={() => this.onSelectCategory()}/>
             <View style={styles.title}>
               <Text style={styles.titleText}>栏目</Text>
             </View>
-            <ImageButton icon="md-checkmark" iconSize={25} iconColor="black" onPress={() => this.onSelectCategory()}/>
+            <ImageButton btnStyle={{padding:10}} icon="md-checkmark" iconSize={25} iconColor="black" activeOpacity={0.2} onPress={() => this.onSelectCategory()}/>
           </View>           
 
           <View style={styles.greet}>
@@ -325,11 +325,11 @@ class Category extends React.Component {
       <View style={styles.container}>
 
         <View style={styles.header}>
-          <ImageButton icon="md-close" iconSize={25} iconColor="black" onPress={() => this.onActionSelected()}/>
+          <ImageButton btnStyle={{padding:10}} icon="md-close" iconSize={25} iconColor="black" activeOpacity={0.2} onPress={() => this.onActionSelected()}/>
           <View style={styles.title}>
             <Text style={styles.titleText}>栏目</Text>
           </View>
-          <ImageButton icon="md-checkmark" iconSize={25} iconColor="black" onPress={() => this.onActionSelected()}/>
+          <ImageButton btnStyle={{padding:10}} icon="md-checkmark" iconSize={25} iconColor="black" activeOpacity={0.2} onPress={() => this.onActionSelected()}/>
         </View>   
 
         <View style={styles.myTopic}>
@@ -343,12 +343,6 @@ class Category extends React.Component {
           <Text style={styles.allTopicSubText}>点击栏目添加或移除</Text>
         </View>
         {this.renderGridView()}
-        <Button
-            btnStyle={styles.sureBtn}
-            textStyle={styles.sureBtnText}
-            text="确认"
-            onPress={() => this.onActionSelected()}
-        />
       </View>
     );
   }
@@ -372,7 +366,7 @@ const styles = StyleSheet.create({
   margin:10
   },
   title: {
-    //padding: 10,
+    padding: 10,
     backgroundColor: '#fcfcfc'
   },
   titleText: {

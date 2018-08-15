@@ -16,19 +16,10 @@
  *
  */
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import Icon from 'react-native-vector-icons/Ionicons';
-import * as signInUpCreators from '../actions/signinup';
-
 import SettingPage from '../pages/HomePage/Subs/SettingPage';
 import AboutPage from '../pages/HomePage/Subs/AboutPage';
 import FeedbackPage from '../pages/HomePage/Subs/FeedbackPage';
 
-import ToastUtil from '../utils/ToastUtil';
-import { WRITE_URL} from '../constants/Urls';
-
-let gUserInfo={};
 class SubContainer extends React.Component {
   _closePage(){
     console.log('*******SubContainer _closePage*******');
@@ -52,21 +43,5 @@ class SubContainer extends React.Component {
         return <SettingPage closePage={()=>this._closePage()} {...this.props}/>;
   }
 }
-/*
-const mapStateToProps = (state) => {
-  const { signinup } = state;
-  return {
-    signinup
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  const signInUpActions = bindActionCreators(signInUpCreators, dispatch);
-  return {
-    signInUpActions
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SubContainer);
-*/
 export default SubContainer;

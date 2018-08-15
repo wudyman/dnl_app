@@ -18,7 +18,6 @@
 import React from 'react';
 import {
   StyleSheet,
-  WebView,
   BackHandler,
   Dimensions,
   Text,
@@ -42,10 +41,6 @@ const shareIconMoments = require('../../img/share_icon_moments.png');
 
 class WebViewPage extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.article.userName,
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-home" size={25} color={tintColor} />
-    ),
     headerRight: (
       <Icon.Button
         name="md-share"
@@ -127,7 +122,7 @@ class WebViewPage extends React.Component {
                     if (isInstalled) {
                       WeChat.shareToSession({
                         title: formatStringWithHtml(params.article.title),
-                        description: '分享自：iReading',
+                        description: '分享自：大农令',
                         thumbImage: params.article.contentImg,
                         type: 'news',
                         webpageUrl: params.article.url
