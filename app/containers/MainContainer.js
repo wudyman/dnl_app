@@ -27,7 +27,7 @@ import * as readCreators from '../actions/read';
 import Button from '../components/Button';
 import ImageButton from '../components/ImageButtonWithText';  
 
-let isSignIn='';
+let isSignIn='false';
 class MainContainer extends React.Component {
   
   static navigationOptions = ({ navigation }) => {
@@ -50,7 +50,10 @@ class MainContainer extends React.Component {
   componentWillMount() {
     console.log('**************MainContainer componentWillMount*********');
     store.get('userInfo').then((userInfo)=>{
-      isSignIn=userInfo.isSignIn;
+      if('true'==userInfo.isSignIn)
+        isSignIn='true';
+      else
+        isSignIn='false';
     });
   }
 

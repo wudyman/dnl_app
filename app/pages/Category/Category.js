@@ -38,12 +38,11 @@ import ToastUtil from '../../utils/ToastUtil';
 //import { HEAD_TOPIC_ID, ANSWER_TOPIC_ID } from '../../constants/Constants';
 import { FOLLOW_TOPICS_URL } from '../../constants/Urls';
 
-//let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0}];
-//let [ ...tempFollowTopics ] = preFollowTopics;
 //let tempFollowTopicsIds = [HEAD_TOPIC_ID,ANSWER_TOPIC_ID];
 let tempFollowTopics = [];
 let tempFollowTopicsIds = [];
 let maxCategory = 100; // 未登录最多3个类别，登录后无限制
+let isSignIn='false';
 
 const propTypes = {
   categoryActions: PropTypes.object,
@@ -80,6 +79,7 @@ class Category extends React.Component {
   }
 
   componentDidMount() {
+    console.log("********category componentDidMount*********");
     const { categoryActions } = this.props;
     categoryActions.requestTopicList();
     //const query = new AV.Query('Reading_Settings');
@@ -89,6 +89,13 @@ class Category extends React.Component {
     const { params } = this.props.navigation.state;
     if (params === undefined || !params.isFirst) {
       this.props.navigation.setParams({ handleCheck: this.onActionSelected });
+      store.get('userInfo').then((userInfo)=>{
+        if('true'==userInfo.isSignIn)
+          isSignIn='true';
+        else
+          isSignIn='false';
+        console.log(isSignIn);
+      });
     }
   }
 
@@ -148,8 +155,6 @@ class Category extends React.Component {
         {
           text: '确定',
           onPress: () => {
-            //store.save('followTopics', this.state.followTopics);
-            //NavigationUtil.reset(this.props.navigation, 'Home');
             store.save('followTopics', this.state.followTopics)
             .then(store.save('isInit', true))
             .then(this.routeMain);
@@ -161,9 +166,6 @@ class Category extends React.Component {
       ToastUtil.showShort(`不要超过${maxCategory}个类别哦`);
     } 
     else {
-      //store.save('followTopics', this.state.followTopics);
-      //store.save('isInit', true);
-      //NavigationUtil.reset(this.props.navigation, 'Home');
       store.save('followTopics', this.state.followTopics)
       .then(store.save('isInit', true))
       .then(this.routeMain);
@@ -197,7 +199,11 @@ class Category extends React.Component {
             return;
           }
         }
-        this.followTopicsServer(tempFollowTopicsIds);
+        if("true"==isSignIn)
+        {
+          console.log('*******followTopicsServer********');
+          this.followTopicsServer(tempFollowTopicsIds);
+        }
         store.save('followTopics', this.state.followTopics).then(this.routeMain);
 
       });
@@ -205,6 +211,7 @@ class Category extends React.Component {
   };
 
   routeMain = () => {
+    console.log(this.state.followTopics);
     const { navigate } = this.props.navigation;
     DeviceEventEmitter.emit('changeCategory', this.state.followTopics);
     navigate('Main');

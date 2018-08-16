@@ -61,8 +61,7 @@ class SignPage extends React.Component {
 
 
   componentWillMount() {
-    console.log(this.props);
-    //ToastUtil.showShort("请先登录");
+    console.log('***************SignPage componentWillMount**************');
     store.get('userInfo').then((userInfo)=>{
       this.setState({userInfo:userInfo});
     });
@@ -72,14 +71,13 @@ class SignPage extends React.Component {
     const { signinup } = nextProps;
     if('success'==signinup.signInResult)
     {
-      //this.setState({signModal:false});
-      //this.props.navigation.pop();
-      NavigationUtil.reset(this.props.navigation, 'Home');
+      console.log("sign in success");
     }
     if('success'==signinup.getUserInfoResult)
     {
+      console.log("getUserInfoResult success");
       this.setState({userInfo:signinup.userInfo});
-      this.props.navigation.navigate('Sign',{pageType:'write',isSignIn:'true'})
+      NavigationUtil.reset(this.props.navigation, 'Home');
     }
     if('success'==signinup.signUpResult)
     {

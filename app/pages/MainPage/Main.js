@@ -43,9 +43,9 @@ const propTypes = {
   read: PropTypes.object.isRequired
 };
 
-
-let preFollowTopics = [{'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0},{'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0}];
-let [ ...myTopics ] = preFollowTopics;
+const preTopic1={'id':HEAD_TOPIC_ID,'name':'头条','dataIndex':0};
+const preTopic2={'id':ANSWER_TOPIC_ID,'name':'待回答','dataIndex':0};
+let myTopics=[];
 
 let loadMoreTime = 0;
 let currentLoadMoreTopicId;
@@ -58,6 +58,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      tabIndex:0,
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
@@ -67,25 +68,26 @@ class Main extends React.Component {
   componentDidMount() {
     console.log('**************MainPage componentDidMount*********');
     const { readActions } = this.props;
+    DeviceEventEmitter.removeAllListeners('changeCategory');
     DeviceEventEmitter.addListener('changeCategory', (followTopics) => {
       console.log('**************MainPage componentDidMount changeCategory*********');
-      myTopics = [];
-      [ ...myTopics ] = preFollowTopics;
+      myTopics = new Array(Object.assign({},preTopic1),Object.assign({},preTopic2));
       myTopics=myTopics.concat(followTopics);
-      currentTopicId=myTopics[0].id;
-      readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
+      //readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
+      //console.log(this.refs.myScrollableTabView);
+      this.refs.myScrollableTabView.goToPage(0);
     });
+
     InteractionManager.runAfterInteractions(() => {
       console.log('*MainPage componentDidMount runAfterInteractions*');
       store.get('followTopics').then((followTopics) => {
-        myTopics = [];
-        [ ...myTopics ] = preFollowTopics;
+        myTopics = new Array(Object.assign({},preTopic1),Object.assign({},preTopic2));
         if(null!=followTopics)
         {
           myTopics=myTopics.concat(followTopics);
         }
-        console.log(myTopics);
         currentTopicId=myTopics[0].id;
+        currentTabIndex=0;
         readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, true);
       });
     });
@@ -123,13 +125,17 @@ class Main extends React.Component {
   
 
   componentWillUnmount() {
-    DeviceEventEmitter.removeAllListeners('changeCategory');
+    console.log('**************MainPage componentWillUnmount*********');
+    //DeviceEventEmitter.removeAllListeners('changeCategory');
   }
 
   onRefresh = (topicId) => {
+    console.log('**************MainPage onRefresh*********');
     const { readActions } = this.props;
     dataIndex=0;
     readActions.requestArticleList(topicId, currentTabIndex, dataIndex, true, false);
+    dataIndex=dataIndex+DATA_STEP;
+    myTopics[currentTabIndex].dataIndex=dataIndex;
     //const index = this.state.typeIds.indexOf(typeId);
   };
 
@@ -154,6 +160,7 @@ class Main extends React.Component {
       dataIndex=myTopics[currentTabIndex].dataIndex;
       dataIndex=dataIndex+DATA_STEP;
       myTopics[currentTabIndex].dataIndex=dataIndex;
+      console.log('**************MainPage onEndReached*********');
       readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, false, false, true);
       loadMoreTime = Date.parse(new Date()) / 1000;
     }
@@ -168,7 +175,7 @@ class Main extends React.Component {
   );
 
   renderContent = (topic) => {
-    //console.log(topic);
+    console.log(topic);
     const { read } = this.props;
     if (read.loading) {
       return <LoadingView />;
@@ -216,6 +223,7 @@ class Main extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollableTabView
+          ref="myScrollableTabView"
           renderTabBar={() => (
             <ScrollableTabBar
               style={{borderWidth:1,borderColor:'#f8f8f8'}}
@@ -223,14 +231,24 @@ class Main extends React.Component {
               textStyle={styles.tabText}
             />
           )}
+          initialPage={0}
+          locked={true}
           onChangeTab={(obj) => {
-            currentTabIndex=obj.i;
-            const { read } = this.props;
-            console.log(read);
-            currentTopicId=myTopics[currentTabIndex].id;
-            const { readActions } = this.props;
-            dataIndex=0;
-            readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, true, false);
+              console.log('**************MainPage onChangeTab*********');
+              currentTabIndex=obj.i;
+              this.setState({tabIndex:currentTabIndex});
+              const { read } = this.props;
+              console.log(read);
+              currentTopicId=myTopics[currentTabIndex].id;
+              dataIndex=myTopics[currentTabIndex].dataIndex;
+              if(0==dataIndex)
+              {
+                console.log('**************MainPage onChangeTab need refresh*********');
+                const { readActions } = this.props;
+                readActions.requestArticleList(currentTopicId, currentTabIndex, dataIndex, true, false);
+                dataIndex=dataIndex+DATA_STEP;
+                myTopics[currentTabIndex].dataIndex=dataIndex;
+              }
             }
           }
           tabBarBackgroundColor="#ffffff"
