@@ -233,6 +233,7 @@ class Main extends React.Component {
           )}
           initialPage={0}
           locked={true}
+          scrollWithoutAnimation={true}
           onChangeTab={(obj) => {
               console.log('**************MainPage onChangeTab*********');
               currentTabIndex=obj.i;

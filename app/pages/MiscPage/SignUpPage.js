@@ -20,7 +20,7 @@ import React from 'react';
 import {Text, View, StyleSheet, Platform, TextInput, BackHandler} from 'react-native';
 import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
-import { GET_SMS_URL } from '../../constants/Urls';
+import { GET_SMS_URL, SITE_NAME } from '../../constants/Urls';
 import { checkPhoneNoFormat, checkPasswordFormat, checkSmsCodeFormat, checkNickNameFormat } from '../../utils/AccountUtil';
 import ToastUtil from '../../utils/ToastUtil';
 
@@ -137,7 +137,7 @@ export default class SignUpPage extends React.Component {
                     />
                 </View>
                 <View style={styles.title}>
-                    <Text style={styles.mainTitle}>注册大农令</Text>
+                    <Text style={styles.mainTitle}>注册{SITE_NAME}</Text>
                 </View>
                 <View style={styles.signUp}>
                     <View style={styles.accout}>

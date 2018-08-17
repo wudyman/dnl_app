@@ -21,6 +21,7 @@ import Button from '../../components/Button';
 import ImageButton from '../../components/ImageButtonWithText';
 import { checkPhoneNoFormat, checkPasswordFormat } from '../../utils/AccountUtil';
 import ToastUtil from '../../utils/ToastUtil';
+import { SITE_NAME, SITE_SLOGAN } from '../../constants/Urls';
 class SignInPage extends React.Component{
     constructor(props){
         super(props);
@@ -80,8 +81,8 @@ class SignInPage extends React.Component{
                     />
                 </View>
                 <View style={styles.title}>
-                    <Text style={styles.mainTitle}>登录大农令</Text>
-                    <Text style={styles.subTitle}>关注新农村,新农业,新农民</Text>
+                    <Text style={styles.mainTitle}>登录{SITE_NAME}</Text>
+                    <Text style={styles.subTitle}>{SITE_SLOGAN}</Text>
                 </View>
                 <View style={styles.signIn}>
                     <View style={styles.accout}>

@@ -20,7 +20,7 @@ import { StyleSheet, Image, Text, Linking, View } from 'react-native';
 
 import DeviceInfo from 'react-native-device-info';
 import Button from '../../../components/Button';
-import { SITE_URL } from '../../../constants/Urls';
+import { SITE_URL,SITE_NAME,SITE_SLOGAN } from '../../../constants/Urls';
 
 const aboutLogo = require('../../../img/about_logo.png');
 
@@ -34,8 +34,8 @@ class AboutPage extends React.Component {
           <View style={styles.center}>
             <Image style={styles.logo} source={aboutLogo} />
             <Text style={styles.version}>{`V${DeviceInfo.getVersion()}`}</Text>
-            <Text style={styles.title}>大农令</Text>
-            <Text style={styles.subtitle}>关注新农村，新农民，新农业</Text>
+            <Text style={styles.title}>{SITE_NAME}</Text>
+            <Text style={styles.subtitle}>{SITE_SLOGAN}</Text>
           </View>
           <View style={styles.bottomContainer}>
             <View style={styles.disclaimerContent}>

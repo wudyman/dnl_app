@@ -19,6 +19,7 @@ import React from 'react';
 import { StyleSheet, TextInput, View, Keyboard } from 'react-native';
 import Button from '../../../components/Button';
 import ToastUtil from '../../../utils/ToastUtil';
+import {SITE_NAME} from '../../../constants/Urls';
 
 let feedbackText;
 
@@ -57,7 +58,7 @@ class FeedbackPage extends React.Component {
             this.textInput = ref;
           }}
           style={styles.textInput}
-          placeholder="请写下您宝贵的意见或建议，与大农令一起进步！"
+          placeholder={`请写下您宝贵的意见或建议，与${SITE_NAME}一起进步！`}
           placeholderTextColor="#aaaaaa"
           underlineColorAndroid="transparent"
           numberOfLines={500}

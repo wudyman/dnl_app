@@ -34,6 +34,7 @@ import ToastUtil from '../../utils/ToastUtil';
 import LoadingView from '../../components/LoadingView';
 import { formatStringWithHtml } from '../../utils/FormatUtil';
 import WebView2 from '../../components/WebView2';
+import { SITE_NAME } from '../../constants/Urls';
 
 let canGoBack = false;
 const shareIconWechat = require('../../img/share_icon_wechat.png');
@@ -122,7 +123,7 @@ class WebViewPage extends React.Component {
                     if (isInstalled) {
                       WeChat.shareToSession({
                         title: formatStringWithHtml(params.article.title),
-                        description: '分享自：大农令',
+                        description: `分享自：${SITE_NAME}`,
                         thumbImage: params.article.contentImg,
                         type: 'news',
                         webpageUrl: params.article.url
