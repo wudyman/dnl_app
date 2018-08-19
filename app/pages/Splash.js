@@ -28,8 +28,7 @@ import { SITE_URL,REQUEST_USER_INFO_URL } from '../constants/Urls';
 
 const maxHeight = Dimensions.get('window').height;
 const maxWidth = Dimensions.get('window').width;
-//const splashImg = require('../img/splash.png');
-const splashImg = require('../img/share_icon_moments.png');
+const splashImg = require('../img/splash.png');
 let bDone=false;
 
 class Splash extends React.Component {
