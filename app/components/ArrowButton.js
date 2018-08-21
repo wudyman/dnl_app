@@ -17,13 +17,13 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { ViewPropTypes, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const propTypes = {
     onPress: PropTypes.func,
     disabled: PropTypes.bool,
-    btnStyle: View.propTypes.style,
+    btnStyle: ViewPropTypes.style,
     textStyle: Text.propTypes.style,
     tipsStyle: Text.propTypes.style,
     text: PropTypes.string,
